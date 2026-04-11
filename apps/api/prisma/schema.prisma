@@ -1,0 +1,255 @@
+// SQ Agriculture - Database Schema
+// Prisma ORM with SQLite (for development)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  nameBn        String?
+  phone         String?
+  role          String    @default("USER")
+  isActive      Boolean   @default(true)
+  emailVerified Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  leads                  Lead[]   @relation("AssignedLeads")
+  inquiries              Inquiry[] @relation("AssignedInquiries")
+  wishlistItems          WishlistItem[]
+  passwordResetTokens    PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
+  refreshTokens          RefreshToken[]
+
+  @@map("users")
+}
+
+model Category {
+  id             String   @id @default(uuid())
+  name           String
+  nameBn         String?
+  slug           String   @unique
+  description    String?
+  descriptionBn  String?
+  image          String?
+  type           String
+  sortOrder      Int      @default(0)
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id             String   @id @default(uuid())
+  name           String
+  nameBn         String?
+  slug           String   @unique
+  description    String
+  descriptionBn  String?
+  price          Float?
+  priceUnit      String?
+  images         String   @default("[]")
+  brochure       String?
+  specs          String   @default("{}")
+  featured       Boolean  @default(false)
+  inStock        Boolean  @default(true)
+  categoryId     String
+  category       Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  wishlistItems WishlistItem[]
+
+  @@index([categoryId])
+  @@index([featured])
+  @@index([isActive])
+  @@map("products")
+}
+
+model Dealer {
+  id          String   @id @default(uuid())
+  name        String
+  nameBn      String?
+  phone       String
+  email       String
+  address     String
+  district    String
+  division    String
+  latitude    Float?
+  longitude   Float?
+  image       String?
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([division])
+  @@index([district])
+  @@index([isActive])
+  @@map("dealers")
+}
+
+model BlogPost {
+  id          String   @id @default(uuid())
+  title       String
+  titleBn     String?
+  slug        String   @unique
+  excerpt     String
+  excerptBn   String?
+  content     String
+  contentBn   String?
+  image       String?
+  author      String
+  authorImage String?
+  category    String
+  tags        String   @default("[]")
+  published   Boolean  @default(false)
+  featured    Boolean  @default(false)
+  viewCount   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([published])
+  @@index([featured])
+  @@index([category])
+  @@map("blog_posts")
+}
+
+model Lead {
+  id               String   @id @default(uuid())
+  name             String
+  email            String
+  phone            String
+  company          String?
+  userType         String
+  productInterest  String?
+  message          String
+  status           String   @default("NEW")
+  notes            String?
+  assignedToId     String?
+  assignedTo       User?    @relation("AssignedLeads", fields: [assignedToId], references: [id])
+  source           String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([assignedToId])
+  @@map("leads")
+}
+
+model Inquiry {
+  id               String   @id @default(uuid())
+  name             String
+  email            String
+  phone            String
+  company          String?
+  userType         String
+  productInterest  String?
+  message          String
+  status           String   @default("NEW")
+  notes            String?
+  assignedToId     String?
+  assignedTo       User?    @relation("AssignedInquiries", fields: [assignedToId], references: [id])
+  ipAddress        String?
+  userAgent        String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([status])
+  @@index([createdAt])
+  @@index([assignedToId])
+  @@map("inquiries")
+}
+
+model NewsletterSubscription {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  isActive      Boolean   @default(true)
+  subscribedAt  DateTime  @default(now())
+  unsubscribedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@map("newsletter_subscriptions")
+}
+
+model WishlistItem {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  addedAt   DateTime @default(now())
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+  @@map("password_reset_tokens")
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+  @@map("email_verification_tokens")
+}
+
+model Upload {
+  id            String   @id @default(uuid())
+  filename      String
+  originalName  String
+  mimeType      String
+  size          Int
+  url           String
+  entityType    String?
+  entityId      String?
+  uploadedById   String?
+  createdAt     DateTime @default(now())
+
+  @@map("uploads")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("refresh_tokens")
+}

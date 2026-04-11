@@ -1,0 +1,1035 @@
+import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+
+const prisma = new PrismaClient();
+
+// SQLite uses strings instead of enums
+const Role = { ADMIN: 'ADMIN', MANAGER: 'MANAGER', CUSTOMER: 'CUSTOMER', USER: 'USER' };
+const CategoryType = { SEEDS: 'SEEDS', PESTICIDES: 'PESTICIDES', FERTILIZERS: 'FERTILIZERS', MACHINERY: 'MACHINERY', MICRONUTRIENTS: 'MICRONUTRIENTS', LUBRICANTS: 'LUBRICANTS' };
+const ProductUnit = { KG: 'KG', GRAM: 'GRAM', BAG: 'BAG', UNIT: 'UNIT', LITER: 'LITER', PIECE: 'PIECE' };
+const UserType = { FARMER: 'FARMER', DEALER: 'DEALER', CORPORATE: 'CORPORATE' };
+const LeadStatus = { NEW: 'NEW', CONTACTED: 'CONTACTED', QUALIFIED: 'QUALIFIED', CONVERTED: 'CONVERTED', LOST: 'LOST' };
+const InquiryStatus = { NEW: 'NEW', READ: 'READ', REPLIED: 'REPLIED', CLOSED: 'CLOSED' };
+
+async function main() {
+  console.log('Starting database seed...');
+  
+  await prisma.$connect();
+
+  // Clear existing data
+  await prisma.refreshToken.deleteMany();
+  await prisma.upload.deleteMany();
+  await prisma.inquiry.deleteMany();
+  await prisma.lead.deleteMany();
+  await prisma.blogPost.deleteMany();
+  await prisma.dealer.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.category.deleteMany();
+  await prisma.user.deleteMany();
+
+  console.log('Cleared existing data');
+
+  // Create Admin User
+  const adminPassword = await bcrypt.hash('admin123', 10);
+  const admin = await prisma.user.create({
+    data: {
+      email: 'admin@sq-agriculture.com',
+      password: adminPassword,
+      name: 'Admin User',
+      phone: '+8801700000000',
+      role: Role.ADMIN,
+      isActive: true,
+    },
+  });
+  console.log('Created admin user');
+
+  // Create Customer
+  const customerPassword = await bcrypt.hash('customer123', 10);
+  await prisma.user.create({
+    data: {
+      email: 'customer@test.com',
+      password: customerPassword,
+      name: 'Test Customer',
+      phone: '+8801700000002',
+      role: Role.CUSTOMER,
+      isActive: true,
+    },
+  });
+  const managerPassword = await bcrypt.hash('manager123', 10);
+  await prisma.user.create({
+    data: {
+      email: 'manager@sq-agriculture.com',
+      password: managerPassword,
+      name: 'Sales Manager',
+      phone: '+8801700000001',
+      role: Role.MANAGER,
+      isActive: true,
+    },
+  });
+
+  // Categories
+  const categories = await Promise.all([
+    prisma.category.create({
+      data: {
+        name: 'Hybrid Seeds',
+        nameBn: 'হাইব্রিড বীজ',
+        slug: 'hybrid-seeds',
+        description: 'High-yield hybrid seeds for various crops',
+        descriptionBn: 'বিভিন্ন ফসলের জন্য উচ্চ ফলনশীল হাইব্রিড বীজ',
+        image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 1,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Organic Seeds',
+        nameBn: 'জৈব বীজ',
+        slug: 'organic-seeds',
+        description: 'Certified organic seeds for sustainable farming',
+        descriptionBn: 'টেকসই চাষের জন্য সার্টিফাইড জৈব বীজ',
+        image: 'https://images.unsplash.com/photo-1595855759920-86582396756a?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 2,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Rice Seeds',
+        nameBn: 'ধানের বীজ',
+        slug: 'rice-seeds',
+        description: 'Premium quality rice seeds for Boro, Aman, and Aus seasons',
+        descriptionBn: 'বোরো, আমন এবং আউস মৌসুমের জন্য প্রিমিয়াম মানের ধানের বীজ',
+        image: 'https://images.unsplash.com/photo-1500367880906-9a5b3dc0c8d3?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 3,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Vegetable Seeds',
+        nameBn: 'সবজির বীজ',
+        slug: 'vegetable-seeds',
+        description: 'Wide variety of vegetable seeds',
+        descriptionBn: 'সবজির বীজের বিস্তৃত পরিসর',
+        image: 'https://images.unsplash.com/photo-1518977676601-b53f82ber1?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 4,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Pesticides',
+        nameBn: 'কীটনাশক',
+        slug: 'pesticides',
+        description: 'Effective pest control solutions',
+        descriptionBn: 'কার্যকরী কীট নিয়ন্ত্রণ সমাধান',
+        image: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800',
+        type: CategoryType.PESTICIDES,
+        sortOrder: 5,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Fertilizers',
+        nameBn: 'সার',
+        slug: 'fertilizers',
+        description: 'Quality fertilizers for better crop yield',
+        descriptionBn: 'উন্নত ফসল ফলনের জন্য মানসম্মত সার',
+        image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
+        type: CategoryType.PESTICIDES,
+        sortOrder: 6,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Irrigation Equipment',
+        nameBn: 'সেচ সরঞ্জাম',
+        slug: 'irrigation-equipment',
+        description: 'Modern irrigation systems and equipment',
+        descriptionBn: 'আধুনিক সেচ ব্যবস্থা এবং সরঞ্জাম',
+        image: 'https://images.unsplash.com/photo-1595326964291-59296d629562?w=800',
+        type: CategoryType.MACHINERY,
+        sortOrder: 7,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Harvesting Machinery',
+        nameBn: 'ফসল কাটার যন্ত্র',
+        slug: 'harvesting-machinery',
+        description: 'Efficient harvesting machines',
+        descriptionBn: 'দক্ষ ফসল কাটার যন্ত্র',
+        image: 'https://images.unsplash.com/photo-1630398442022-b4c9c04e5b3b?w=800',
+        type: CategoryType.MACHINERY,
+        sortOrder: 8,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Tractors',
+        nameBn: 'ট্র্যাক্টর',
+        slug: 'tractors',
+        description: 'SQ ETIAN tractors for all farming needs',
+        descriptionBn: 'সকল কৃষি কাজের জন্য এসকিউ এটিয়ান ট্র্যাক্টর',
+        image: '/uploads/products/machinery/TT47.png',
+        type: CategoryType.MACHINERY,
+        sortOrder: 9,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Rotavators',
+        nameBn: 'রোটাভেটর',
+        slug: 'rotavators',
+        description: 'High-quality rotavators for efficient soil preparation',
+        descriptionBn: 'দক্ষ মাটি প্রস্তুতির জন্য উচ্চ-মানের রোটাভেটর',
+        image: '/uploads/products/machinery/Rotavator.png',
+        type: CategoryType.MACHINERY,
+        sortOrder: 10,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Lubricants & Oils',
+        nameBn: 'লুব্রিকেন্ট ও তেল',
+        slug: 'lubricants-oils',
+        description: 'Premium lubricants for tractors and machinery',
+        descriptionBn: 'ট্র্যাক্টর ও যন্ত্রের জন্য প্রিমিয়াম লুব্রিকেন্ট',
+        image: '/uploads/products/lube/Tractor Pro Engine Oil.png',
+        type: CategoryType.LUBRICANTS,
+        sortOrder: 11,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Micronutrients',
+        nameBn: 'মাইক্রোনিউট্রিয়েন্টস',
+        slug: 'micronutrients',
+        description: 'Essential micronutrients for plant health',
+        descriptionBn: 'গাছের স্বাস্থ্যের জন্য অপরিহার্য মাইক্রোনিউট্রিয়েন্টস',
+        image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
+        type: CategoryType.MICRONUTRIENTS,
+        sortOrder: 12,
+        isActive: true,
+      },
+    }),
+  ]);
+  console.log('Created categories');
+
+  // Products
+  await Promise.all([
+    prisma.product.create({
+      data: {
+        name: 'BRRI Dhan-88',
+        nameBn: 'ব্রি ধান-৮৮',
+        slug: 'brri-dhan-88',
+        description: 'High-yielding Boro rice variety with excellent grain quality. Average yield: 7-8 tons per hectare. Resistant to major diseases.',
+        descriptionBn: 'চমৎকার দানার মান সহ উচ্চ ফলনশীল বোরো ধানের জাত। গড় ফলন: ৭-৮ টন প্রতি হেক্টর। প্রধান রোগে প্রতিরোধী।',
+        price: 120,
+        priceUnit: ProductUnit.KG,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1500367880906-9a5b3dc0c8d3?w=800']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[2].id,
+        specs: JSON.stringify({ yield: '7-8 t/ha', maturity: '145-150 days', disease_resistance: 'Blast resistant' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'BRRI Dhan-89',
+        nameBn: 'ব্রি ধান-৮৯',
+        slug: 'brri-dhan-89',
+        description: 'Premium salt-tolerant Boro rice variety. Ideal for coastal areas. High market demand.',
+        descriptionBn: 'লবণ সহিষ্ণু প্রিমিয়াম বোরো ধানের জাত। উপকূলীয় এলাকার জন্য আদর্শ। উচ্চ বাজার চাহিদা।',
+        price: 130,
+        priceUnit: ProductUnit.KG,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1500367880906-9a5b3dc0c8d3?w=800']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[2].id,
+        specs: JSON.stringify({ yield: '6-7 t/ha', maturity: '150-155 days', tolerance: 'Salt tolerant' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Hybrid Maize Seeds',
+        nameBn: 'হাইব্রিড ভুট্টার বীজ',
+        slug: 'hybrid-maize-seeds',
+        description: 'Super hybrid maize seeds with 99% purity. High returns for commercial farmers.',
+        descriptionBn: '৯৯% বিশুদ্ধতা সহ সুপার হাইব্রিড ভুট্টার বীজ। বাণিজ্যিক কৃষকদের জন্য উচ্চ রিটার্ন।',
+        price: 450,
+        priceUnit: ProductUnit.KG,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=800']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[0].id,
+        specs: JSON.stringify({ yield: '10-12 t/ha', maturity: '100-110 days', purity: '99%' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Organic Tomato Seeds',
+        nameBn: 'জৈব টমেটোর বীজ',
+        slug: 'organic-tomato-seeds',
+        description: 'Certified organic tomato seeds for greenhouse and open field cultivation.',
+        descriptionBn: 'গ্রিনহাউস এবং মুক্ত মাঠ চাষের জন্য সার্টিফাইড জৈব টমেটোর বীজ।',
+        price: 800,
+        priceUnit: ProductUnit.GRAM,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[1].id,
+        specs: JSON.stringify({ yield: '60-80 t/ha', maturity: '70-80 days', type: 'Indeterminate' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Imidacloprid 70% WG',
+        nameBn: 'ইমিডাক্লোপ্রিড ৭০% ডব্লিউজি',
+        slug: 'imidacloprid-70wg',
+        description: 'Systemic insecticide for controlling sucking pests. Safe for beneficial insects when used as directed.',
+        descriptionBn: 'চোষক কীট নিয়ন্ত্রণের জন্য সিস্টেমিক কীটনাশক। নির্দেশ অনুযায়ী ব্যবহারে মিত্রতামূলক কীটের জন্য নিরাপদ।',
+        price: 850,
+        priceUnit: ProductUnit.GRAM,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[4].id,
+        specs: JSON.stringify({ active_ingredient: 'Imidacloprid 70%', formulation: 'Water Dispersible Granule', coverage: '400-500 sqm' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Drip Irrigation Kit (1 Bigha)',
+        nameBn: 'ড্রিপ সেচ কিট (১ বিঘা)',
+        slug: 'drip-irrigation-kit-1-bigha',
+        description: 'Complete drip irrigation system for 1 bigha land. Includes main pipe, sub-pipe, drippers, and fittings.',
+        descriptionBn: '১ বিঘা জমির জন্য সম্পূর্ণ ড্রিপ সেচ ব্যবস্থা। মূল পাইপ, সাব-পাইপ, ড্রিপার এবং ফিটিংস অন্তর্ভুক্ত।',
+        price: 25000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1595326964291-59296d629562?w=800']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[6].id,
+        specs: JSON.stringify({ coverage: '1 Bigha (33 decimal)', flow_rate: '2 L/hr per dripper', warranty: '3 years' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Power Tiller 12HP',
+        nameBn: 'পাওয়ার টিলার ১২HP',
+        slug: 'power-tiller-12hp',
+        description: 'Heavy-duty power tiller with 12HP diesel engine. Ideal for small to medium farms.',
+        descriptionBn: '১২HP ডিজেল ইঞ্জিন সহ ভারী ডিউটি পাওয়ার টিলার। ছোট থেকে মাঝারি জমির জন্য আদর্শ।',
+        price: 185000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/TT47.png']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ power: '12 HP', fuel: 'Diesel', weight: '450 kg', width: '120 cm' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Urea Fertilizer 50kg',
+        nameBn: 'ইউরিয়া সার ৫০কেজি',
+        slug: 'urea-fertilizer-50kg',
+        description: 'High-quality urea fertilizer for nitrogen supplementation. Government approved.',
+        descriptionBn: 'নাইট্রোজেন সম্পূরকের জন্য উচ্চ-মানের ইউরিয়া সার। সরকার অনুমোদিত।',
+        price: 1200,
+        priceUnit: ProductUnit.BAG,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[5].id,
+        specs: JSON.stringify({ nitrogen_content: '46%', weight: '50 kg', form: 'Granular' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'TSP Fertilizer 50kg',
+        nameBn: 'টিএসপি সার ৫০কেজি',
+        slug: 'tsp-fertilizer-50kg',
+        description: 'Triple Super Phosphate for phosphorus supplementation. Essential for root development.',
+        descriptionBn: 'ফসফরাস সম্পূরকের জন্য ট্রিপল সুপার ফসফেট। শিকড় বিকাশের জন্য অপরিহার্য।',
+        price: 1800,
+        priceUnit: ProductUnit.BAG,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[5].id,
+        specs: JSON.stringify({ phosphorus_content: '45%', weight: '50 kg', form: 'Granular' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'MoP Fertilizer 50kg',
+        nameBn: 'এমওপি সার ৫০কেজি',
+        slug: 'mop-fertilizer-50kg',
+        description: 'Muriate of Potash for potassium supplementation. Improves crop quality and disease resistance.',
+        descriptionBn: 'পটাশিয়াম সম্পূরকের জন্য মিউরিয়েট অফ পটাশ। ফসলের মান উন্নতি এবং রোগ প্রতিরোধ ক্ষমতা বাড়ায়।',
+        price: 1600,
+        priceUnit: ProductUnit.BAG,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[5].id,
+        specs: JSON.stringify({ potassium_content: '60%', weight: '50 kg', form: 'Granular' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Carbaryl 85% WP',
+        nameBn: 'কারবারিল ৮৫% ডব্লিউপি',
+        slug: 'carbaryl-85wp',
+        description: 'Broad-spectrum insecticide for controlling chewing insects. Effective against beetles and caterpillars.',
+        descriptionBn: 'চিবানো কীট নিয়ন্ত্রণের জন্য ব্রড-স্পেকট্রাম কীটনাশক। পোকা এবং শুঁকির বিরুদ্ধে কার্যকর।',
+        price: 720,
+        priceUnit: ProductUnit.GRAM,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[4].id,
+        specs: JSON.stringify({ active_ingredient: 'Carbaryl 85%', formulation: 'Wettable Powder', coverage: '300-400 sqm' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'BARI Tomato-14',
+        nameBn: 'বারি টমেটো-১৪',
+        slug: 'bari-tomato-14',
+        description: 'BARI developed high-yielding tomato variety. Suitable for both winter and summer cultivation.',
+        descriptionBn: 'বারি উন্নত উচ্চ ফলনশীল টমেটো জাত। শীতকাল এবং গ্রীষ্মকাল উভয় চাষের জন্য উপযুক্ত।',
+        price: 650,
+        priceUnit: ProductUnit.GRAM,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[3].id,
+        specs: JSON.stringify({ yield: '70-90 t/ha', maturity: '60-65 days', type: 'Determinate' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'BARI Hybrid Tomato',
+        nameBn: 'বারি হাইব্রিড টমেটো',
+        slug: 'bari-hybrid-tomato',
+        description: 'High-yielding hybrid tomato variety with excellent fruit quality. Disease resistant.',
+        descriptionBn: 'চমৎকার ফলের মান সহ উচ্চ ফলনশীল হাইব্রিড টমেটো জাত। রোগ প্রতিরোধী।',
+        price: 950,
+        priceUnit: ProductUnit.GRAM,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=800']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[0].id,
+        specs: JSON.stringify({ yield: '80-100 t/ha', maturity: '55-60 days', type: 'Semi-determinate' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Hybrid Cucumber Seeds',
+        nameBn: 'হাইব্রিড শসার বীজ',
+        slug: 'hybrid-cucumber-seeds',
+        description: 'Early maturing hybrid cucumber for commercial cultivation. High market value.',
+        descriptionBn: 'বাণিজ্যিক চাষের জন্য তাড়াতাড়ি পাকা হাইব্রিড শসা। উচ্চ বাজার মূল্য।',
+        price: 550,
+        priceUnit: ProductUnit.GRAM,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1449300079323-02e6e7d7c7a6?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[0].id,
+        specs: JSON.stringify({ yield: '40-50 t/ha', maturity: '45-50 days', type: 'Gynoecious' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'BRRI Dhan-75',
+        nameBn: 'ব্রি ধান-৭৫',
+        slug: 'brri-dhan-75',
+        description: 'Premium quality Aman rice variety. Medium bold grain with excellent cooking quality.',
+        descriptionBn: 'প্রিমিয়াম মানের আমন ধানের জাত। মাঝারি বড় দানা চমৎকার রান্নার মান সহ।',
+        price: 125,
+        priceUnit: ProductUnit.KG,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1500367880906-9a5b3dc0c8d3?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[2].id,
+        specs: JSON.stringify({ yield: '5-6 t/ha', maturity: '115-120 days', grain_type: 'Medium bold' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Rice Transplanter 4 Row',
+        nameBn: 'ধান রোপণ যন্ত্র ৪ সারি',
+        slug: 'rice-transplanter-4-row',
+        description: 'Self-propelled rice transplanter for efficient planting. Reduces labor cost significantly.',
+        descriptionBn: 'দক্ষ রোপণের জন্য স্ব-চালিত ধান রোপণ যন্ত্র। শ্রম খরচ উল্লেখযোগ্যভাবে কমায়।',
+        price: 450000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/TT47.png']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ rows: '4', capacity: '0.5 acre/hr', fuel: 'Diesel', weight: '350 kg' }),
+      },
+    }),
+    // NEW MACHINERY PRODUCTS WITH LOCAL IMAGES
+    prisma.product.create({
+      data: {
+        name: 'SQ Etian TT47 Tractor',
+        nameBn: 'এসকিউ এটিয়ান টিটি-৪৭ ট্র্যাক্টর',
+        slug: 'sq-etian-tt47-tractor',
+        description: 'Powerful and reliable SQ Etian TT47 tractor suitable for all types of farming operations. Features advanced hydraulic system and comfortable operator cabin.',
+        descriptionBn: 'সকল প্রকার কৃষি কাজের জন্য উপযুক্ত শক্তিশালী এবং নির্ভরযোগ্য এসকিউ এটিয়ান টিটি-৪৭ ট্র্যাক্টর। উন্নত হাইড্রোলিক সিস্টেম এবং আরামদায়ক অপারেটর কেবিন রয়েছে।',
+        price: 850000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/TT47.png', '/uploads/products/Tractor Specs.png']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ power: '47 HP', engine: '4-Cylinder Diesel', transmission: '8 Forward / 2 Reverse', fuel_tank: '45 Liters', weight: '2100 kg', PTO: '540/1000 RPM' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'SQ Etian TT55 Tractor',
+        nameBn: 'এসকিউ এটিয়ান টিটি-৫৫ ট্র্যাক্টর',
+        slug: 'sq-etian-tt55-tractor',
+        description: 'High-performance SQ Etian TT55 tractor designed for heavy-duty agricultural operations. Perfect for plowing, tilling, and transportation.',
+        descriptionBn: 'ভারী কৃষি কাজের জন্য ডিজাইন করা উচ্চ-পারফরম্যান্স এসকিউ এটিয়ান টিটি-৫৫ ট্র্যাক্টর। চাষ, আইন এবং পরিবহনের জন্য আদর্শ।',
+        price: 950000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/TT55.png', '/uploads/products/Spec Zoom.png']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ power: '55 HP', engine: '4-Cylinder Diesel Turbo', transmission: '12 Forward / 12 Reverse', fuel_tank: '60 Liters', weight: '2400 kg', PTO: '540/1000 RPM' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'SQ Etian TT70 Tractor',
+        nameBn: 'এসকিউ এটিয়ান টিটি-৭০ ট্র্যাক্টর',
+        slug: 'sq-etian-tt70-tractor',
+        description: 'Premium SQ Etian TT70 tractor with maximum power for large-scale farming. Equipped with modern technology and fuel efficiency.',
+        descriptionBn: 'বৃহৎ পরিসরের কৃষির জন্য সর্বোচ্চ শক্তিসহ প্রিমিয়াম এসকিউ এটিয়ান টিটি-৭০ ট্র্যাক্টর। আধুনিক প্রযুক্তি এবং জ্বালানি দক্ষতা দিয়ে সজ্জিত।',
+        price: 1200000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/TT70.png', '/uploads/products/Spec Zoom 2.png']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ power: '70 HP', engine: '4-Cylinder Diesel Turbocharged', transmission: '12 Forward / 12 Reverse', fuel_tank: '80 Liters', weight: '2800 kg', PTO: '540/1000 RPM' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'SQ Etian TCT-3230 Compact Tractor',
+        nameBn: 'এসকিউ এটিয়ান টিসিটি-৩২৩০ কমপ্যাক্ট ট্র্যাক্টর',
+        slug: 'sq-etian-tct-3230-tractor',
+        description: 'Compact and versatile SQ Etian TCT-3230 tractor perfect for small farms and orchards. Easy maneuverability with strong performance.',
+        descriptionBn: 'ছোট জমি এবং বাগানের জন্য আদর্শ কমপ্যাক্ট এবং বহুমুখী এসকিউ এটিয়ান টিসিটি-৩২৩০ ট্র্যাক্টর। শক্তিশালী পারফরম্যান্স সহ সহজ চলাচল ক্ষমতা।',
+        price: 780000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/Tct-3230.png', '/uploads/products/Tractor & Rotavator.png']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ power: '32 HP', engine: '3-Cylinder Diesel', transmission: '6 Forward / 2 Reverse', fuel_tank: '35 Liters', weight: '1500 kg', PTO: '540 RPM' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Agricultural Rotavator',
+        nameBn: 'কৃষি রোটাভেটর',
+        slug: 'agricultural-rotavator',
+        description: 'High-quality agricultural rotavator for efficient soil preparation. Compatible with all SQ Etian tractors for optimal performance.',
+        descriptionBn: 'দক্ষ মাটি প্রস্তুতির জন্য উচ্চ-মানের কৃষি রোটাভেটর। সর্বোত্তম পারফরম্যান্সের জন্য সমস্ত এসকিউ এটিয়ান ট্র্যাক্টরের সাথে সামঞ্জস্যপূর্ণ।',
+        price: 185000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/Rotavator.png', '/uploads/products/RT.png']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ width: '5-7 feet', blades: '18-24', type: 'L-shaped blades', weight: '380 kg', required_HP: '35-50 HP' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Heavy Duty Rotavator RTW',
+        nameBn: 'ভারী ডিউটি রোটাভেটর আরটিডাব্লিউ',
+        slug: 'heavy-duty-rotavator-rtw',
+        description: 'Heavy-duty rotavator RTW for challenging soil conditions. Features reinforced blade system and durable construction.',
+        descriptionBn: 'কঠিন মাটির অবস্থার জন্য ভারী-ডিউটি রোটাভেটর আরটিডাব্লিউ। শক্তিশালী ব্লেড সিস্টেম এবং টেকসই নির্মাণ রয়েছে।',
+        price: 220000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/RTW.png', '/uploads/products/RT2.png']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ width: '7-9 feet', blades: '24-30', type: 'C-shaped heavy duty blades', weight: '450 kg', required_HP: '50-70 HP' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Fieldking Farm Implement',
+        nameBn: 'ফিল্ডকিং ফার্ম ইমপ্লিমেন্ট',
+        slug: 'fieldking-farm-implement',
+        description: 'Fieldking agricultural implements for various farming operations. Quality construction with excellent field performance.',
+        descriptionBn: 'বিভিন্ন কৃষি কাজের জন্য ফিল্ডকিং কৃষি ইমপ্লিমেন্ট। চমৎকার মাঠ পারফরম্যান্স সহ মানসম্মত নির্মাণ।',
+        price: 95000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/Fieldking.png', '/uploads/products/Filk Spec.png']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ type: 'Multi-purpose', width: 'Adjustable', weight: '200 kg', required_HP: '30-45 HP' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Zoomlion Agricultural Equipment',
+        nameBn: 'জুমলায়ন কৃষি সরঞ্জাম',
+        slug: 'zoomlion-agricultural-equipment',
+        description: 'Zoomlion agricultural machinery for modern farming. Known for reliability, efficiency, and excellent after-sales support.',
+        descriptionBn: 'আধুনিক কৃষির জন্য জুমলায়ন কৃষি যন্ত্রপাতি। নির্ভরযোগ্যতা, দক্ষতা এবং চমৎকার বিক্রয়োত্তর সহায়তার জন্য পরিচিত।',
+        price: 650000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['/uploads/products/Zoomlion.png', '/uploads/products/Other Models.png']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ brand: 'Zoomlion', type: 'Agricultural Tractor', power_range: '40-80 HP', warranty: '2 Years' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'SQ Premium Seeds Collection',
+        nameBn: 'এসকিউ প্রিমিয়াম বীজ সংগ্রহ',
+        slug: 'sq-premium-seeds-collection',
+        description: 'Premium quality seeds from SQ Agriculture. High germination rate, disease resistant varieties for better yield.',
+        descriptionBn: 'এসকিউ এগ্রিকালচার থেকে প্রিমিয়াম মানের বীজ। উন্নত ফলনের জন্য উচ্চ অঙ্কুরোদ্গার হার, রোগ প্রতিরোধী জাত।',
+        price: 450,
+        priceUnit: ProductUnit.KG,
+        images: JSON.stringify(['/uploads/products/Seeds.png', '/uploads/products/Sq Seed.png']),
+        featured: true,
+        inStock: true,
+        categoryId: categories[0].id,
+        specs: JSON.stringify({ purity: '98%', germination: '85%', packaging: '1 kg, 5 kg, 25 kg', origin: 'Bangladesh' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'SQ Fertilizer Premium',
+        nameBn: 'এসকিউ প্রিমিয়াম সার',
+        slug: 'sq-fertilizer-premium',
+        description: 'SQ branded premium fertilizer for optimal crop nutrition. Balanced NPK formula for healthy plant growth.',
+        descriptionBn: 'সর্বোত্তম ফসল পুষ্টির জন্য এসকিউ ব্র্যান্ডেড প্রিমিয়াম সার। স্বাস্থ্যকর উদ্ভিদ বৃদ্ধির জন্য ভারসাম্যপূর্ণ এনপিকে ফর্মুলা।',
+        price: 1600,
+        priceUnit: ProductUnit.BAG,
+        images: JSON.stringify(['/uploads/products/SQ Fertilizer.png', '/uploads/products/SQ Fertilizer AI Logo Final.png']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[5].id,
+        specs: JSON.stringify({ NPK_ratio: '10:10:10', weight: '50 kg', form: 'Granular', coverage: 'Per hectare' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Mini Combine Harvester',
+        nameBn: 'মিনি কম্বাইন হারভেস্টার',
+        slug: 'mini-combine-harvester',
+        description: 'Compact combine harvester suitable for small to medium farms. Multi-crop capability.',
+        descriptionBn: 'ছোট থেকে মাঝারি জমির জন্য উপযুক্ত কমপ্যাক্ট কম্বাইন হারভেস্টার। বহু-ফসল সক্ষমতা।',
+        price: 1250000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1630398442022-b4c9c04e5b3b?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[7].id,
+        specs: JSON.stringify({ cutting_width: '2.5 m', capacity: '2-3 acre/day', fuel: 'Diesel', engine: '65 HP' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Sprinkler Irrigation System',
+        nameBn: 'স্প্রিংকলার সেচ ব্যবস্থা',
+        slug: 'sprinkler-irrigation-system',
+        description: 'Portable sprinkler system for medium to large farms. Even water distribution.',
+        descriptionBn: 'মাঝারি থেকে বড় জমির জন্য পোর্টেবল স্প্রিংকলার সিস্টেম। সমান পানি বিতরণ।',
+        price: 35000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1595326964291-59296d629562?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[6].id,
+        specs: JSON.stringify({ coverage: '1 acre', pressure: '3-5 bar', nozzles: '10', warranty: '2 years' }),
+      },
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Drip Irrigation Kit (Half Bigha)',
+        nameBn: 'ড্রিপ সেচ কিট (আধ বিঘা)',
+        slug: 'drip-irrigation-kit-half-bigha',
+        description: 'Complete drip irrigation system for half bigha land. Perfect for small farms and gardens.',
+        descriptionBn: 'আধ বিঘা জমির জন্য সম্পূর্ণ ড্রিপ সেচ ব্যবস্থা। ছোট জমি এবং বাগানের জন্য আদর্শ।',
+        price: 15000,
+        priceUnit: ProductUnit.UNIT,
+        images: JSON.stringify(['https://images.unsplash.com/photo-1595326964291-59296d629562?w=800']),
+        featured: false,
+        inStock: true,
+        categoryId: categories[6].id,
+        specs: JSON.stringify({ coverage: '0.5 Bigha (16.5 decimal)', flow_rate: '2 L/hr per dripper', warranty: '3 years' }),
+      },
+    }),
+  ]);
+  console.log('Created products');
+
+  // Dealers
+  await Promise.all([
+    prisma.dealer.create({
+      data: {
+        name: 'Dhaka Agricultural Store',
+        nameBn: 'ঢাকা এগ্রিকালচারাল স্টোর',
+        phone: '+8801711000001',
+        email: 'dhaka@sqdealer.com',
+        address: 'Farmgate, Dhaka',
+        district: 'Dhaka',
+        division: 'Dhaka',
+        latitude: 23.7580,
+        longitude: 90.3818,
+        description: 'Premier agricultural supplies dealer in Dhaka',
+        isActive: true,
+      },
+    }),
+    prisma.dealer.create({
+      data: {
+        name: 'Chittagong Farm Supplies',
+        nameBn: 'চট্টগ্রাম ফার্ম সাপ্লাইজ',
+        phone: '+8801811000002',
+        email: 'ctg@sqdealer.com',
+        address: 'Nasirabad, Chittagong',
+        district: 'Chittagong',
+        division: 'Chittagong',
+        latitude: 22.3569,
+        longitude: 91.7832,
+        description: 'Leading farm supplies in southeastern Bangladesh',
+        isActive: true,
+      },
+    }),
+    prisma.dealer.create({
+      data: {
+        name: 'Rajshahi Agro Center',
+        nameBn: 'রাজশাহী এগ্রো সেন্টার',
+        phone: '+8801911000003',
+        email: 'raj@sqdealer.com',
+        address: 'Station Road, Rajshahi',
+        district: 'Rajshahi',
+        division: 'Rajshahi',
+        latitude: 24.3636,
+        longitude: 88.6241,
+        description: 'Trusted partner for northern region farmers',
+        isActive: true,
+      },
+    }),
+    prisma.dealer.create({
+      data: {
+        name: 'Khulna Agriculture Hub',
+        nameBn: 'খুলনা এগ্রিকালচার হাব',
+        phone: '+8801511000004',
+        email: 'khulna@sqdealer.com',
+        address: 'Daulatpur, Khulna',
+        district: 'Khulna',
+        division: 'Khulna',
+        latitude: 22.8456,
+        longitude: 89.5403,
+        description: 'Complete agricultural solutions for southwestern region',
+        isActive: true,
+      },
+    }),
+    prisma.dealer.create({
+      data: {
+        name: 'Sylhet Farm Mart',
+        nameBn: 'সিলেট ফার্ম মার্ট',
+        phone: '+8801711000005',
+        email: 'sylhet@sqdealer.com',
+        address: 'Zindabazar, Sylhet',
+        district: 'Sylhet',
+        division: 'Sylhet',
+        latitude: 24.9045,
+        longitude: 91.8611,
+        description: 'Quality seeds and pesticides supplier',
+        isActive: true,
+      },
+    }),
+    prisma.dealer.create({
+      data: {
+        name: 'Barisal Agro Services',
+        nameBn: 'বরিশাল এগ্রো সার্ভিসেস',
+        phone: '+8801611000006',
+        email: 'barisal@sqdealer.com',
+        address: 'Bondor Road, Barisal',
+        district: 'Barisal',
+        division: 'Barisal',
+        latitude: 22.7010,
+        longitude: 90.3535,
+        description: 'Serving southern delta region farmers',
+        isActive: true,
+      },
+    }),
+    prisma.dealer.create({
+      data: {
+        name: 'Rangpur Agro Dealers',
+        nameBn: 'রংপুর এগ্রো ডিলার্স',
+        phone: '+8801711000007',
+        email: 'rangpur@sqdealer.com',
+        address: 'Mithapukur Road, Rangpur',
+        district: 'Rangpur',
+        division: 'Rangpur',
+        latitude: 25.7439,
+        longitude: 89.2752,
+        description: 'Northern region agricultural equipment supplier',
+        isActive: true,
+      },
+    }),
+    prisma.dealer.create({
+      data: {
+        name: 'Mymensingh Farm Center',
+        nameBn: 'ময়মনসিংহ ফার্ম সেন্টার',
+        phone: '+8801911000008',
+        email: 'mymensingh@sqdealer.com',
+        address: 'Ganginar Par, Mymensingh',
+        district: 'Mymensingh',
+        division: 'Mymensingh',
+        latitude: 24.7471,
+        longitude: 90.4204,
+        description: 'Central Bangladesh agricultural solutions provider',
+        isActive: true,
+      },
+    }),
+  ]);
+  console.log('Created dealers');
+
+  // Blog Posts
+  await Promise.all([
+    prisma.blogPost.create({
+      data: {
+        title: 'Modern Rice Cultivation Techniques for Higher Yields',
+        titleBn: 'উচ্চ ফলনের জন্য আধুনিক ধান চাষ কৌশল',
+        slug: 'modern-rice-cultivation-techniques',
+        excerpt: 'Learn the latest techniques in rice cultivation that can significantly increase your harvest while reducing water and fertilizer usage.',
+        excerptBn: 'জানুন ধান চাষে সর্বশেষ কৌশল যা পানি এবং সার ব্যবহার কমিয়ে আপনার ফসল উল্লেখযোগ্যভাবে বাড়াতে পারে।',
+        content: 'Detailed content about modern rice cultivation techniques including SRI method, direct seeding, and integrated pest management...',
+        contentBn: 'SRI পদ্ধতি, সরাসরি বপন এবং সমন্বিত কীট ব্যবস্থাপনা সহ আধুনিক ধান চাষ কৌশল সম্পর্কে বিস্তারিত বিষয়বস্তু...',
+        image: 'https://images.unsplash.com/photo-1500367880906-9a5b3dc0c8d3?w=800',
+        author: 'Dr. Ahmed Hasan',
+        authorImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200',
+        category: 'Farming Tips',
+        tags: JSON.stringify(['rice', 'cultivation', 'yield', 'techniques']),
+        published: true,
+        featured: true,
+        viewCount: 1250,
+      },
+    }),
+    prisma.blogPost.create({
+      data: {
+        title: 'Benefits of Drip Irrigation in Bangladesh Climate',
+        titleBn: 'বাংলাদেশের জলবায়ুতে ড্রিপ সেচের সুবিধা',
+        slug: 'benefits-drip-irrigation-bangladesh',
+        excerpt: 'Discover how drip irrigation can save up to 60% water while increasing crop yield by 30-90%.',
+        excerptBn: 'কীভাবে ড্রিপ সেচ ৬০% পানি বাঁচাতে পারে এবং ফসলের ফলন ৩০-৯০% বাড়াতে পারে তা আবিষ্কার করুন।',
+        content: 'Comprehensive guide on implementing drip irrigation systems in various crops...',
+        contentBn: 'বিভিন্ন ফসলে ড্রিপ সেচ ব্যবস্থা বাস্তবায়নের ব্যাপক নির্দেশিকা...',
+        image: 'https://images.unsplash.com/photo-1595326964291-59296d629562?w=800',
+        author: 'Engineer Rahman',
+        authorImage: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200',
+        category: 'Technology',
+        tags: JSON.stringify(['irrigation', 'water', 'technology', 'efficiency']),
+        published: true,
+        featured: true,
+        viewCount: 890,
+      },
+    }),
+    prisma.blogPost.create({
+      data: {
+        title: 'Organic Farming: A Sustainable Future for Bangladesh',
+        titleBn: 'জৈব চাষ: বাংলাদেশের জন্য একটি টেকসই ভবিষ্যৎ',
+        slug: 'organic-farming-sustainable-future-bangladesh',
+        excerpt: 'Explore the growing trend of organic farming and how it can benefit both farmers and consumers.',
+        excerptBn: 'জৈব চাষের ক্রমবর্ধমান প্রবণতা এবং এটি কীভাবে কৃষক এবং ভোক্তা উভয়েরই উপকার করতে পারে তা অন্বেষণ করুন।',
+        content: 'In-depth analysis of organic farming practices suitable for Bangladesh...',
+        contentBn: 'বাংলাদেশের জন্য উপযুক্ত জৈব চাষ পদ্ধতির গভীর বিশ্লেষণ...',
+        image: 'https://images.unsplash.com/photo-1595855759920-86582396756a?w=800',
+        author: 'Fatima Begum',
+        authorImage: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200',
+        category: 'Sustainability',
+        tags: JSON.stringify(['organic', 'sustainable', 'farming', 'future']),
+        published: true,
+        featured: false,
+        viewCount: 567,
+      },
+    }),
+    prisma.blogPost.create({
+      data: {
+        title: 'Crop Protection: Essential Tips for Protecting Your Harvest',
+        titleBn: 'ফসল সুরক্ষা: আপনার ফসল রক্ষার জন্য অপরিহার্য টিপস',
+        slug: 'crop-protection-tips-farmers',
+        excerpt: 'Learn effective strategies to protect your crops from pests, diseases, and weather conditions.',
+        excerptBn: 'কীট, রোগ এবং আবহাওয়ার অবস্থা থেকে আপনার ফসল সুরক্ষার কার্যকর কৌশল জানুন।',
+        content: 'Comprehensive guide to integrated pest management and crop protection strategies...',
+        contentBn: 'সমন্বিত কীট ব্যবস্থাপনা এবং ফসল সুরক্ষা কৌশলের ব্যাপক নির্দেশিকা...',
+        image: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800',
+        author: 'Dr. Kamal Hossain',
+        authorImage: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200',
+        category: 'Farming Tips',
+        tags: JSON.stringify(['crop protection', 'pest management', 'harvest', 'farming']),
+        published: true,
+        featured: false,
+        viewCount: 423,
+      },
+    }),
+    prisma.blogPost.create({
+      data: {
+        title: 'Seasonal Farming Calendar for Bangladesh',
+        titleBn: 'বাংলাদেশের মৌসুমী চাষ ক্যালেন্ডার',
+        slug: 'seasonal-farming-calendar-bangladesh',
+        excerpt: 'A complete guide to what to plant and when for optimal yields throughout the year.',
+        excerptBn: 'সারা বছর ধরে সর্বোত্তম ফলনের জন্য কখন কী লাগাবেন তার সম্পূর্ণ নির্দেশিকা।',
+        content: 'Detailed seasonal planting guide for all major crops in Bangladesh...',
+        contentBn: 'বাংলাদেশে সমস্ত প্রধান ফসলের জন্য বিস্তারিত মৌসুমী রোপণ নির্দেশিকা...',
+        image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
+        author: 'Agronomist Sarah',
+        authorImage: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200',
+        category: 'Guide',
+        tags: JSON.stringify(['seasonal', 'calendar', 'planting', 'farming']),
+        published: true,
+        featured: true,
+        viewCount: 756,
+      },
+    }),
+    prisma.blogPost.create({
+      data: {
+        title: 'Soil Health Management: Foundation of Successful Farming',
+        titleBn: 'মাটির স্বাস্থ্য ব্যবস্থাপনা: সফল চাষের ভিত্তি',
+        slug: 'soil-health-management-successful-farming',
+        excerpt: 'Discover how to maintain and improve soil health for sustainable agricultural productivity.',
+        excerptBn: 'টেকসই কৃষি উৎপাদনের জন্য মাটির স্বাস্থ্য বজায় রাখা এবং উন্নত করার উপায় জানুন।',
+        content: 'Best practices for soil testing, amendment, and long-term soil health maintenance...',
+        contentBn: 'মাটি পরীক্ষা, সংশোধন এবং দীর্ঘমেয়াদী মাটির স্বাস্থ্য বজায় রাখার সর্বোত্তম অনুশীলন...',
+        image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
+        author: 'Dr. Mohammad Ali',
+        authorImage: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200',
+        category: 'Sustainability',
+        tags: JSON.stringify(['soil', 'health', 'management', 'sustainable']),
+        published: true,
+        featured: false,
+        viewCount: 312,
+      },
+    }),
+  ]);
+  console.log('Created blog posts');
+
+  // Sample Leads
+  await prisma.lead.createMany({
+    data: [
+      {
+        name: 'Rahim Uddin',
+        email: 'rahim@example.com',
+        phone: '+8801712345678',
+        userType: UserType.FARMER,
+        productInterest: 'BRRI Dhan-88, Urea Fertilizer',
+        message: 'Interested in bulk order for my 5 bigha paddy field.',
+        status: LeadStatus.NEW,
+        assignedToId: admin.id,
+      },
+      {
+        name: 'Green Fields Ltd.',
+        email: 'purchase@greenfields.com',
+        phone: '+8801812345678',
+        company: 'Green Fields Ltd.',
+        userType: UserType.CORPORATE,
+        productInterest: 'Power Tiller 12HP',
+        message: 'Looking to purchase 10 power tillers for our contract farming operations.',
+        status: LeadStatus.CONTACTED,
+        assignedToId: admin.id,
+      },
+      {
+        name: 'Mostafa Kamal',
+        email: 'mostafa@farmerscooperative.org',
+        phone: '+8801912345679',
+        company: 'Mymensingh Farmers Cooperative',
+        userType: UserType.CORPORATE,
+        productInterest: 'Organic Seeds, Drip Irrigation',
+        message: 'We are looking for organic seeds and irrigation equipment for our cooperative members.',
+        status: LeadStatus.QUALIFIED,
+        assignedToId: admin.id,
+      },
+    ],
+  });
+
+  // Sample Inquiries
+  await prisma.inquiry.createMany({
+    data: [
+      {
+        name: 'Karim Khan',
+        email: 'karim@example.com',
+        phone: '+8801912345678',
+        userType: UserType.FARMER,
+        productInterest: 'Drip Irrigation Kit',
+        message: 'Do you provide installation support for drip irrigation?',
+        status: LeadStatus.NEW,
+      },
+      {
+        name: 'Agro Tech Bangladesh',
+        email: 'info@agrotechbd.com',
+        phone: '+8801700000007',
+        company: 'Agro Tech Bangladesh',
+        userType: UserType.DEALER,
+        productInterest: 'All products',
+        message: 'Interested in becoming a dealer for your products in Sylhet region.',
+        status: InquiryStatus.REPLIED,
+      },
+      {
+        name: 'Jahanara Begum',
+        email: 'jahanara@organicfarm.com',
+        phone: '+8801712345670',
+        company: 'Jahanara Organic Farm',
+        userType: UserType.FARMER,
+        productInterest: 'Organic Tomato Seeds, Organic Fertilizers',
+        message: 'Need certified organic seeds for tomato cultivation. Looking for bulk pricing.',
+        status: InquiryStatus.READ,
+      },
+    ],
+  });
+
+  console.log('Created leads and inquiries');
+  console.log('');
+  console.log('Database seeding completed successfully!');
+  console.log('');
+  console.log('Login Credentials:');
+  console.log('   Admin: admin@sq-agriculture.com / admin123');
+  console.log('   Manager: manager@sqagriculture.com / manager123');
+  console.log('   Customer: customer@test.com / customer123');
+}
+
+main()
+  .catch((e) => {
+    console.error('Error seeding database:', e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

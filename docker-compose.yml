@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: sq-agriculture-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: sqadmin
+      POSTGRES_PASSWORD: sqpassword123
+      POSTGRES_DB: sq-agriculture
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sqadmin -d sq-agriculture"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: sq-agriculture-api
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: postgresql://sqadmin:sqpassword123@postgres:5432/sq-agriculture
+      NODE_ENV: development
+      JWT_SECRET: your-super-secret-jwt-key-change-in-production
+      JWT_EXPIRES_IN: 7d
+      JWT_REFRESH_SECRET: your-super-secret-refresh-key-change-in-production
+      JWT_REFRESH_EXPIRES_IN: 30d
+      JWT_RESET_SECRET: reset-secret-key-change-in-production
+      JWT_VERIFY_SECRET: verify-secret-key-change-in-production
+      SMTP_HOST: smtp.gmail.com
+      SMTP_PORT: 587
+      SMTP_USER: your-email@gmail.com
+      SMTP_PASS: your-app-password
+      SMTP_FROM: SQ Agriculture <noreply@sqagriculture.com>
+      FRONTEND_URL: http://localhost:3000
+      API_URL: http://localhost:3001
+    depends_on:
+      postgres:
+        condition: service_healthy
