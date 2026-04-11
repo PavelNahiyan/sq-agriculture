@@ -1,0 +1,11 @@
+# Ignore patterns for Docker build
+node_modules
+.git
+.turbo
+.vercel
+.next
+dist
+.env*
+*.log
+coverage
+.DS_Store
