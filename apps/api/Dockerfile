@@ -1,33 +1,27 @@
 FROM node:20-alpine AS base
 
-WORKDIR /app
-
 FROM base AS deps
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci --only=production
-
-FROM base AS dev-deps
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci
+COPY package*.json ./
+RUN npm ci --only=production && npm cache clean --force
 
 FROM base AS builder
 WORKDIR /app
-COPY --from=dev-deps /app/node_modules ./node_modules
+COPY package*.json ./
+RUN npm ci
 COPY . .
 RUN npx prisma generate
 RUN npm run build
 
-FROM base AS production
+FROM base AS runner
 WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm ci --only=production && npm cache clean --force
+ENV NODE_ENV=production
+
+COPY --from=deps /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY prisma ./prisma
+COPY package*.json ./
 
 EXPOSE 3001
-ENV NODE_ENV=production
-
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:prod"]
+CMD ["node", "dist/main.js"]
