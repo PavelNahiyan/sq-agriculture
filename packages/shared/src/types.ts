@@ -1,5 +1,5 @@
 export type Role = 'ADMIN' | 'MANAGER' | 'USER' | 'CUSTOMER';
-export type CategoryType = 'SEEDS' | 'PESTICIDES' | 'MACHINERY';
+export type CategoryType = 'SEEDS' | 'PESTICIDES' | 'FERTILIZERS' | 'MICRONUTRIENTS' | 'MACHINERY' | 'LUBRICANTS';
 export type UserType = 'FARMER' | 'DEALER' | 'CORPORATE' | 'OTHER';
 export type LeadStatus = 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'CONVERTED' | 'LOST';
 export type ProductUnit = 'KG' | 'TON' | 'LITRE' | 'ML' | 'PIECE' | 'UNIT' | 'BAG' | 'BOX' | 'GRAM';

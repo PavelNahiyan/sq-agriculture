@@ -21,7 +21,9 @@ import { useProducts } from '@/hooks/use-products';
 const categoryOptions = [
   { value: 'all', label: 'All Categories' },
   { value: 'SEEDS', label: 'Seeds' },
-  { value: 'PESTICIDES', label: 'Crop Protection' },
+  { value: 'PESTICIDES', label: 'Pesticide' },
+  { value: 'FERTILIZERS', label: 'Fertilizer' },
+  { value: 'MICRONUTRIENTS', label: 'Micronutrients' },
   { value: 'MACHINERY', label: 'Machinery' },
 ];
 

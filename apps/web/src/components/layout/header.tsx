@@ -19,7 +19,7 @@ const categoryLinks = [
   { href: '/products/seeds', label: 'Seeds', description: 'Premium quality seeds' },
   { href: '/products/fertilizer', label: 'Fertilizers', description: 'Plant nutrition' },
   { href: '/products/pesticide', label: 'Pesticides', description: 'Crop protection' },
-  { href: '/products/pesticide-micronutrients', label: 'Pesticides & Micronutrients', description: 'Crop protection & nutrition' },
+  { href: '/products/micronutrients', label: 'Micronutrients', description: 'Essential plant nutrients' },
   { href: '/products/field-machinery', label: 'Field Machinery', description: 'Tractors & equipment' },
   { href: '/products', label: 'All Products', description: 'View all products' },
 ];

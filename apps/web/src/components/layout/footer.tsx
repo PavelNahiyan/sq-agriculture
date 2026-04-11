@@ -86,8 +86,8 @@ export function Footer({ locale = 'en' }: FooterProps) {
                 </Link>
               </li>
               <li>
-                <Link href="/products/pesticide-micronutrients" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  Pesticides & Micronutrients
+                <Link href="/products/micronutrients" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  Micronutrients
                 </Link>
               </li>
               <li>

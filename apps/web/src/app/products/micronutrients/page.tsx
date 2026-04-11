@@ -9,17 +9,19 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, Shield, Phone, Mail, MapPin, Bug, Leaf } from 'lucide-react';
 
-export default function PesticideMicronutrientsPage() {
+export default function MicronutrientsPage() {
   const { data: products, isLoading } = useProducts();
 
-  const pestControlProducts = products?.filter(p => 
-    p.category?.type === 'PESTICIDES' || 
-    p.name.toLowerCase().includes('pesticide') ||
-    p.name.toLowerCase().includes('insecticide') ||
-    p.name.toLowerCase().includes('fungicide') ||
-    p.name.toLowerCase().includes('herbicide') ||
-    p.name.toLowerCase().includes('carbaryl') ||
-    p.name.toLowerCase().includes('imidacloprid')
+  const micronutrientProducts = products?.filter(p => 
+    p.category?.type === 'MICRONUTRIENTS' ||
+    p.category?.slug === 'micronutrients' ||
+    p.name.toLowerCase().includes('micronutrient') ||
+    p.name.toLowerCase().includes('zinc') ||
+    p.name.toLowerCase().includes('boron') ||
+    p.name.toLowerCase().includes('iron') ||
+    p.name.toLowerCase().includes('copper') ||
+    p.name.toLowerCase().includes('manganese') ||
+    p.name.toLowerCase().includes('magnesium')
   ) || [];
 
   return (
@@ -32,7 +34,7 @@ export default function PesticideMicronutrientsPage() {
           <div className="absolute inset-0 opacity-20">
             <Image 
               src="/uploads/products/Fieldking.png" 
-              alt="Pesticides & Micronutrients"
+              alt="Micronutrients"
               fill
               className="object-cover"
               priority
@@ -41,11 +43,11 @@ export default function PesticideMicronutrientsPage() {
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Pesticides & Micronutrients
+                Micronutrients
               </h1>
               <p className="text-xl text-purple-100 mb-6">
-                Complete crop protection and nutrition solutions. 
-                Protect your crops and boost yields.
+                Essential micronutrients for plant growth and development. 
+                Boost your crop yields with quality micronutrients.
               </p>
               <Button asChild size="lg" className="bg-white text-purple-800 hover:bg-purple-100">
                 <Link href="#products">View Products</Link>
@@ -114,7 +116,7 @@ export default function PesticideMicronutrientsPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {pestControlProducts.length > 0 ? pestControlProducts.map(product => (
+                {micronutrientProducts.length > 0 ? micronutrientProducts.map(product => (
                   <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
                     <div className="relative h-48 bg-gray-100">
                       {product.images?.[0] ? (

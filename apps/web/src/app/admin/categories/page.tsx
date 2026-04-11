@@ -22,7 +22,7 @@ const categorySchema = z.object({
   slug: z.string().min(1, 'Slug is required'),
   description: z.string().optional(),
   descriptionBn: z.string().optional(),
-  type: z.enum(['SEEDS', 'PESTICIDES', 'MACHINERY']),
+  type: z.enum(['SEEDS', 'PESTICIDES', 'FERTILIZERS', 'MICRONUTRIENTS', 'MACHINERY', 'LUBRICANTS']),
   sortOrder: z.number().default(0),
   isActive: z.boolean().default(true),
 });
@@ -90,7 +90,10 @@ export default function AdminCategoriesPage() {
   const typeColors: Record<CategoryType, string> = {
     SEEDS: 'bg-green-100 text-green-700',
     PESTICIDES: 'bg-red-100 text-red-700',
-    MACHINERY: 'bg-blue-100 text-blue-700',
+    FERTILIZERS: 'bg-blue-100 text-blue-700',
+    MICRONUTRIENTS: 'bg-purple-100 text-purple-700',
+    MACHINERY: 'bg-amber-100 text-amber-700',
+    LUBRICANTS: 'bg-gray-100 text-gray-700',
   };
 
   return (
@@ -210,7 +213,10 @@ export default function AdminCategoriesPage() {
                   >
                     <option value="SEEDS">Seeds</option>
                     <option value="PESTICIDES">Pesticides</option>
+                    <option value="FERTILIZERS">Fertilizers</option>
+                    <option value="MICRONUTRIENTS">Micronutrients</option>
                     <option value="MACHINERY">Machinery</option>
+                    <option value="LUBRICANTS">Lubricants</option>
                   </select>
                 </div>
               </div>

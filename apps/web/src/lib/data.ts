@@ -40,11 +40,13 @@ export interface Category {
 export const categories: Category[] = [
   { id: 'cat-1', name: 'Seeds', nameBn: 'বীজ', slug: 'seeds', description: 'Premium quality seeds for better harvest', type: 'SEEDS', sortOrder: 1, isActive: true, image: '/uploads/products/Seeds.png' },
   { id: 'cat-2', name: 'Pesticides', nameBn: 'কীটনাশক', slug: 'pesticide', description: 'Crop protection solutions', type: 'PESTICIDES', sortOrder: 2, isActive: true, image: '/uploads/products/pesticide/Dtuch.png' },
-  { id: 'cat-3', name: 'Tractors', nameBn: 'ট্র্যাক্টর', slug: 'tractors', description: 'Modern tractors for all farming needs', type: 'MACHINERY', sortOrder: 3, isActive: true, image: '/uploads/products/machinery/TT47.png' },
-  { id: 'cat-4', name: 'Harvesters', nameBn: 'হারভেস্টার', slug: 'harvesters', description: 'Efficient harvesting machines', type: 'MACHINERY', sortOrder: 4, isActive: true, image: '/uploads/products/machinery/Zoomlion.png' },
-  { id: 'cat-5', name: 'Rotavators', nameBn: 'রোটাভেটর', slug: 'rotavators', description: 'Soil preparation equipment', type: 'MACHINERY', sortOrder: 5, isActive: true, image: '/uploads/products/machinery/Rotavator.png' },
-  { id: 'cat-6', name: 'Spray Machines', nameBn: 'স্প্রে মেশিন', slug: 'spray-machines', description: 'Professional spray equipment', type: 'MACHINERY', sortOrder: 6, isActive: true, image: '/uploads/products/pesticide/Real Sprayer PNG 1.png' },
-  { id: 'cat-7', name: 'Lubricants', nameBn: 'লুব্রিকেন্ট', slug: 'lubricants', description: 'Quality oils for machinery', type: 'LUBRICANTS', sortOrder: 7, isActive: true, image: '/uploads/products/lube/Tractor Pro Engine Oil.png' },
+  { id: 'cat-3', name: 'Fertilizers', nameBn: 'সার', slug: 'fertilizer', description: 'Quality fertilizers for better crop yield', type: 'FERTILIZERS', sortOrder: 3, isActive: true, image: '/uploads/products/SQ Fertilizer.png' },
+  { id: 'cat-4', name: 'Micronutrients', nameBn: 'মাইক্রোনিউট্রিয়েন্টস', slug: 'micronutrients', description: 'Essential micronutrients for plant growth', type: 'MICRONUTRIENTS', sortOrder: 4, isActive: true, image: '/uploads/products/SQ Fertilizer AI Logo Final.png' },
+  { id: 'cat-5', name: 'Tractors', nameBn: 'ট্র্যাক্টর', slug: 'tractors', description: 'Modern tractors for all farming needs', type: 'MACHINERY', sortOrder: 5, isActive: true, image: '/uploads/products/machinery/TT47.png' },
+  { id: 'cat-6', name: 'Harvesters', nameBn: 'হারভেস্টার', slug: 'harvesters', description: 'Efficient harvesting machines', type: 'MACHINERY', sortOrder: 6, isActive: true, image: '/uploads/products/machinery/Zoomlion.png' },
+  { id: 'cat-7', name: 'Rotavators', nameBn: 'রোটাভেটর', slug: 'rotavators', description: 'Soil preparation equipment', type: 'MACHINERY', sortOrder: 7, isActive: true, image: '/uploads/products/machinery/Rotavator.png' },
+  { id: 'cat-8', name: 'Spray Machines', nameBn: 'স্প্রে মেশিন', slug: 'spray-machines', description: 'Professional spray equipment', type: 'MACHINERY', sortOrder: 8, isActive: true, image: '/uploads/products/pesticide/Real Sprayer PNG 1.png' },
+  { id: 'cat-9', name: 'Lubricants', nameBn: 'লুব্রিকেন্ট', slug: 'lubricants', description: 'Quality oils for machinery', type: 'LUBRICANTS', sortOrder: 9, isActive: true, image: '/uploads/products/lube/Tractor Pro Engine Oil.png' },
 ];
 
 // Products

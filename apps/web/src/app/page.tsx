@@ -244,63 +244,75 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               <Link href="/products/seeds">
                 <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-3xl">🌾</span>
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
+                      <span className="text-2xl">🌾</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-1">Seeds</h3>
-                    <p className="text-white/70 text-sm">Premium quality seeds</p>
+                    <h3 className="text-base font-bold mb-1">Seeds</h3>
+                    <p className="text-white/70 text-xs">Premium quality seeds</p>
                   </CardContent>
                 </Card>
               </Link>
 
               <Link href="/products/fertilizer">
                 <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-3xl">🧪</span>
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
+                      <span className="text-2xl">🧪</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-1">Fertilizers</h3>
-                    <p className="text-white/70 text-sm">Plant nutrition</p>
+                    <h3 className="text-base font-bold mb-1">Fertilizers</h3>
+                    <p className="text-white/70 text-xs">Plant nutrition</p>
                   </CardContent>
                 </Card>
               </Link>
 
-              <Link href="/products/pesticide-micronutrients">
+              <Link href="/products/pesticide">
                 <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-3xl">🛡️</span>
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
+                      <span className="text-2xl">🛡️</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-1">Pesticides</h3>
-                    <p className="text-white/70 text-sm">Crop protection</p>
+                    <h3 className="text-base font-bold mb-1">Pesticides</h3>
+                    <p className="text-white/70 text-xs">Crop protection</p>
+                  </CardContent>
+                </Card>
+              </Link>
+
+              <Link href="/products/micronutrients">
+                <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
+                      <span className="text-2xl">🌱</span>
+                    </div>
+                    <h3 className="text-base font-bold mb-1">Micronutrients</h3>
+                    <p className="text-white/70 text-xs">Essential nutrients</p>
                   </CardContent>
                 </Card>
               </Link>
 
               <Link href="/products/field-machinery">
                 <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-3xl">🚜</span>
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
+                      <span className="text-2xl">🚜</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-1">Field Machinery</h3>
-                    <p className="text-white/70 text-sm">Tractors & equipment</p>
+                    <h3 className="text-base font-bold mb-1">Machinery</h3>
+                    <p className="text-white/70 text-xs">Tractors & equipment</p>
                   </CardContent>
                 </Card>
               </Link>
 
               <Link href="/products">
                 <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-6 text-center">
-                    <div className="w-14 h-14 mx-auto mb-3 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-3xl">⚙️</span>
+                  <CardContent className="p-4 text-center">
+                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
+                      <span className="text-2xl">⚙️</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-1">All Products</h3>
-                    <p className="text-white/70 text-sm">View all items</p>
+                    <h3 className="text-base font-bold mb-1">All Products</h3>
+                    <p className="text-white/70 text-xs">View all items</p>
                   </CardContent>
                 </Card>
               </Link>

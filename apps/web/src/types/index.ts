@@ -19,7 +19,7 @@ export interface PaginatedResponse<T> {
 
 // User types
 export type Role = 'ADMIN' | 'MANAGER' | 'USER';
-export type CategoryType = 'SEEDS' | 'PESTICIDES' | 'MACHINERY';
+export type CategoryType = 'SEEDS' | 'PESTICIDES' | 'FERTILIZERS' | 'MICRONUTRIENTS' | 'MACHINERY' | 'LUBRICANTS';
 export type UserType = 'FARMER' | 'DEALER' | 'CORPORATE' | 'OTHER';
 export type LeadStatus = 'NEW' | 'CONTACTED' | 'QUALIFIED' | 'CONVERTED' | 'LOST';
 export type InquiryStatus = 'NEW' | 'READ' | 'REPLIED' | 'CONVERTED' | 'ARCHIVED';

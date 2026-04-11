@@ -13,15 +13,14 @@ export default function FertilizerPage() {
   const { data: products, isLoading } = useProducts();
 
   const fertilizers = products?.filter(p => 
+    p.category?.type === 'FERTILIZERS' ||
     p.name.toLowerCase().includes('urea') ||
     p.name.toLowerCase().includes('tsp') ||
     p.name.toLowerCase().includes('mop') ||
     p.name.toLowerCase().includes('fertilizer') ||
     p.name.toLowerCase().includes('npk') ||
     p.name.toLowerCase().includes('potash') ||
-    p.name.toLowerCase().includes('nitrogen') ||
-    p.name.toLowerCase().includes('phosphorus') ||
-    p.category?.slug === 'fertilizers'
+    p.category?.slug === 'fertilizer'
   ) || [];
 
   const npkFertilizers = fertilizers.filter(p => 
