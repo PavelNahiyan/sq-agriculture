@@ -1,0 +1,441 @@
+// SQ Agriculture - Product Data
+// No database needed - all products served from this file
+
+export interface Product {
+  id: string;
+  name: string;
+  nameBn?: string;
+  slug: string;
+  description: string;
+  descriptionBn?: string;
+  price?: number;
+  priceUnit?: string;
+  images: string[];
+  categoryId: string;
+  category?: {
+    name: string;
+    slug: string;
+    type: string;
+  };
+  featured: boolean;
+  inStock: boolean;
+  isActive: boolean;
+  createdAt?: string;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  nameBn?: string;
+  slug: string;
+  description?: string;
+  descriptionBn?: string;
+  image?: string;
+  type: string;
+  sortOrder: number;
+  isActive: boolean;
+}
+
+// Categories
+export const categories: Category[] = [
+  { id: 'cat-1', name: 'Seeds', nameBn: 'বীজ', slug: 'seeds', description: 'Premium quality seeds for better harvest', type: 'SEEDS', sortOrder: 1, isActive: true, image: '/uploads/products/Seeds.png' },
+  { id: 'cat-2', name: 'Pesticides', nameBn: 'কীটনাশক', slug: 'pesticide', description: 'Crop protection solutions', type: 'PESTICIDES', sortOrder: 2, isActive: true, image: '/uploads/products/pesticide/Dtuch.png' },
+  { id: 'cat-3', name: 'Tractors', nameBn: 'ট্র্যাক্টর', slug: 'tractors', description: 'Modern tractors for all farming needs', type: 'MACHINERY', sortOrder: 3, isActive: true, image: '/uploads/products/machinery/TT47.png' },
+  { id: 'cat-4', name: 'Harvesters', nameBn: 'হারভেস্টার', slug: 'harvesters', description: 'Efficient harvesting machines', type: 'MACHINERY', sortOrder: 4, isActive: true, image: '/uploads/products/machinery/Zoomlion.png' },
+  { id: 'cat-5', name: 'Rotavators', nameBn: 'রোটাভেটর', slug: 'rotavators', description: 'Soil preparation equipment', type: 'MACHINERY', sortOrder: 5, isActive: true, image: '/uploads/products/machinery/Rotavator.png' },
+  { id: 'cat-6', name: 'Lubricants', nameBn: 'লুব্রিকেন্ট', slug: 'lubricants', description: 'Quality oils for machinery', type: 'LUBRICANTS', sortOrder: 6, isActive: true, image: '/uploads/products/lube/Tractor Pro Engine Oil.png' },
+];
+
+// Products
+export const products: Product[] = [
+  // Tractors
+  {
+    id: 'prod-1',
+    name: 'SQ ETIAN TT47 Tractor',
+    slug: 'sq-etian-tt47',
+    description: '47HP compact tractor perfect for small to medium farms. Fuel efficient with advanced features. Easy to operate and maintain.',
+    price: 850000,
+    priceUnit: 'BDT',
+    images: ['/uploads/products/machinery/TT47.png'],
+    categoryId: 'cat-3',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-2',
+    name: 'SQ ETIAN TT55 Tractor',
+    slug: 'sq-etian-tt55',
+    description: '55HP versatile tractor for medium farms. Excellent power and reliability for all farming operations.',
+    price: 950000,
+    priceUnit: 'BDT',
+    images: ['/uploads/products/machinery/TT55.png'],
+    categoryId: 'cat-3',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-3',
+    name: 'SQ ETIAN TT70 Tractor',
+    slug: 'sq-etian-tt70',
+    description: '70HP heavy-duty tractor for large farms. Maximum power and efficiency for intensive farming.',
+    price: 1200000,
+    priceUnit: 'BDT',
+    images: ['/uploads/products/machinery/TT70.png'],
+    categoryId: 'cat-3',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-4',
+    name: 'SQ ETIAN TCT-3230',
+    slug: 'sq-etian-tct-3230',
+    description: '32HP compact tractor for small farms and gardens. Easy to operate and maneuver.',
+    price: 650000,
+    priceUnit: 'BDT',
+    images: ['/uploads/products/machinery/Tct-3230.png'],
+    categoryId: 'cat-3',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-5',
+    name: 'TT3.50 Compact Tractor',
+    slug: 'tt3-50',
+    description: 'Compact tractor for specialized farming tasks and horticultural work.',
+    images: ['/uploads/products/machinery/TT3.50.png'],
+    categoryId: 'cat-3',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+
+  // Harvesters
+  {
+    id: 'prod-6',
+    name: '3037 Harvester',
+    slug: '3037-harvester',
+    description: 'Efficient combine harvester for wheat and rice. High capacity with minimum grain loss.',
+    images: ['/uploads/products/machinery/3037.png'],
+    categoryId: 'cat-4',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-7',
+    name: 'Zoomlion Harvester',
+    slug: 'zoomlion-harvester',
+    description: 'Professional harvesting machine for commercial farms. Advanced technology for efficient harvesting.',
+    images: ['/uploads/products/machinery/Zoomlion.png'],
+    categoryId: 'cat-4',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+
+  // Rotavators
+  {
+    id: 'prod-8',
+    name: 'Rotavator',
+    slug: 'rotavator',
+    description: 'High-quality rotavator for efficient soil preparation. Compatible with all major tractor brands.',
+    images: ['/uploads/products/machinery/Rotavator.png'],
+    categoryId: 'cat-5',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-9',
+    name: 'Fieldking Implement',
+    slug: 'fieldking-implement',
+    description: 'Professional farm implement for various tasks. Durable and reliable.',
+    images: ['/uploads/products/machinery/Fieldking.png'],
+    categoryId: 'cat-5',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-10',
+    name: 'ETIAN SQTE',
+    slug: 'etian-sqte',
+    description: 'Specialized SQ ETIAN equipment for modern farming. Advanced features for precision agriculture.',
+    images: ['/uploads/products/machinery/Etian SQTE.png'],
+    categoryId: 'cat-5',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+
+  // Pesticides
+  {
+    id: 'prod-11',
+    name: 'Dtuch Herbicide',
+    slug: 'dtuch-herbicide',
+    description: 'Effective weed control herbicide for crops. Safe for crops and environment.',
+    images: ['/uploads/products/pesticide/Dtuch.png'],
+    categoryId: 'cat-2',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-12',
+    name: 'Keyazate Fungicide',
+    slug: 'keyazate-fungicide',
+    description: 'Professional disease control fungicide. Effective against wide range of fungal diseases.',
+    images: ['/uploads/products/pesticide/keyazate.png'],
+    categoryId: 'cat-2',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-13',
+    name: 'Keyaton Insecticide',
+    slug: 'keyaton-insecticide',
+    description: 'Powerful pest control insecticide. Fast acting and long lasting protection.',
+    images: ['/uploads/products/pesticide/keyaton.png'],
+    categoryId: 'cat-2',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-14',
+    name: 'Keyatov Insecticide',
+    slug: 'keyatov-insecticide',
+    description: 'Advanced formula insecticide for crop protection. Controls tough pests effectively.',
+    images: ['/uploads/products/pesticide/keyatov.png'],
+    categoryId: 'cat-2',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-15',
+    name: 'Mantasha Herbicide',
+    slug: 'mantasha-herbicide',
+    description: 'Effective weed control solution. Season-long protection.',
+    images: ['/uploads/products/pesticide/Mantasha.png'],
+    categoryId: 'cat-2',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-16',
+    name: 'Pango Pesticide',
+    slug: 'pango-pesticide',
+    description: 'Complete crop protection solution. Multi-action formula.',
+    images: ['/uploads/products/pesticide/Pango PNG.png'],
+    categoryId: 'cat-2',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-17',
+    name: 'Real Sprayer',
+    slug: 'real-sprayer',
+    description: 'Professional agricultural sprayer equipment. Uniform spray distribution.',
+    images: ['/uploads/products/pesticide/Real Sprayer PNG 1.png'],
+    categoryId: 'cat-2',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-18',
+    name: 'Real Sprayers Set',
+    slug: 'real-sprayers-set',
+    description: 'Complete sprayer set for farm applications. Multiple nozzle options.',
+    images: ['/uploads/products/pesticide/Real Sprayers PNG 2.png'],
+    categoryId: 'cat-2',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+
+  // Seeds
+  {
+    id: 'prod-19',
+    name: 'SQ King (July)',
+    slug: 'sq-king-july',
+    description: 'Premium quality hybrid seeds for July planting season. High-yielding variety developed for Bangladesh climate.',
+    images: ['/uploads/products/seed/SQ King-July.png'],
+    categoryId: 'cat-1',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-20',
+    name: 'Pilot (March)',
+    slug: 'pilot-march',
+    description: 'High-yielding seed variety perfect for March planting. Developed for optimal growth in Bangladesh.',
+    images: ['/uploads/products/seed/Pilot-Mar.png'],
+    categoryId: 'cat-1',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-21',
+    name: 'P2 Seeds',
+    slug: 'p2-seeds',
+    description: 'Premium quality P2 variety seeds for better harvest.',
+    images: ['/uploads/products/seed/P2.png'],
+    categoryId: 'cat-1',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-22',
+    name: 'P3 Seeds',
+    slug: 'p3-seeds',
+    description: 'High-quality P3 hybrid seeds for maximum yield.',
+    images: ['/uploads/products/seed/P3.png'],
+    categoryId: 'cat-1',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-23',
+    name: 'P6 Seeds',
+    slug: 'p6-seeds',
+    description: 'P6 variety seeds with excellent disease resistance.',
+    images: ['/uploads/products/seed/P6.png'],
+    categoryId: 'cat-1',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-24',
+    name: 'P8 Seeds',
+    slug: 'p8-seeds',
+    description: 'Premium P8 seeds for commercial farming.',
+    images: ['/uploads/products/seed/P8.png'],
+    categoryId: 'cat-1',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-25',
+    name: 'P9 Seeds',
+    slug: 'p9-seeds',
+    description: 'High-yielding P9 variety seeds.',
+    images: ['/uploads/products/seed/P9.png'],
+    categoryId: 'cat-1',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-26',
+    name: 'P10 Seeds',
+    slug: 'p10-seeds',
+    description: 'Premium P10 hybrid seeds for better crop.',
+    images: ['/uploads/products/seed/P10.png'],
+    categoryId: 'cat-1',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-27',
+    name: 'P11 Seeds',
+    slug: 'p11-seeds',
+    description: 'P11 variety seeds with superior quality.',
+    images: ['/uploads/products/seed/P11.png'],
+    categoryId: 'cat-1',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+
+  // Lubricants
+  {
+    id: 'prod-28',
+    name: 'Tractor Pro Engine Oil',
+    slug: 'tractor-pro-engine-oil',
+    description: 'Premium engine oil for tractors. Maximum protection and performance.',
+    images: ['/uploads/products/lube/Tractor Pro Engine Oil.png'],
+    categoryId: 'cat-6',
+    featured: true,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-29',
+    name: 'Harvester Pro Engine Oil',
+    slug: 'harvester-pro-engine-oil',
+    description: 'Specialized engine oil for harvesters. High thermal stability.',
+    images: ['/uploads/products/lube/Harvester Pro Engine Oil.png'],
+    categoryId: 'cat-6',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-30',
+    name: 'Tractor Transmission Oil',
+    slug: 'tractor-transmission-oil',
+    description: 'High-quality transmission fluid for tractors. Smooth gear shifting.',
+    images: ['/uploads/products/lube/Tractor Transmission Oil.png'],
+    categoryId: 'cat-6',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-31',
+    name: 'Tractor UTTO',
+    slug: 'tractor-utto',
+    description: 'Universal tractor transmission oil for all tractor types.',
+    images: ['/uploads/products/lube/Tractor Utto.png'],
+    categoryId: 'cat-6',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-32',
+    name: 'Hydro AW68 Hydraulic Oil',
+    slug: 'hydro-aw68',
+    description: 'Premium hydraulic oil for hydraulic systems.',
+    images: ['/uploads/products/lube/Hydro AW68.png'],
+    categoryId: 'cat-6',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+  {
+    id: 'prod-33',
+    name: 'GearTech Extra',
+    slug: 'geartech-extra',
+    description: 'Advanced gear oil for maximum protection.',
+    images: ['/uploads/products/lube/GearTech Extra.png'],
+    categoryId: 'cat-6',
+    featured: false,
+    inStock: true,
+    isActive: true,
+  },
+];
+
+// Add category info to products
+export const productsWithCategories = products.map(p => ({
+  ...p,
+  category: categories.find(c => c.id === p.categoryId),
+}));
+
+export default productsWithCategories;

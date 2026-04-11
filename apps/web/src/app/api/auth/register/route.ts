@@ -1,38 +1,47 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET || 'sq-agriculture-secret-key-2026';
+
+// In-memory user storage (for demo purposes)
+const users = [
+  { id: 'user-1', email: 'admin@sqagriculture.com', password: 'admin123', name: 'Admin User', role: 'ADMIN' },
+];
 
 export async function POST(request: Request) {
   try {
-    const { name, email, password, phone, userType } = await request.json();
+    const { name, email, password, phone } = await request.json();
     
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
+    const existingUser = users.find(u => u.email === email);
 
     if (existingUser) {
       return NextResponse.json({ error: 'User already exists' }, { status: 409 });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = {
+      id: `user-${Date.now()}`,
+      email,
+      password, // In production, hash the password
+      name,
+      role: 'USER',
+    };
 
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        phone,
-        password: hashedPassword,
-        userType: userType || 'FARMER',
-        role: 'USER',
-      },
-    });
+    users.push(newUser);
+
+    const token = jwt.sign(
+      { userId: newUser.id, email: newUser.email, role: newUser.role },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    );
 
     return NextResponse.json({
-      id: user.id,
-      email: user.email,
-      name: user.name,
+      token,
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        name: newUser.name,
+        role: newUser.role,
+      },
     }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Registration failed' }, { status: 500 });

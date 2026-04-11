@@ -1,27 +1,21 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient();
+const JWT_SECRET = process.env.JWT_SECRET || 'sq-agriculture-secret-key-2026';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'sq-agriculture-secret-key-change-in-production';
+// Admin users (in production, use proper auth with database)
+const users = [
+  { id: 'user-1', email: 'admin@sqagriculture.com', password: 'admin123', name: 'Admin User', role: 'ADMIN' },
+  { id: 'user-2', email: 'manager@sqagriculture.com', password: 'manager123', name: 'Manager', role: 'MANAGER' },
+];
 
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
     
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    const user = users.find(u => u.email === email && u.password === password);
 
     if (!user) {
-      return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
-    }
-
-    const isValidPassword = await bcrypt.compare(password, user.password);
-
-    if (!isValidPassword) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 

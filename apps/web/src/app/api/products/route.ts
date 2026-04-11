@@ -1,16 +1,9 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { productsWithCategories, categories } from '@/lib/data';
 
 export async function GET() {
   try {
-    const products = await prisma.product.findMany({
-      where: { isActive: true },
-      include: { category: true },
-      orderBy: { createdAt: 'desc' },
-    });
-    return NextResponse.json(products);
+    return NextResponse.json(productsWithCategories);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
   }
@@ -19,10 +12,12 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const product = await prisma.product.create({
-      data: body,
-    });
-    return NextResponse.json(product, { status: 201 });
+    const newProduct = {
+      id: `prod-${Date.now()}`,
+      ...body,
+      createdAt: new Date().toISOString(),
+    };
+    return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create product' }, { status: 500 });
   }
