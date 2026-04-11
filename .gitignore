@@ -59,3 +59,5 @@ login*.ps1
 test*.ps1
 check*.ps1
 start-servers.bat
+
+.vercel
