@@ -1,27 +1,41 @@
-FROM node:20-alpine AS base
+FROM node:20-alpine
 
-FROM base AS deps
 WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
 
-FROM base AS builder
-WORKDIR /app
+# Copy root level files first (monorepo structure)
 COPY package*.json ./
+COPY turbo.json ./
+
+# Copy API package files
+COPY apps/api/package*.json ./apps/api/
+COPY apps/api/nest-cli.json ./apps/api/
+COPY apps/api/tsconfig*.json ./apps/api/
+
+# Copy shared package
+COPY packages/shared/package*.json ./packages/shared/
+
+# Install dependencies
 RUN npm ci
-COPY . .
-RUN npx prisma generate
-RUN npm run build
 
-FROM base AS runner
+# Copy source code
+COPY apps/api/src ./apps/api/src
+COPY packages/shared/src ./packages/shared/src
+
+# Generate Prisma client
+RUN cd apps/api && npx prisma generate
+
+# Build
+RUN npm run build --workspace=apps/api
+
+# Production runtime
+FROM node:20-alpine
 WORKDIR /app
+
+COPY --from=0 /app/apps/api/node_modules ./node_modules
+COPY --from=0 /app/apps/api/dist ./dist
+COPY --from=0 /app/apps/api/node_modules/.prisma ./node_modules/.prisma
+COPY --from=0 /app/apps/api/prisma ./prisma
+
 ENV NODE_ENV=production
-
-COPY --from=deps /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
-COPY prisma ./prisma
-COPY package*.json ./
-
 EXPOSE 3001
 CMD ["node", "dist/main.js"]
