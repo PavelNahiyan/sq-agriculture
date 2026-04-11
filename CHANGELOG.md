@@ -4,6 +4,21 @@ All notable changes to the SQ Agriculture project will be documented in this fil
 
 ---
 
+## [Version 1.1.1] - 2026-04-11
+
+### 🐛 Bug Fixes
+
+#### Image Files
+- Fixed uploads folder not being tracked in git
+- Added README.md to uploads folder to force tracking
+- Fixed .gitignore to not ignore image files
+
+#### Dependencies
+- Added missing bcryptjs package
+- Added missing jsonwebtoken package
+
+---
+
 ## [Version 1.1.0] - 2026-04-11
 
 ### 🚀 Deployment Complete
