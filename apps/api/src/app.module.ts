@@ -16,6 +16,7 @@ import { UploadsModule } from './modules/uploads/uploads.module';
 import { NewsletterModule } from './modules/newsletter/newsletter.module';
 import { WishlistModule } from './modules/wishlist/wishlist.module';
 import { MailModule } from './modules/mail/mail.module';
+import { HealthModule } from './modules/health/health.module';
 
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 
@@ -54,6 +55,7 @@ import { PrismaModule } from './prisma/prisma/prisma.module';
     NewsletterModule,
     WishlistModule,
     MailModule,
+    HealthModule,
   ],
   providers: [
     {
