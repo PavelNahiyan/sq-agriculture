@@ -27,7 +27,7 @@ export function HeroSection({
   ctaLink,
   secondaryCtaText,
   secondaryCtaLink,
-  backgroundImage = 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920',
+  backgroundImage = '/uploads/products/Rice.png',
   overlay = 'gradient',
   height = 'large',
   align = 'center',

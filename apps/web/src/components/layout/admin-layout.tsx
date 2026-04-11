@@ -122,7 +122,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
 
             <Link href="/admin" className="flex items-center gap-2">
               <img 
-                src="/uploads/logo/Bended & Non-Bended SQ Agriculture Logo For Plate Design.png" 
+                src="/uploads/products/SQ Fertilizer AI Logo Final.png" 
                 alt="SQ Agriculture" 
                 className="h-8 w-auto object-contain"
               />
@@ -181,7 +181,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
               <div className="p-4 border-b">
                 <Link href="/admin" className="flex items-center gap-2">
                   <img 
-                    src="/uploads/logo/Bended & Non-Bended SQ Agriculture Logo For Plate Design.png" 
+                    src="/uploads/products/SQ Fertilizer AI Logo Final.png" 
                     alt="SQ Agriculture" 
                     className="h-8 w-auto object-contain"
                   />

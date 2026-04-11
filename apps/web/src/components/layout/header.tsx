@@ -65,7 +65,7 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <img 
-              src="/uploads/logo/Bended & Non-Bended SQ Agriculture Logo For Plate Design.png" 
+              src="/uploads/products/SQ Fertilizer AI Logo Final.png" 
               alt="SQ Agriculture" 
               className="h-12 w-auto object-contain"
             />
