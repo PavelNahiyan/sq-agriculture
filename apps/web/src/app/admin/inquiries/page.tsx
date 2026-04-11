@@ -11,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useInquiries, useUpdateInquiry } from '@/hooks/use-inquiries';
-import type { Inquiry, InquiryStatus } from '@sq-agriculture/shared';
+import type { Inquiry, InquiryStatus } from '@/lib/shared-types';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';

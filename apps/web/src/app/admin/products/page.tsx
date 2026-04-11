@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useAdminProducts, useDeleteProduct } from '@/hooks/use-products';
-import type { CategoryType } from '@sq-agriculture/shared';
+import type { CategoryType } from '@/lib/shared-types';
 
 export default function AdminProductsPage() {
   const { data: products, isLoading } = useAdminProducts();

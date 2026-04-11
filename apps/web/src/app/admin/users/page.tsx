@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { useUsers, useCreateUser, useUpdateUser, useDeleteUser } from '@/hooks/use-users';
-import type { User, Role } from '@sq-agriculture/shared';
+import type { User, Role } from '@/lib/shared-types';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';

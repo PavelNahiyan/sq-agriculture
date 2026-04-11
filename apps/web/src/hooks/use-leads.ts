@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, apiEndpoints } from '@/lib/api';
-import type { Lead } from '@sq-agriculture/shared';
+import type { Lead } from '@/lib/shared-types';
 
 function extractArrayData<T>(response: any): T[] {
   if (Array.isArray(response)) return response;

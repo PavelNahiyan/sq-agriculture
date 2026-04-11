@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { api } from '@/lib/api';
-import type { BlogPost } from '@sq-agriculture/shared';
+import type { BlogPost } from '@/lib/shared-types';
 
 function extractArrayData<T>(response: any): T[] {
   if (Array.isArray(response)) return response;

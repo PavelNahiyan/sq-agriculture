@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, apiEndpoints } from '@/lib/api';
-import type { Product, Category } from '@sq-agriculture/shared';
+import type { Product, Category } from '@/lib/shared-types';
 
 interface PaginatedResponse<T> {
   data: T[];
