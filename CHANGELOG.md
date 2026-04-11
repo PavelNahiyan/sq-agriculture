@@ -4,6 +4,29 @@ All notable changes to the SQ Agriculture project will be documented in this fil
 
 ---
 
+## [Version 1.1.0] - 2026-04-11
+
+### 🚀 Deployment Complete
+
+#### Cloud Deployment
+- Migrated to Vercel (frontend + API)
+- Migrated to PostgreSQL (Supabase)
+- Deployed successfully to Vercel
+- Added custom domain sqagriculture.com
+
+#### Technical Changes
+- Migrated from NestJS backend to Next.js API Routes
+- Updated Prisma schema for PostgreSQL
+- Added environment variables for production
+- Updated API endpoints to use local routes
+- Fixed build configuration for Vercel
+
+#### Live URLs
+- Production: https://sq-agriculture-web.vercel.app
+- Custom Domain: https://sqagriculture.com (pending DNS)
+
+---
+
 ## [Version 1.0.0] - 2026-04-11
 
 ### 🚀 Features Added
