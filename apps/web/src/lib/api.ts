@@ -134,8 +134,8 @@ export const apiEndpoints = {
   // Products
   products: {
     list: '/api/products',
-    public: '/api/products/public',
-    featured: '/api/products/featured',
+    public: '/api/products',
+    featured: '/api/products?featured=true',
     bySlug: (slug: string) => `/api/products/${slug}`,
     byId: (id: string) => `/api/products/${id}`,
     related: (id: string) => `/api/products/${id}/related`,
@@ -143,7 +143,7 @@ export const apiEndpoints = {
   // Categories
   categories: {
     list: '/api/categories',
-    public: '/api/categories/public',
+    public: '/api/categories',
     bySlug: (slug: string) => `/api/categories/${slug}`,
     byId: (id: string) => `/api/categories/${id}`,
   },

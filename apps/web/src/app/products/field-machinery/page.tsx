@@ -14,11 +14,13 @@ export default function FieldMachineryPage() {
 
   const fieldMachinery = products?.filter(p => 
     p.category?.type === 'MACHINERY' || 
+    p.category?.type === 'PESTICIDES' ||
     p.name.toLowerCase().includes('tractor') ||
     p.name.toLowerCase().includes('rotavator') ||
     p.name.toLowerCase().includes('harvester') ||
     p.name.toLowerCase().includes('tiller') ||
-    p.name.toLowerCase().includes('transplanter')
+    p.name.toLowerCase().includes('transplanter') ||
+    p.name.toLowerCase().includes('sprayer')
   ) || [];
 
   const tractors = fieldMachinery.filter(p => 
@@ -38,10 +40,10 @@ export default function FieldMachineryPage() {
   );
 
   const sprayMachines = fieldMachinery.filter(p => 
+    p.category?.slug === 'spray-machines' ||
+    p.category?.id === 'cat-6' ||
     p.name.toLowerCase().includes('sprayer') ||
-    p.name.toLowerCase().includes('spray') ||
-    p.name.toLowerCase().includes('pango') ||
-    p.name.toLowerCase().includes('real sprayer')
+    p.name.toLowerCase().includes('spray')
   );
 
   const others = fieldMachinery.filter(p => 
