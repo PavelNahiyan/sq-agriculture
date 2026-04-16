@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { UserType, UserTypeType, InquiryStatus, InquiryStatusType } from '@/common/constants';
+import { UserType, UserTypeType, InquiryStatusType } from '@/common/constants';
 
 export class CreateInquiryDto {
   @IsString()

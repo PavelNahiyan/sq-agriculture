@@ -1,11 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Query, Headers, Req } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Patch, Param, Query, Req } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { InquiriesService } from './inquiries.service';
 import { CreateInquiryDto, UpdateInquiryDto, InquiryQueryDto } from './dto';
 import { Public } from '../../common/decorators/public.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
-import { Role, InquiryStatus } from '@/common/constants';
+import { Role } from '@/common/constants';
 
 @ApiTags('inquiries')
 @Controller('inquiries')

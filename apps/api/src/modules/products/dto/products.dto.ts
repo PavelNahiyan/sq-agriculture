@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { CategoryType, CategoryTypeType, ProductUnit, ProductUnitType } from '@/common/constants';
+import { CategoryTypeType, ProductUnitType } from '@/common/constants';
 
 export class CreateProductDto {
   @IsString()

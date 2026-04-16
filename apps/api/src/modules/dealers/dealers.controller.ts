@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { DealersService } from './dealers.service';
 import { CreateDealerDto, UpdateDealerDto, DealerQueryDto } from './dto';
 import { Public } from '../../common/decorators/public.decorator';

@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Query, Delete } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { BlogService } from './blog.service';
 import { CreateBlogPostDto, UpdateBlogPostDto, BlogQueryDto } from './dto';
 import { Public } from '../../common/decorators/public.decorator';

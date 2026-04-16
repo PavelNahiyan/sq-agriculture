@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, Patch, Param, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiBearerAuth, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LeadsService } from './leads.service';
 import { CreateLeadDto, UpdateLeadDto, LeadQueryDto, LeadResponseDto } from './dto';
 import { Public } from '../../common/decorators/public.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
-import { Role, LeadStatus, UserType } from '@/common/constants';
+import { Role } from '@/common/constants';
 
 @ApiTags('leads')
 @Controller('leads')

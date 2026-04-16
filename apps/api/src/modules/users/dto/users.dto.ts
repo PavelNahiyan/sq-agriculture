@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { Role, RoleType } from '@/common/constants';
+import { RoleType } from '@/common/constants';
 
 export class CreateUserDto {
   @IsEmail()

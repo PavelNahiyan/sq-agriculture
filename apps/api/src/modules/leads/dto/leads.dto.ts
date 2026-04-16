@@ -10,7 +10,7 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { LeadStatus, LeadStatusType, UserType, UserTypeType } from '@/common/constants';
+import { LeadStatusType, UserTypeType } from '@/common/constants';
 
 export class CreateLeadDto {
   @IsString()

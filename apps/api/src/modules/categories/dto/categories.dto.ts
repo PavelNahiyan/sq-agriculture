@@ -5,11 +5,10 @@ import {
   IsInt,
   Min,
   IsBoolean,
-  IsArray,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { CategoryType, CategoryTypeType, ProductUnit } from '@/common/constants';
+import { CategoryTypeType } from '@/common/constants';
 
 export class CreateCategoryDto {
   @IsString()

@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '@/prisma/prisma/prisma.service';
 import { CreateInquiryDto, UpdateInquiryDto, InquiryQueryDto } from './dto';
 import { Prisma } from '@prisma/client';
-import { InquiryStatus, InquiryStatusType, UserType, UserTypeType } from '@/common/constants';
+import { InquiryStatusType, UserTypeType } from '@/common/constants';
 
 @Injectable()
 export class InquiriesService {
