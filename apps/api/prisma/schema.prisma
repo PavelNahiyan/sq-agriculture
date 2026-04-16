@@ -1,12 +1,12 @@
 // SQ Agriculture - Database Schema
-// Prisma ORM with PostgreSQL (for production - Vercel/Supabase)
+// Prisma ORM with SQLite (local) or PostgreSQL (production)
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
