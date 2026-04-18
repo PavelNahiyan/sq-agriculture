@@ -2,7 +2,6 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Target, Eye, Heart, Award, Users, Truck, Shield, CheckCircle } from 'lucide-react';
@@ -12,24 +11,21 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 export default function AboutPage() {
-  const t = useTranslations('about');
-  const tCommon = useTranslations('common');
-
   const values = [
     {
       icon: Shield,
-      title: t('quality'),
-      description: t('qualityDesc'),
+      title: 'Quality',
+      description: 'We ensure the highest quality products for our farmers',
     },
     {
       icon: Heart,
-      title: t('innovation'),
-      description: t('innovationDesc'),
+      title: 'Innovation',
+      description: 'Continuously innovating to bring the best solutions',
     },
     {
       icon: Users,
-      title: t('partnership'),
-      description: t('partnershipDesc'),
+      title: 'Partnership',
+      description: 'Building lasting partnerships with our community',
     },
   ];
 
@@ -58,7 +54,7 @@ export default function AboutPage() {
             <div className="absolute inset-0 bg-gradient-to-r from-primary-dark/90 to-primary/70" />
           </div>
           <div className="relative z-10 container mx-auto px-4 text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('title')}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">About SQ Agriculture</h1>
             <p className="text-lg text-white/90 max-w-2xl mx-auto">
               Empowering Bangladeshi farmers with quality agricultural solutions since 2009
             </p>
@@ -74,9 +70,9 @@ export default function AboutPage() {
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                     <Target className="w-6 h-6 text-primary" />
                   </div>
-                  <h2 className="text-2xl font-bold mb-4">{t('mission')}</h2>
+                  <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
                   <p className="text-gray-600 leading-relaxed">
-                    {t('missionText')}
+                    To provide high-quality agricultural products and services that empower farmers to achieve sustainable and profitable harvests while contributing to Bangladesh's food security.
                   </p>
                 </CardContent>
               </Card>
@@ -86,9 +82,9 @@ export default function AboutPage() {
                   <div className="w-12 h-12 rounded-full bg-secondary/10 flex items-center justify-center mb-4">
                     <Eye className="w-6 h-6 text-secondary" />
                   </div>
-                  <h2 className="text-2xl font-bold mb-4">{t('vision')}</h2>
+                  <h2 className="text-2xl font-bold mb-4">Our Vision</h2>
                   <p className="text-gray-600 leading-relaxed">
-                    {t('visionText')}
+                    To become the most trusted agricultural solutions provider in South Asia, known for quality, innovation, and commitment to farmer success.
                   </p>
                 </CardContent>
               </Card>
@@ -100,7 +96,7 @@ export default function AboutPage() {
         <section className="py-20 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">{t('values')}</h2>
+              <h2 className="text-3xl font-bold mb-4">Our Core Values</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

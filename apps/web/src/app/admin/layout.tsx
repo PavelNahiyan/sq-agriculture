@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
 import { LayoutDashboard, Package, FolderTree, MessageSquare, Users, Settings, LogOut, Leaf, Menu, X, Bell, User } from 'lucide-react';
@@ -26,7 +25,6 @@ const mockStats = {
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const t = useTranslations();
   const router = useRouter();
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);

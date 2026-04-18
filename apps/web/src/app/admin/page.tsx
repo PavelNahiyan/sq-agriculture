@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Package, Users, MessageSquare, TrendingUp, Eye, ArrowUpRight, ArrowDownRight, Leaf, Loader2 } from 'lucide-react';
+import { Package, Users, MessageSquare, TrendingUp, Eye, ArrowUpRight, ArrowDownRight, Leaf, Loader2, Activity, Plus, Edit, Trash2, LogIn, LogOut } from 'lucide-react';
 import { AdminLayout } from '@/components/layout/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { useAdminProducts } from '@/hooks/use-products';
 import { useLeads, useLeadStats } from '@/hooks/use-leads';
 import { useUsers } from '@/hooks/use-users';
 import { useInquiries } from '@/hooks/use-inquiries';
+import { useActivityLogs, useActivityStats, ActivityLog } from '@/hooks/use-activity';
 
 const getStatusColor = (status: string) => {
   const colors: Record<string, string> = {
@@ -23,12 +24,46 @@ const getStatusColor = (status: string) => {
   return colors[status] || 'bg-gray-100 text-gray-700';
 };
 
+const getActionIcon = (action: string) => {
+  switch (action) {
+    case 'CREATE':
+      return <Plus className="w-4 h-4 text-green-600" />;
+    case 'UPDATE':
+      return <Edit className="w-4 h-4 text-blue-600" />;
+    case 'DELETE':
+      return <Trash2 className="w-4 h-4 text-red-600" />;
+    case 'LOGIN':
+      return <LogIn className="w-4 h-4 text-purple-600" />;
+    case 'LOGOUT':
+      return <LogOut className="w-4 h-4 text-gray-600" />;
+    default:
+      return <Activity className="w-4 h-4 text-gray-600" />;
+  }
+};
+
+const getActionBadge = (action: string) => {
+  switch (action) {
+    case 'CREATE':
+      return <Badge className="bg-green-100 text-green-700 hover:bg-green-100">{action}</Badge>;
+    case 'UPDATE':
+      return <Badge className="bg-blue-100 text-blue-700 hover:bg-blue-100">{action}</Badge>;
+    case 'DELETE':
+      return <Badge className="bg-red-100 text-red-700 hover:bg-red-100">{action}</Badge>;
+    case 'STATUS_CHANGE':
+      return <Badge className="bg-yellow-100 text-yellow-700 hover:bg-yellow-100">{action}</Badge>;
+    default:
+      return <Badge variant="outline">{action}</Badge>;
+  }
+};
+
 export default function AdminDashboardPage() {
   const { data: products } = useAdminProducts();
   const { data: leads, isLoading: leadsLoading } = useLeads();
   const { data: leadStats } = useLeadStats();
   const { data: users } = useUsers();
   const { data: inquiries } = useInquiries();
+  const { data: activities, isLoading: activitiesLoading } = useActivityLogs(20);
+  const { data: activityStats } = useActivityStats();
 
   const recentLeads = leads?.slice(0, 5) || [];
   const topProducts = products?.slice(0, 5) || [];
@@ -214,6 +249,62 @@ export default function AdminDashboardPage() {
                 </Button>
               </Link>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Activity Log Section */}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <Activity className="w-5 h-5" />
+              Recent Activity
+            </CardTitle>
+            <div className="text-sm text-gray-500">
+              {activityStats && (
+                <span>{activityStats.todayCount} activities today</span>
+              )}
+            </div>
+          </CardHeader>
+          <CardContent>
+            {activitiesLoading ? (
+              <div className="flex items-center justify-center py-8">
+                <Loader2 className="w-6 h-6 animate-spin text-primary" />
+              </div>
+            ) : activities && activities.length > 0 ? (
+              <div className="space-y-3">
+                {activities.slice(0, 15).map((activity: ActivityLog) => (
+                  <div key={activity.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="mt-1">
+                      {getActionIcon(activity.action)}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        {getActionBadge(activity.action)}
+                        <span className="text-sm font-medium text-gray-900">
+                          {activity.user?.name || 'Unknown User'}
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {activity.description || `${activity.action} on ${activity.entityType}`}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mt-1 text-xs text-gray-400">
+                        <span className="capitalize">{activity.entityType.toLowerCase()}</span>
+                        {activity.entityName && (
+                          <>
+                            <span>:</span>
+                            <span className="font-medium">{activity.entityName}</span>
+                          </>
+                        )}
+                        <span>•</span>
+                        <span>{new Date(activity.timestamp).toLocaleString()}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-500 py-8">No activity recorded yet</p>
+            )}
           </CardContent>
         </Card>
       </div>

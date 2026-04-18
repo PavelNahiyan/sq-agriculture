@@ -1,6 +1,5 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Sprout, Droplets, Tractor, Phone, ArrowRight, CheckCircle } from 'lucide-react';
@@ -10,7 +9,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 export default function ServicesPage() {
-  const t = useTranslations();
 
   const services = [
     {
@@ -77,7 +75,7 @@ export default function ServicesPage() {
             <div className="absolute inset-0 bg-gradient-to-r from-primary-dark/90 to-primary/70" />
           </div>
           <div className="relative z-10 container mx-auto px-4 text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{t('nav.services')}</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
             <p className="text-lg text-white/90 max-w-2xl mx-auto">
               Comprehensive agricultural solutions to help you grow more, grow better
             </p>
