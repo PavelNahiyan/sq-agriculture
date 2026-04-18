@@ -2,8 +2,6 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers';
-import { NextIntlClientProvider } from 'next-intl';
-import en from '@/i18n/messages/en.json';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,11 +26,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextIntlClientProvider messages={en}>
-          <Providers>
-            {children}
-          </Providers>
-        </NextIntlClientProvider>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   );

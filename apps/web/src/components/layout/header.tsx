@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import { usePathname } from 'next/navigation';
 import { Menu, X, Leaf, Globe, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -21,6 +20,7 @@ const categoryLinks = [
   { href: '/products/pesticide', label: 'Pesticides', description: 'Crop protection' },
   { href: '/products/micronutrients', label: 'Micronutrients', description: 'Essential plant nutrients' },
   { href: '/products/field-machinery', label: 'Field Machinery', description: 'Tractors & equipment' },
+  { href: '/products/pre-owned-machines', label: 'Pre-Owned Machines', description: 'Certified used tractors & harvesters' },
   { href: '/products', label: 'All Products', description: 'View all products' },
 ];
 
@@ -30,7 +30,6 @@ interface HeaderProps {
 }
 
 export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
-  const t = useTranslations('nav');
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isScrolled, setIsScrolled] = React.useState(false);
@@ -44,11 +43,11 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
   }, []);
 
   const navItems = [
-    { href: '/', label: t('home') },
-    { href: '/products', label: t('products'), hasDropdown: true },
-    { href: '/services', label: t('services') },
-    { href: '/about', label: t('about') },
-    { href: '/contact', label: t('contact') },
+    { href: '/', label: 'Home' },
+    { href: '/products', label: 'Products', hasDropdown: true },
+    { href: '/services', label: 'Services' },
+    { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
   ];
 
   return (
@@ -119,28 +118,10 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-4">
-            {/* Language Switcher */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="gap-1">
-                  <Globe className="w-4 h-4" />
-                  <span className="uppercase">{locale}</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => onLocaleChange?.('en')}>
-                  English
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => onLocaleChange?.('bn')}>
-                  বাংলা
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
             {/* Admin Link */}
             <Link href="/admin" className="hidden md:block">
               <Button variant="outline" size="sm">
-                {t('admin')}
+                Admin
               </Button>
             </Link>
 
@@ -197,7 +178,7 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
 
               <Link href="/admin" className="mt-2">
                 <Button variant="outline" className="w-full">
-                  {t('admin')}
+                  Admin
                 </Button>
               </Link>
             </div>

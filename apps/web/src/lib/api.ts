@@ -169,4 +169,11 @@ export const apiEndpoints = {
     add: '/api/v1/wishlist',
     remove: (productId: string) => `/api/v1/wishlist/${productId}`,
   },
+  // Activity Log
+  activity: {
+    list: '/api/v1/activity',
+    stats: '/api/v1/activity/stats',
+    byEntity: (type: string, id: string) => `/api/v1/activity/entity/${type}/${id}`,
+    byUser: (userId: string) => `/api/v1/activity/user/${userId}`,
+  },
 };
