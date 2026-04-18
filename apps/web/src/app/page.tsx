@@ -1,18 +1,16 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { ArrowRight, Leaf, Shield, Truck, Sprout, Tractor, Cog } from 'lucide-react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
-import { HeroSection } from '@/components/features/hero-section';
+import { ImageSlider, heroSlides } from '@/components/features/image-slider';
 import { ProductCard, ProductCardSkeleton } from '@/components/features/product-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useFeaturedProducts, useProducts } from '@/hooks/use-products';
 
 export default function HomePage() {
-  const t = useTranslations();
   const { data: featuredProducts, isLoading } = useFeaturedProducts();
   const { data: allProducts } = useProducts();
 
@@ -33,14 +31,14 @@ export default function HomePage() {
       <Header />
 
       <main className="flex-1">
-        <HeroSection
-          title="Empowering Bangladesh's Agricultural Future"
-          subtitle="Your trusted partner for quality seeds, crop protection, and modern farming machinery"
-          ctaText="Explore Products"
-          ctaLink="/products"
-          secondaryCtaText="Contact Us"
-          secondaryCtaLink="/contact"
-          height="large"
+        {/* Hero Image Slider */}
+        <ImageSlider
+          slides={heroSlides}
+          autoPlay={true}
+          interval={5000}
+          height="h-[70vh] min-h-[500px]"
+          showArrows={true}
+          showDots={true}
         />
 
         {/* YouTube Video Section */}
