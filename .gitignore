@@ -28,9 +28,9 @@ Thumbs.db
 coverage/
 .nyc_output/
 
-# Uploads (local storage) - only ignore DB files
-uploads/*.db
-uploads/*.db-journal
+# Uploads (local storage) - ignore all for development, use cloud storage in production
+uploads/
+apps/api/uploads/
 
 # Prisma
 apps/api/prisma/*.db
