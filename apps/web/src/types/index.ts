@@ -76,6 +76,7 @@ export interface Product {
   contactEmail?: string;
   contactPhone?: string;
   contactWhatsApp?: string;
+  productLocations?: ProductLocation[];
   createdAt: string;
   updatedAt: string;
 }
@@ -85,6 +86,15 @@ export interface PreOwnedDetails {
   hours?: number;
   condition?: string;
   previousOwner?: string;
+}
+
+export interface ProductLocation {
+  id: string;
+  productId: string;
+  dealerId: string;
+  dealer?: Dealer;
+  isActive: boolean;
+  createdAt: string;
 }
 
 export interface Dealer {

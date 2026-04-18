@@ -15,7 +15,7 @@ export class DealersService {
   }
 
   async findAll(query: DealerQueryDto): Promise<{ data: any[]; total: number }> {
-    const { page = 1, limit = 20, district, division, search } = query;
+    const { page = 1, limit = 500, district, division, search } = query;
     const skip = (page - 1) * limit;
 
     const where: Prisma.DealerWhereInput = {

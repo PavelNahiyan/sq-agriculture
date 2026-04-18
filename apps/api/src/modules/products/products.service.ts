@@ -78,8 +78,22 @@ export class ProductsService {
             type: true,
           },
         },
+        productLocations: {
+          include: {
+            dealer: true,
+          },
+        },
       },
     });
+
+    if (dto.dealerIds && dto.dealerIds.length > 0) {
+      await this.prisma.productLocation.createMany({
+        data: dto.dealerIds.map((dealerId) => ({
+          productId: product.id,
+          dealerId,
+        })),
+      });
+    }
 
     if (userId) {
       await this.auditService.logProductActivity(
@@ -227,6 +241,23 @@ export class ProductsService {
       where: { id },
       include: {
         category: true,
+        productLocations: {
+          include: {
+            dealer: {
+              select: {
+                id: true,
+                name: true,
+                address: true,
+                district: true,
+                division: true,
+                phone: true,
+                email: true,
+                latitude: true,
+                longitude: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -242,6 +273,23 @@ export class ProductsService {
       where: { slug },
       include: {
         category: true,
+        productLocations: {
+          include: {
+            dealer: {
+              select: {
+                id: true,
+                name: true,
+                address: true,
+                district: true,
+                division: true,
+                phone: true,
+                email: true,
+                latitude: true,
+                longitude: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -292,6 +340,7 @@ export class ProductsService {
     if (dto.preOwnedDetails) {
       updateData.preOwnedDetails = JSON.stringify(dto.preOwnedDetails);
     }
+    delete updateData.dealerIds;
     updateData.updatedById = userId;
 
     const updatedProduct = await this.prisma.product.update({
@@ -306,8 +355,28 @@ export class ProductsService {
             type: true,
           },
         },
+        productLocations: {
+          include: {
+            dealer: true,
+          },
+        },
       },
     });
+
+    if (dto.dealerIds !== undefined) {
+      await this.prisma.productLocation.deleteMany({
+        where: { productId: id },
+      });
+      
+      if (dto.dealerIds.length > 0) {
+        await this.prisma.productLocation.createMany({
+          data: dto.dealerIds.map((dealerId) => ({
+            productId: id,
+            dealerId,
+          })),
+        });
+      }
+    }
 
     if (userId) {
       await this.auditService.logProductActivity(

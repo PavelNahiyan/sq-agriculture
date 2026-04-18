@@ -155,7 +155,7 @@ export class DealerQueryDto {
   @IsOptional()
   @Type(() => Number)
   @ApiPropertyOptional({ default: 20 })
-  limit?: number = 20;
+  limit?: number = 500;
 
   @IsString()
   @IsOptional()

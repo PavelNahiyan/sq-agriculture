@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAdminProduct, useUpdateProduct } from '@/hooks/use-products';
 import { useCategories } from '@/hooks/use-categories';
+import { ProductLocationSelector } from '@/components/admin/product-location-selector';
 
 const productSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -56,6 +57,7 @@ export default function AdminEditProductPage() {
   const [preOwnedHours, setPreOwnedHours] = React.useState('');
   const [preOwnedCondition, setPreOwnedCondition] = React.useState('');
   const [preOwnedOwner, setPreOwnedOwner] = React.useState('');
+  const [selectedDealerIds, setSelectedDealerIds] = React.useState<string[]>([]);
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -273,6 +275,11 @@ export default function AdminEditProductPage() {
                   </div>
                 </CardContent>
               </Card>
+
+              <ProductLocationSelector
+                selectedDealerIds={selectedDealerIds}
+                onSelectionChange={setSelectedDealerIds}
+              />
 
               <Card>
                 <CardHeader>

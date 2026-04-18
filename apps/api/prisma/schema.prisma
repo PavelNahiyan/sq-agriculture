@@ -99,7 +99,8 @@ model Product {
   deletedAt     DateTime?
 
   wishlistItems WishlistItem[]
-
+  productLocations ProductLocation[]
+  
   @@index([categoryId])
   @@index([featured])
   @@index([isActive])
@@ -124,11 +125,28 @@ model Dealer {
   isActive    Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  
+  productLocations ProductLocation[]
 
   @@index([division])
   @@index([district])
   @@index([isActive])
   @@map("dealers")
+}
+
+model ProductLocation {
+  id          String   @id @default(uuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  dealerId    String
+  dealer      Dealer   @relation(fields: [dealerId], references: [id], onDelete: Cascade)
+  isActive   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  @@unique([productId, dealerId])
+  @@index([productId])
+  @@index([dealerId])
+  @@map("product_locations")
 }
 
 model BlogPost {

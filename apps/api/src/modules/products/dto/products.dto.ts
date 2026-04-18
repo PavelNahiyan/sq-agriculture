@@ -90,6 +90,11 @@ export class CreateProductDto {
     condition?: string;
     previousOwner?: string;
   };
+
+  @IsArray()
+  @IsOptional()
+  @ApiPropertyOptional({ type: [String] })
+  dealerIds?: string[];
 }
 
 export class UpdateProductDto {
@@ -176,6 +181,11 @@ export class UpdateProductDto {
     condition?: string;
     previousOwner?: string;
   };
+
+  @IsArray()
+  @IsOptional()
+  @ApiPropertyOptional({ type: [String] })
+  dealerIds?: string[];
 }
 
 export class ProductQueryDto {

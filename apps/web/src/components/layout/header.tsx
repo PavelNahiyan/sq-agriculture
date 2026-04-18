@@ -45,6 +45,7 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
   const navItems = [
     { href: '/', label: 'Home' },
     { href: '/products', label: 'Products', hasDropdown: true },
+    { href: '/store-locator', label: 'Where to Buy' },
     { href: '/services', label: 'Services' },
     { href: '/about', label: 'About' },
     { href: '/contact', label: 'Contact' },

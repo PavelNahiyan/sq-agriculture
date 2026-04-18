@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useCreateProduct } from '@/hooks/use-products';
 import { useCategories } from '@/hooks/use-categories';
+import { ProductLocationSelector } from '@/components/admin/product-location-selector';
 import { cn } from '@/lib/utils';
 
 const productSchema = z.object({
@@ -55,6 +56,7 @@ export default function AdminNewProductPage() {
   const [preOwnedCondition, setPreOwnedCondition] = React.useState('');
   const [preOwnedOwner, setPreOwnedOwner] = React.useState('');
   const [hidePrice, setHidePrice] = React.useState(false);
+  const [selectedDealerIds, setSelectedDealerIds] = React.useState<string[]>([]);
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -265,6 +267,11 @@ export default function AdminNewProductPage() {
                   </div>
                 </CardContent>
               </Card>
+
+              <ProductLocationSelector
+                selectedDealerIds={selectedDealerIds}
+                onSelectionChange={setSelectedDealerIds}
+              />
 
               <Card>
                 <CardHeader>

@@ -59,6 +59,16 @@ export interface Product {
   contactWhatsApp?: string;
   createdAt: string;
   updatedAt: string;
+  productLocations?: ProductLocation[];
+}
+
+export interface ProductLocation {
+  id: string;
+  productId: string;
+  dealerId: string;
+  dealer?: Dealer;
+  isActive: boolean;
+  createdAt: string;
 }
 
 export interface PreOwnedDetails {
