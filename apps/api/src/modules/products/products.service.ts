@@ -2,10 +2,14 @@ import { Injectable, NotFoundException, BadRequestException } from '@nestjs/comm
 import { PrismaService } from '@/prisma/prisma/prisma.service';
 import { CreateProductDto, UpdateProductDto, ProductQueryDto } from './dto';
 import { Prisma } from '@prisma/client';
+import { AuditService } from '@/common/services/audit.service';
 
 @Injectable()
 export class ProductsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private auditService: AuditService,
+  ) {}
 
   private generateSlug(name: string): string {
     return name
@@ -20,6 +24,7 @@ export class ProductsService {
       ...product,
       images: typeof product.images === 'string' ? JSON.parse(product.images || '[]') : product.images || [],
       specs: typeof product.specs === 'string' ? JSON.parse(product.specs || '{}') : product.specs || {},
+      preOwnedDetails: product.preOwnedDetails ? JSON.parse(product.preOwnedDetails) : null,
     };
   }
 
@@ -27,7 +32,7 @@ export class ProductsService {
     return products.map(p => this.parseProduct(p));
   }
 
-  async create(dto: CreateProductDto): Promise<any> {
+  async create(dto: CreateProductDto, userId?: string): Promise<any> {
     const slug = dto.slug || this.generateSlug(dto.name);
 
     const existingProduct = await this.prisma.product.findUnique({
@@ -60,6 +65,9 @@ export class ProductsService {
         featured: dto.featured || false,
         inStock: dto.inStock !== false,
         categoryId: dto.categoryId,
+        isPreOwned: dto.isPreOwned || false,
+        preOwnedDetails: dto.preOwnedDetails ? JSON.stringify(dto.preOwnedDetails) : null,
+        createdById: userId,
       },
       include: {
         category: {
@@ -73,6 +81,15 @@ export class ProductsService {
       },
     });
 
+    if (userId) {
+      await this.auditService.logProductActivity(
+        userId,
+        'CREATE',
+        product,
+        undefined,
+      );
+    }
+
     return this.parseProduct(product);
   }
 
@@ -82,11 +99,13 @@ export class ProductsService {
       limit = 10,
       search,
       categoryId,
+      categoryType,
       featured,
       inStock,
       minPrice,
       maxPrice,
       isActive,
+      isPreOwned,
     } = query;
 
     const skip = (page - 1) * limit;
@@ -105,7 +124,15 @@ export class ProductsService {
       ...(isActive !== undefined && { isActive }),
       ...(minPrice !== undefined && { price: { gte: minPrice } }),
       ...(maxPrice !== undefined && { price: { lte: maxPrice } }),
+      ...(isPreOwned !== undefined && { isPreOwned }),
     };
+
+    if (categoryType) {
+      where.category = {
+        type: categoryType,
+        isActive: true,
+      };
+    }
 
     const [products, total] = await Promise.all([
       this.prisma.product.findMany({
@@ -225,7 +252,7 @@ export class ProductsService {
     return this.parseProduct(product);
   }
 
-  async update(id: string, dto: UpdateProductDto): Promise<any> {
+  async update(id: string, dto: UpdateProductDto, userId?: string): Promise<any> {
     const product = await this.prisma.product.findUnique({
       where: { id },
     });
@@ -262,6 +289,10 @@ export class ProductsService {
     if (dto.specs && typeof dto.specs !== 'string') {
       updateData.specs = JSON.stringify(dto.specs);
     }
+    if (dto.preOwnedDetails) {
+      updateData.preOwnedDetails = JSON.stringify(dto.preOwnedDetails);
+    }
+    updateData.updatedById = userId;
 
     const updatedProduct = await this.prisma.product.update({
       where: { id },
@@ -278,10 +309,19 @@ export class ProductsService {
       },
     });
 
+    if (userId) {
+      await this.auditService.logProductActivity(
+        userId,
+        'UPDATE',
+        updatedProduct,
+        product,
+      );
+    }
+
     return this.parseProduct(updatedProduct);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string, userId?: string): Promise<void> {
     const product = await this.prisma.product.findUnique({
       where: { id },
     });
@@ -290,9 +330,22 @@ export class ProductsService {
       throw new NotFoundException('Product not found');
     }
 
-    await this.prisma.product.delete({
+    await this.prisma.product.update({
       where: { id },
+      data: {
+        deletedAt: new Date(),
+        deletedById: userId,
+        isActive: false,
+      },
     });
+
+    if (userId) {
+      await this.auditService.logProductActivity(
+        userId,
+        'DELETE',
+        product,
+      );
+    }
   }
 
   async getFeatured(limit: number = 8): Promise<any[]> {
@@ -316,6 +369,64 @@ export class ProductsService {
     });
     
     return this.parseProducts(products);
+  }
+
+  async findPreOwned(query: ProductQueryDto): Promise<{ data: any[]; total: number }> {
+    const {
+      page = 1,
+      limit = 12,
+      search,
+      categoryId,
+    } = query;
+
+    const skip = (page - 1) * limit;
+
+    const where: Prisma.ProductWhereInput = {
+      isActive: true,
+      isPreOwned: true,
+      ...(search && {
+        OR: [
+          { name: { contains: search } },
+          { description: { contains: search } },
+        ],
+      }),
+      ...(categoryId && { categoryId }),
+    };
+
+    const [products, total] = await Promise.all([
+      this.prisma.product.findMany({
+        where,
+        skip,
+        take: limit,
+        select: {
+          id: true,
+          name: true,
+          nameBn: true,
+          slug: true,
+          description: true,
+          price: true,
+          priceUnit: true,
+          images: true,
+          featured: true,
+          inStock: true,
+          isPreOwned: true,
+          preOwnedDetails: true,
+          category: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+              type: true,
+            },
+          },
+          createdAt: true,
+        },
+        orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }],
+      }),
+      this.prisma.product.count({ where }),
+    ]);
+
+    return { data: this.parseProducts(products), total };
   }
 
   async getRelated(productId: string, limit: number = 4): Promise<any[]> {

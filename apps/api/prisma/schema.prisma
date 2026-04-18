@@ -29,6 +29,12 @@ model User {
   passwordResetTokens    PasswordResetToken[]
   emailVerificationTokens EmailVerificationToken[]
   refreshTokens          RefreshToken[]
+  
+  // Audit Trail Relations
+  createdProducts Product[] @relation("CreatedProducts")
+  updatedProducts Product[] @relation("UpdatedProducts")
+  deletedProducts Product[] @relation("DeletedProducts")
+  activityLogs    ActivityLog[]
 
   @@map("users")
 }
@@ -49,6 +55,7 @@ model Category {
 
   products Product[]
 
+  @@index([type])
   @@map("categories")
 }
 
@@ -71,12 +78,33 @@ model Product {
   isActive       Boolean  @default(true)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+  
+  // Pre-Owned Machine Details
+  isPreOwned       Boolean  @default(false)
+  preOwnedDetails  String?  // JSON: { year, hours, condition, previousOwner }
+  
+  // Inquire Only - Hide price and show contact details instead
+  hidePrice       Boolean  @default(false)
+  contactEmail    String?
+  contactPhone   String?
+  contactWhatsApp String?
+  
+  // Audit Trail
+  createdById   String?
+  createdBy     User?   @relation("CreatedProducts", fields: [createdById], references: [id])
+  updatedById   String?
+  updatedBy     User?   @relation("UpdatedProducts", fields: [updatedById], references: [id])
+  deletedById   String?
+  deletedBy     User?   @relation("DeletedProducts", fields: [deletedById], references: [id])
+  deletedAt     DateTime?
 
   wishlistItems WishlistItem[]
 
   @@index([categoryId])
   @@index([featured])
   @@index([isActive])
+  @@index([isPreOwned])
+  @@index([hidePrice])
   @@map("products")
 }
 
@@ -252,4 +280,27 @@ model RefreshToken {
 
   @@index([userId])
   @@map("refresh_tokens")
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action      String   // CREATE, UPDATE, DELETE, VIEW, LOGIN, LOGOUT, STATUS_CHANGE
+  entityType  String   // Product, Category, User, Lead, Inquiry, Dealer, BlogPost
+  entityId    String?
+  entityName  String?  // Product name, User email, etc. for quick reference
+  description String?   // Human-readable description
+  oldValue   String?   // JSON string of old values
+  newValue   String?   // JSON string of new values
+  ipAddress   String?
+  userAgent   String?
+  timestamp   DateTime @default(now())
+
+  @@index([userId])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([action])
+  @@index([timestamp])
+  @@map("activity_logs")
 }

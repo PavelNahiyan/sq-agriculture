@@ -75,6 +75,21 @@ export class CreateProductDto {
   @IsOptional()
   @ApiPropertyOptional({ default: true })
   inStock?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiPropertyOptional({ default: false })
+  isPreOwned?: boolean;
+
+  @IsObject()
+  @IsOptional()
+  @ApiPropertyOptional()
+  preOwnedDetails?: {
+    year?: string;
+    hours?: number;
+    condition?: string;
+    previousOwner?: string;
+  };
 }
 
 export class UpdateProductDto {
@@ -146,6 +161,21 @@ export class UpdateProductDto {
   @IsOptional()
   @ApiPropertyOptional()
   isActive?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiPropertyOptional()
+  isPreOwned?: boolean;
+
+  @IsObject()
+  @IsOptional()
+  @ApiPropertyOptional()
+  preOwnedDetails?: {
+    year?: string;
+    hours?: number;
+    condition?: string;
+    previousOwner?: string;
+  };
 }
 
 export class ProductQueryDto {
@@ -195,6 +225,12 @@ export class ProductQueryDto {
   @Type(() => Boolean)
   @ApiPropertyOptional()
   isActive?: boolean;
+
+  @IsBoolean()
+  @IsOptional()
+  @Type(() => Boolean)
+  @ApiPropertyOptional()
+  isPreOwned?: boolean;
 
   @IsNumber()
   @IsOptional()

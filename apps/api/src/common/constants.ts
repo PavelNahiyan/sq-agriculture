@@ -18,6 +18,8 @@ export const CategoryType = {
   PESTICIDES: 'PESTICIDES',
   FERTILIZERS: 'FERTILIZERS',
   MACHINERY: 'MACHINERY',
+  MICRONUTRIENTS: 'MICRONUTRIENTS',
+  LUBRICANTS: 'LUBRICANTS',
 } as const;
 
 export type CategoryTypeType = typeof CategoryType[keyof typeof CategoryType];
