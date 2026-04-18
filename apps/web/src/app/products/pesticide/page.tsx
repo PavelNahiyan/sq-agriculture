@@ -8,23 +8,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, Shield, Phone, Mail, MapPin, Bug } from 'lucide-react';
+import { LicenseInfo } from '@/components/features/license-info';
 
 export default function PesticidePage() {
-  const { data: products, isLoading } = useProducts();
+  const { data: products, isLoading } = useProducts({ categoryType: 'PESTICIDES', limit: 200 });
 
-  const pesticides = products?.filter(p => 
-    p.category?.type === 'PESTICIDES' || 
-    p.name.toLowerCase().includes('pesticide') ||
-    p.name.toLowerCase().includes('insecticide') ||
-    p.name.toLowerCase().includes('fungicide') ||
-    p.name.toLowerCase().includes('herbicide')
-  ) || [];
-
-  const insecticides = pesticides.filter(p => 
-    p.name.toLowerCase().includes('imidacloprid') ||
-    p.name.toLowerCase().includes('insecticide') ||
-    p.name.toLowerCase().includes('carbaryl')
-  );
+  const pesticides = products || [];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -102,7 +91,7 @@ export default function PesticidePage() {
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                       <p className="text-red-600 font-bold text-xl mb-3">
-                        ৳{product.price?.toLocaleString()}/{product.priceUnit}
+                        Price On Request
                       </p>
                       <div className="text-sm text-gray-600 mb-4">
                         {product.specs && (
@@ -169,6 +158,13 @@ export default function PesticidePage() {
           </div>
         </section>
 
+        {/* License Information */}
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            <LicenseInfo />
+          </div>
+        </section>
+
         {/* Contact */}
         <section className="py-16 bg-green-800 text-white">
           <div className="container mx-auto px-4">
@@ -181,15 +177,15 @@ export default function PesticidePage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 text-green-400" />
-                    <span>+880 1700-000000</span>
+                    <span>+880 1321-219223</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Mail className="w-5 h-5 text-green-400" />
-                    <span>protection@sqagriculture.com</span>
+                    <span>agriculture@sq-bd.com</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin className="w-5 h-5 text-green-400" />
-                    <span>Dhaka, Bangladesh</span>
+                    <span>Banani, Dhaka-1213</span>
                   </div>
                 </div>
               </div>

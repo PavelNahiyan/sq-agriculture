@@ -10,32 +10,40 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, Leaf, Sprout, Phone, Mail, MapPin } from 'lucide-react';
 
 export default function SeedsPage() {
-  const { data: products, isLoading } = useProducts();
+  const { data: products, isLoading } = useProducts({ categoryType: 'SEEDS', limit: 200 });
 
-  const seeds = products?.filter(p => 
-    p.category?.type === 'SEEDS' || 
-    p.name.toLowerCase().includes('seed')
-  ) || [];
+  const seeds = products || [];
 
   const riceSeeds = seeds.filter(p => 
     p.name.toLowerCase().includes('rice') ||
-    p.name.toLowerCase().includes('dhan')
+    p.name.toLowerCase().includes('dhan') ||
+    p.name.toLowerCase().includes('paddy')
   );
 
   const vegetableSeeds = seeds.filter(p => 
     p.name.toLowerCase().includes('tomato') ||
     p.name.toLowerCase().includes('cucumber') ||
-    p.name.toLowerCase().includes('vegetable') ||
-    p.name.toLowerCase().includes('maize')
+    p.name.toLowerCase().includes('chilli') ||
+    p.name.toLowerCase().includes('brinjal') ||
+    p.name.toLowerCase().includes('eggplant') ||
+    p.name.toLowerCase().includes('cabbage') ||
+    p.name.toLowerCase().includes('cauliflower') ||
+    p.name.toLowerCase().includes('maize') ||
+    p.name.toLowerCase().includes('corn') ||
+    p.name.toLowerCase().includes('okra') ||
+    p.name.toLowerCase().includes('bottle gourd') ||
+    p.name.toLowerCase().includes('bitter gourd') ||
+    p.name.toLowerCase().includes('ridge gourd') ||
+    p.name.toLowerCase().includes('sponge gourd') ||
+    p.name.toLowerCase().includes('pumpkin') ||
+    p.name.toLowerCase().includes('watermelon') ||
+    p.name.toLowerCase().includes('capsicum') ||
+    p.name.toLowerCase().includes('ladys finger')
   );
 
   const otherSeeds = seeds.filter(p => 
-    !p.name.toLowerCase().includes('rice') &&
-    !p.name.toLowerCase().includes('dhan') &&
-    !p.name.toLowerCase().includes('tomato') &&
-    !p.name.toLowerCase().includes('cucumber') &&
-    !p.name.toLowerCase().includes('vegetable') &&
-    !p.name.toLowerCase().includes('maize')
+    !riceSeeds.includes(p) &&
+    !vegetableSeeds.includes(p)
   );
 
   return (
@@ -134,7 +142,7 @@ export default function SeedsPage() {
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                       <p className="text-amber-600 font-bold text-xl mb-3">
-                        ৳{product.price?.toLocaleString()}/{product.priceUnit}
+                        Price On Request
                       </p>
                       <div className="text-sm text-gray-600 mb-4">
                         {product.specs && (
@@ -193,7 +201,7 @@ export default function SeedsPage() {
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                     <p className="text-green-600 font-bold text-xl mb-3">
-                      ৳{product.price?.toLocaleString()}/{product.priceUnit}
+                      Price On Request
                     </p>
                     <Button asChild className="w-full">
                       <Link href={`/products/${product.slug}`}>View Details</Link>
@@ -232,7 +240,7 @@ export default function SeedsPage() {
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                       <p className="text-green-600 font-bold text-xl mb-3">
-                        ৳{product.price?.toLocaleString()}/{product.priceUnit}
+                        Price On Request
                       </p>
                       <Button asChild className="w-full">
                         <Link href={`/products/${product.slug}`}>View Details</Link>
@@ -291,15 +299,15 @@ export default function SeedsPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 text-green-400" />
-                    <span>+880 1700-000000</span>
+                    <span>+880 1321-219223</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Mail className="w-5 h-5 text-green-400" />
-                    <span>seeds@sqagriculture.com</span>
+                    <span>agriculture@sq-bd.com</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin className="w-5 h-5 text-green-400" />
-                    <span>Dhaka, Bangladesh</span>
+                    <span>Banani, Dhaka-1213</span>
                   </div>
                 </div>
               </div>

@@ -10,18 +10,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, Tractor, Cog, Settings, Phone, Mail, MapPin } from 'lucide-react';
 
 export default function FieldMachineryPage() {
-  const { data: products, isLoading } = useProducts();
+  const { data: products, isLoading } = useProducts({ categoryType: 'MACHINERY', limit: 200 });
 
-  const fieldMachinery = products?.filter(p => 
-    p.category?.type === 'MACHINERY' || 
-    p.category?.type === 'PESTICIDES' ||
-    p.name.toLowerCase().includes('tractor') ||
-    p.name.toLowerCase().includes('rotavator') ||
-    p.name.toLowerCase().includes('harvester') ||
-    p.name.toLowerCase().includes('tiller') ||
-    p.name.toLowerCase().includes('transplanter') ||
-    p.name.toLowerCase().includes('sprayer')
-  ) || [];
+  const fieldMachinery = products || [];
 
   const tractors = fieldMachinery.filter(p => 
     p.name.toLowerCase().includes('tractor')
@@ -41,7 +32,6 @@ export default function FieldMachineryPage() {
 
   const sprayMachines = fieldMachinery.filter(p => 
     p.category?.slug === 'spray-machines' ||
-    p.category?.id === 'cat-6' ||
     p.name.toLowerCase().includes('sprayer') ||
     p.name.toLowerCase().includes('spray')
   );
@@ -128,7 +118,7 @@ export default function FieldMachineryPage() {
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                       <p className="text-green-600 font-bold text-xl mb-3">
-                        ৳{product.price?.toLocaleString()}
+                        Price On Request
                       </p>
                       <div className="text-sm text-gray-600 mb-4">
                         {product.specs && (
@@ -234,7 +224,7 @@ export default function FieldMachineryPage() {
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                       <p className="text-green-600 font-bold text-xl mb-3">
-                        {product.price ? `৳${product.price.toLocaleString()}` : 'Call for Price'}
+                        Price On Request
                       </p>
                       <Button asChild className="w-full">
                         <Link href={`/products/${product.slug}`}>View Details</Link>
@@ -280,7 +270,7 @@ export default function FieldMachineryPage() {
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                       <p className="text-green-600 font-bold text-xl mb-3">
-                        {product.price ? `৳${product.price.toLocaleString()}` : 'Call for Price'}
+                        Price On Request
                       </p>
                       <Button asChild className="w-full">
                         <Link href={`/products/${product.slug}`}>View Details</Link>
@@ -321,7 +311,7 @@ export default function FieldMachineryPage() {
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                       <p className="text-green-600 font-bold text-xl mb-3">
-                        ৳{product.price?.toLocaleString()}
+                        Price On Request
                       </p>
                       <Button asChild className="w-full">
                         <Link href={`/products/${product.slug}`}>View Details</Link>
@@ -380,15 +370,15 @@ export default function FieldMachineryPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 text-green-400" />
-                    <span>+880 1700-000000</span>
+                    <span>+880 1321-219223</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Mail className="w-5 h-5 text-green-400" />
-                    <span>machinery@sqagriculture.com</span>
+                    <span>agriculture@sq-bd.com</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin className="w-5 h-5 text-green-400" />
-                    <span>Dhaka, Bangladesh</span>
+                    <span>Banani, Dhaka-1213</span>
                   </div>
                 </div>
               </div>

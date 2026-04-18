@@ -14,14 +14,17 @@ function extractArrayData<T>(response: any): T[] {
   return [];
 }
 
-export function useProducts(params?: { category?: string; featured?: boolean; search?: string }) {
+export function useProducts(params?: { category?: string; categoryType?: string; featured?: boolean; search?: string; limit?: number; isPreOwned?: boolean }) {
   return useQuery({
     queryKey: ['products', params],
     queryFn: async () => {
       const queryParams: Record<string, string> = {};
       if (params?.category) queryParams.category = params.category;
+      if (params?.categoryType) queryParams.categoryType = params.categoryType;
       if (params?.featured) queryParams.featured = 'true';
       if (params?.search) queryParams.search = params.search;
+      if (params?.limit) queryParams.limit = params.limit.toString();
+      if (params?.isPreOwned) queryParams.isPreOwned = 'true';
       
       const response = await api.get<any>(apiEndpoints.products.public, queryParams);
       return extractArrayData<Product>(response);
@@ -44,6 +47,16 @@ export function useFeaturedProducts() {
     queryKey: ['products', 'featured'],
     queryFn: async () => {
       const response = await api.get<any>(apiEndpoints.products.featured);
+      return extractArrayData<Product>(response);
+    },
+  });
+}
+
+export function usePreOwnedProducts() {
+  return useQuery({
+    queryKey: ['products', 'pre-owned'],
+    queryFn: async () => {
+      const response = await api.get<any>('/api/v1/products/public', { isPreOwned: 'true', limit: '100' });
       return extractArrayData<Product>(response);
     },
   });

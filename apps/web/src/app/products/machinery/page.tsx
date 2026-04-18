@@ -1,6 +1,5 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { useProducts } from '@/hooks/use-products';
@@ -11,16 +10,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, MapPin, Phone, Mail, Tractor, Cog, Settings } from 'lucide-react';
 
 export default function MachineryPage() {
-  const t = useTranslations();
-  const { data: products, isLoading } = useProducts();
+  const { data: products, isLoading } = useProducts({ categoryType: 'MACHINERY', limit: 200 });
 
-  const machineryProducts = products?.filter(p => 
-    p.category?.type === 'MACHINERY' || 
-    p.name.toLowerCase().includes('tractor') ||
-    p.name.toLowerCase().includes('rotavator') ||
-    p.name.toLowerCase().includes('tiller') ||
-    p.name.toLowerCase().includes('harvester')
-  ) || [];
+  const machineryProducts = products || [];
 
   const tractors = machineryProducts.filter(p => 
     p.name.toLowerCase().includes('tractor')
@@ -35,6 +27,12 @@ export default function MachineryPage() {
     p.name.toLowerCase().includes('fieldking') ||
     p.name.toLowerCase().includes('zoomlion') ||
     p.name.toLowerCase().includes('implement')
+  );
+
+  const sprayers = machineryProducts.filter(p => 
+    p.name.toLowerCase().includes('sprayer') ||
+    p.name.toLowerCase().includes('spray') ||
+    p.name.toLowerCase().includes('spraying')
   );
 
   return (
@@ -175,7 +173,7 @@ export default function MachineryPage() {
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                       <p className="text-green-600 font-bold text-xl mb-3">
-                        ৳{product.price?.toLocaleString()}
+                        Price On Request
                       </p>
                       <div className="text-sm text-gray-600 mb-4">
                         {product.specs && (
@@ -273,6 +271,52 @@ export default function MachineryPage() {
           </div>
         </section>
 
+        {/* Sprayers Section */}
+        {sprayers.length > 0 && (
+          <section id="sprayers" className="py-16 bg-blue-50">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center gap-3 mb-8">
+                <Settings className="w-8 h-8 text-blue-600" />
+                <h2 className="text-3xl font-bold">Sprayers & Spray Equipment</h2>
+              </div>
+              <p className="text-gray-600 mb-8 max-w-2xl">
+                Professional spray equipment for effective crop protection. 
+                Available in various capacities for different farm sizes.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {sprayers.map(product => (
+                  <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                    <div className="relative h-48 bg-gray-100">
+                      {product.images?.[0] ? (
+                        <Image
+                          src={product.images[0]}
+                          alt={product.name}
+                          fill
+                          className="object-contain p-4"
+                        />
+                      ) : (
+                        <div className="flex items-center justify-center h-full">
+                          <Settings className="w-16 h-16 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                      <p className="text-green-600 font-bold text-xl mb-3">
+                        Price On Request
+                      </p>
+                      <Button asChild className="w-full">
+                        <Link href={`/products/${product.slug}`}>View Details</Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* Features Section */}
         <section className="py-16">
           <div className="container mx-auto px-4">
@@ -323,15 +367,15 @@ export default function MachineryPage() {
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 text-green-400" />
-                    <span>+880 1700-000000</span>
+                    <span>+880 1321-219223</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Mail className="w-5 h-5 text-green-400" />
-                    <span>machinery@sqagriculture.com</span>
+                    <span>agriculture@sq-bd.com</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin className="w-5 h-5 text-green-400" />
-                    <span>Dhaka, Bangladesh</span>
+                    <span>Banani, Dhaka-1213</span>
                   </div>
                 </div>
               </div>
