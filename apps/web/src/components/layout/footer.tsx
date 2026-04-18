@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { useTranslations } from 'next-intl';
 import { MapPin, Phone, Mail, Facebook, Twitter, Youtube } from 'lucide-react';
 import { NewsletterForm } from '@/components/features/newsletter-form';
 
@@ -8,10 +7,6 @@ interface FooterProps {
 }
 
 export function Footer({ locale = 'en' }: FooterProps) {
-  const t = useTranslations('footer');
-  const tNav = useTranslations('nav');
-  const tCommon = useTranslations('common');
-
   const currentYear = new Date().getFullYear();
 
   return (
@@ -28,37 +23,37 @@ export function Footer({ locale = 'en' }: FooterProps) {
               />
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              {t('aboutText')}
+              SQ Agriculture Ltd. is your trusted partner for quality seeds, crop protection, and modern farming machinery in Bangladesh.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">{t('quickLinks')}</h3>
+            <h3 className="font-semibold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {tNav('home')}
+                  Home
                 </Link>
               </li>
               <li>
                 <Link href="/products" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {tNav('products')}
+                  Products
                 </Link>
               </li>
               <li>
                 <Link href="/services" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {tNav('services')}
+                  Services
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {tNav('about')}
+                  About
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {tNav('contact')}
+                  Contact
                 </Link>
               </li>
             </ul>
@@ -67,7 +62,7 @@ export function Footer({ locale = 'en' }: FooterProps) {
           {/* Product Categories */}
           <div>
             <h3 className="font-semibold text-lg mb-4">
-              {tNav('products')}
+              Products
             </h3>
             <ul className="space-y-2">
               <li>
@@ -105,22 +100,22 @@ export function Footer({ locale = 'en' }: FooterProps) {
 
           {/* Contact Info */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">{t('contactInfo')}</h3>
+            <h3 className="font-semibold text-lg mb-4">Contact Info</h3>
             <ul className="space-y-3">
               <li className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 mt-1 flex-shrink-0 text-accent" />
-                <span className="text-gray-300 text-sm">{t('address')}</span>
+                <span className="text-gray-300 text-sm">9th Floor, Suvastu Suraiya Trade Center, 57 Kemal Ataturk Avenue, Banani, Dhaka-1213</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 flex-shrink-0 text-accent" />
-                <a href="tel:+8801711111111" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  +880 1711 111111
+                <a href="tel:+8801321219223" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  +880 1321-219223
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 flex-shrink-0 text-accent" />
-                <a href="mailto:info@sqagriculture.com" className="text-gray-300 hover:text-white transition-colors text-sm">
-                  {t('email')}
+                <a href="mailto:agriculture@sq-bd.com" className="text-gray-300 hover:text-white transition-colors text-sm">
+                  agriculture@sq-bd.com
                 </a>
               </li>
             </ul>
@@ -148,7 +143,7 @@ export function Footer({ locale = 'en' }: FooterProps) {
         {/* Bottom Bar */}
         <div className="border-t border-white/10 mt-8 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            {t('copyright').replace('2024', currentYear.toString())}
+            &copy; {currentYear} SQ Agriculture Ltd. All rights reserved.
           </p>
         </div>
       </div>

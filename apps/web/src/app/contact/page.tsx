@@ -71,17 +71,17 @@ export default function ContactPage() {
     {
       icon: MapPin,
       title: 'Address',
-      value: '123 Agricultural Lane, Dhaka, Bangladesh',
+      value: '9th Floor, Suvastu Suraiya Trade Center, 57 Kemal Ataturk Avenue, Banani, Dhaka-1213',
     },
     {
       icon: Phone,
       title: 'Phone',
-      value: '+880 1700-000000',
+      value: '+880 1321-219223',
     },
     {
       icon: Mail,
       title: 'Email',
-      value: 'info@sqagriculture.com',
+      value: 'agriculture@sq-bd.com',
     },
     {
       icon: Clock,

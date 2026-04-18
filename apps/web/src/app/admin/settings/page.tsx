@@ -33,9 +33,9 @@ export default function AdminSettingsPage() {
     defaultValues: {
       siteName: 'SQ Agriculture',
       siteDescription: 'Your trusted partner for quality agricultural products',
-      contactEmail: 'info@sqagriculture.com',
-      contactPhone: '+880 1700-000000',
-      contactAddress: '123 Agricultural Lane, Dhaka, Bangladesh',
+      contactEmail: 'agriculture@sq-bd.com',
+      contactPhone: '+880 1321-219223',
+      contactAddress: '9th Floor, Suvastu Suraiya Trade Center, 57 Kemal Ataturk Avenue, Banani, Dhaka-1213',
       facebookUrl: '',
       twitterUrl: '',
       youtubeUrl: '',

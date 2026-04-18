@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { WishlistButton } from '@/components/features/wishlist-button';
+import { InquireModal } from '@/components/features/inquire-modal';
 
 export interface Product {
   id: string;
@@ -24,6 +25,10 @@ export interface Product {
   featured?: boolean;
   inStock?: boolean;
   isInWishlist?: boolean;
+  hidePrice?: boolean;
+  contactEmail?: string;
+  contactPhone?: string;
+  contactWhatsApp?: string;
 }
 
 interface ProductCardProps {
@@ -36,6 +41,7 @@ interface ProductCardProps {
 export function ProductCard({ product, variant = 'grid', className, locale = 'en' }: ProductCardProps) {
   const isList = variant === 'list';
   const [isImageLoaded, setIsImageLoaded] = React.useState(false);
+  const [showInquireModal, setShowInquireModal] = React.useState(false);
 
   const formatPrice = (price: number, unit?: string) => {
     const formatted = new Intl.NumberFormat('en-US', {
@@ -46,6 +52,8 @@ export function ProductCard({ product, variant = 'grid', className, locale = 'en
     }).format(price);
     return unit ? `${formatted}/${unit}` : formatted;
   };
+
+  const showInquire = product.hidePrice === true;
 
   return (
     <article
@@ -135,25 +143,31 @@ export function ProductCard({ product, variant = 'grid', className, locale = 'en
           'p-4 border-t border-gray-100 flex items-center justify-between',
           isList && 'md:border-t-0 md:border-l md:w-48'
         )}>
-          {product.price ? (
-            <div className="flex flex-col">
-              <span className={cn(
-                'font-bold text-primary',
-                isList ? 'text-xl' : 'text-lg'
-              )}>
-                {formatPrice(product.price, product.priceUnit)}
-              </span>
-            </div>
-          ) : (
-            <a 
-              href="tel:+8801711111111" 
-              className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-dark transition-colors"
+          {showInquire ? (
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="bg-primary hover:bg-primary-dark"
+              onClick={() => setShowInquireModal(true)}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-              </svg>
-              <span className="hidden sm:inline">Call for price</span>
-            </a>
+              Inquire Now
+            </Button>
+          ) : product.price ? (
+            <span className={cn(
+              'font-bold text-primary',
+              isList ? 'text-xl' : 'text-lg'
+            )}>
+              {formatPrice(product.price, product.priceUnit)}
+            </span>
+          ) : (
+            <Button 
+              variant="default" 
+              size="sm" 
+              className="bg-primary hover:bg-primary-dark"
+              onClick={() => setShowInquireModal(true)}
+            >
+              Inquire Now
+            </Button>
           )}
           
           <Link href={`/products/${product.slug}`}>
@@ -163,6 +177,15 @@ export function ProductCard({ product, variant = 'grid', className, locale = 'en
           </Link>
         </div>
       </div>
+
+      <InquireModal
+        open={showInquireModal}
+        onOpenChange={setShowInquireModal}
+        productName={product.name}
+        contactEmail={product.contactEmail}
+        contactPhone={product.contactPhone}
+        contactWhatsApp={product.contactWhatsApp}
+      />
     </article>
   );
 }

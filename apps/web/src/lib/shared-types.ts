@@ -48,11 +48,24 @@ export interface Product {
   featured: boolean;
   inStock: boolean;
   isActive: boolean;
+  isPreOwned?: boolean;
+  preOwnedDetails?: PreOwnedDetails;
   categoryId: string;
   category?: Category;
   brochure?: string;
+  hidePrice?: boolean;
+  contactEmail?: string;
+  contactPhone?: string;
+  contactWhatsApp?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface PreOwnedDetails {
+  year?: number;
+  hours?: number;
+  condition?: string;
+  previousOwner?: string;
 }
 
 export interface Lead {
