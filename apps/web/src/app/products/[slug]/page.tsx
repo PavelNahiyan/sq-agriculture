@@ -1,7 +1,6 @@
 'use client';
 
 import * as React from 'react';
-import { useTranslations } from 'next-intl';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -26,6 +25,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductCard, ProductCardSkeleton } from '@/components/features/product-card';
 import { InquiryForm } from '@/components/features/inquiry-form';
+import { InquireModal } from '@/components/features/inquire-modal';
+import { LicenseInfo } from '@/components/features/license-info';
 import { useProduct, useRelatedProducts } from '@/hooks/use-products';
 
 interface ProductDetailPageProps {
@@ -33,12 +34,12 @@ interface ProductDetailPageProps {
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
-  const t = useTranslations();
   const { data: product, isLoading, error } = useProduct(params.slug);
   const { data: relatedProducts, isLoading: isRelatedLoading } = useRelatedProducts(product?.id || '');
   
   const [selectedImage, setSelectedImage] = React.useState(0);
   const [quantity, setQuantity] = React.useState(1);
+  const [showInquireModal, setShowInquireModal] = React.useState(false);
 
   const formatPrice = (price: number, unit?: string) => {
     const formatted = new Intl.NumberFormat('en-US', {
@@ -148,18 +149,26 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                 </div>
 
                 <div className="flex items-baseline gap-2">
-                  {product.price ? (
+                  {product.hidePrice ? (
+                    <Button 
+                      size="lg" 
+                      className="bg-primary hover:bg-primary-dark"
+                      onClick={() => setShowInquireModal(true)}
+                    >
+                      Inquire Now
+                    </Button>
+                  ) : product.price ? (
                     <span className="text-3xl font-bold text-primary">
                       {formatPrice(product.price, product.priceUnit)}
                     </span>
                   ) : (
-                    <a 
-                      href="tel:+8801711111111" 
-                      className="text-2xl font-bold text-primary flex items-center gap-2 hover:text-primary-dark transition-colors"
+                    <Button 
+                      size="lg" 
+                      className="bg-primary hover:bg-primary-dark"
+                      onClick={() => setShowInquireModal(true)}
                     >
-                      <Phone className="w-6 h-6" />
-                      Call for Price
-                    </a>
+                      Inquire Now
+                    </Button>
                   )}
                 </div>
 
@@ -230,7 +239,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
                         </a>
                       </Button>
                       <Button variant="outline" size="sm" className="gap-1" asChild>
-                        <a href="mailto:info@sqagriculture.com">
+                        <a href="mailto:agriculture@sq-bd.com">
                           <Mail className="w-4 h-4" />
                           Email
                         </a>
@@ -303,6 +312,13 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           </div>
         </section>
 
+        {/* License Information */}
+        <section className="py-8 bg-gray-50">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <LicenseInfo />
+          </div>
+        </section>
+
         <section className="py-12">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl font-bold mb-6">Related Products</h2>
@@ -326,6 +342,15 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       </main>
 
       <Footer />
+
+      <InquireModal
+        open={showInquireModal}
+        onOpenChange={setShowInquireModal}
+        productName={product?.name || ''}
+        contactEmail={product?.contactEmail}
+        contactPhone={product?.contactPhone}
+        contactWhatsApp={product?.contactWhatsApp}
+      />
     </div>
   );
 }

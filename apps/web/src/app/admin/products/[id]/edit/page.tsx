@@ -28,6 +28,17 @@ const productSchema = z.object({
   featured: z.boolean().default(false),
   inStock: z.boolean().default(true),
   isActive: z.boolean().default(true),
+  isPreOwned: z.boolean().default(false),
+  preOwnedDetails: z.object({
+    year: z.number().optional(),
+    hours: z.number().optional(),
+    condition: z.string().optional(),
+    previousOwner: z.string().optional(),
+  }).optional(),
+  hidePrice: z.boolean().default(false),
+  contactEmail: z.string().optional(),
+  contactPhone: z.string().optional(),
+  contactWhatsApp: z.string().optional(),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -41,6 +52,10 @@ export default function AdminEditProductPage() {
   const updateProduct = useUpdateProduct();
   const { data: categories } = useCategories();
   const [imageUrls, setImageUrls] = React.useState<string[]>([]);
+  const [preOwnedYear, setPreOwnedYear] = React.useState('');
+  const [preOwnedHours, setPreOwnedHours] = React.useState('');
+  const [preOwnedCondition, setPreOwnedCondition] = React.useState('');
+  const [preOwnedOwner, setPreOwnedOwner] = React.useState('');
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -49,8 +64,11 @@ export default function AdminEditProductPage() {
       inStock: true,
       isActive: true,
       images: [],
+      isPreOwned: false,
     },
   });
+
+  const watchIsPreOwned = watch('isPreOwned');
 
   React.useEffect(() => {
     if (product) {
@@ -67,19 +85,38 @@ export default function AdminEditProductPage() {
         featured: product.featured,
         inStock: product.inStock,
         isActive: product.isActive,
+        isPreOwned: product.isPreOwned || false,
       });
       setImageUrls(product.images || []);
+      
+      if (product.preOwnedDetails) {
+        setPreOwnedYear(product.preOwnedDetails.year?.toString() || '');
+        setPreOwnedHours(product.preOwnedDetails.hours?.toString() || '');
+        setPreOwnedCondition(product.preOwnedDetails.condition || '');
+        setPreOwnedOwner(product.preOwnedDetails.previousOwner || '');
+      }
     }
   }, [product, reset]);
 
   const onSubmit = async (data: ProductFormData) => {
     try {
+      const productData: any = {
+        ...data,
+        images: imageUrls.length > 0 ? imageUrls : product?.images,
+      };
+
+      if (data.isPreOwned) {
+        productData.preOwnedDetails = {
+          year: preOwnedYear ? parseInt(preOwnedYear) : undefined,
+          hours: preOwnedHours ? parseInt(preOwnedHours) : undefined,
+          condition: preOwnedCondition || undefined,
+          previousOwner: preOwnedOwner || undefined,
+        };
+      }
+
       await updateProduct.mutateAsync({
         id: productId,
-        data: {
-          ...data,
-          images: imageUrls.length > 0 ? imageUrls : product?.images,
-        },
+        data: productData,
       });
       router.push('/admin/products');
     } catch (error) {
@@ -326,8 +363,72 @@ export default function AdminEditProductPage() {
                     />
                     <Label htmlFor="isActive">Active</Label>
                   </div>
+
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="isPreOwned"
+                      {...register('isPreOwned')}
+                      className="rounded border-gray-300"
+                    />
+                    <Label htmlFor="isPreOwned">Pre-Owned Machine</Label>
+                  </div>
                 </CardContent>
               </Card>
+
+              {watchIsPreOwned && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Pre-Owned Details</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Year</Label>
+                        <Input 
+                          type="number" 
+                          placeholder="e.g., 2020"
+                          value={preOwnedYear}
+                          onChange={(e) => setPreOwnedYear(e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Hours Used</Label>
+                        <Input 
+                          type="number" 
+                          placeholder="e.g., 1500"
+                          value={preOwnedHours}
+                          onChange={(e) => setPreOwnedHours(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Condition</Label>
+                        <select
+                          className="w-full h-10 px-3 rounded-md border border-input bg-white text-sm"
+                          value={preOwnedCondition}
+                          onChange={(e) => setPreOwnedCondition(e.target.value)}
+                        >
+                          <option value="">Select condition</option>
+                          <option value="Like New">Like New</option>
+                          <option value="Excellent">Excellent</option>
+                          <option value="Good">Good</option>
+                          <option value="Fair">Fair</option>
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Previous Owner</Label>
+                        <Input 
+                          placeholder="e.g., Dhaka District Farmer"
+                          value={preOwnedOwner}
+                          onChange={(e) => setPreOwnedOwner(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               <div className="flex gap-4">
                 <Button 

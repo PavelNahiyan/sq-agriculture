@@ -29,6 +29,17 @@ const productSchema = z.object({
   featured: z.boolean().default(false),
   inStock: z.boolean().default(true),
   isActive: z.boolean().default(true),
+  isPreOwned: z.boolean().default(false),
+  preOwnedDetails: z.object({
+    year: z.number().optional(),
+    hours: z.number().optional(),
+    condition: z.string().optional(),
+    previousOwner: z.string().optional(),
+  }).optional(),
+  hidePrice: z.boolean().default(false),
+  contactEmail: z.string().optional(),
+  contactPhone: z.string().optional(),
+  contactWhatsApp: z.string().optional(),
 });
 
 type ProductFormData = z.infer<typeof productSchema>;
@@ -38,6 +49,12 @@ export default function AdminNewProductPage() {
   const createProduct = useCreateProduct();
   const { data: categories } = useCategories();
   const [imageUrls, setImageUrls] = React.useState<string[]>([]);
+  const [isPreOwned, setIsPreOwned] = React.useState(false);
+  const [preOwnedYear, setPreOwnedYear] = React.useState('');
+  const [preOwnedHours, setPreOwnedHours] = React.useState('');
+  const [preOwnedCondition, setPreOwnedCondition] = React.useState('');
+  const [preOwnedOwner, setPreOwnedOwner] = React.useState('');
+  const [hidePrice, setHidePrice] = React.useState(false);
 
   const { register, handleSubmit, reset, setValue, watch, formState: { errors } } = useForm<ProductFormData>({
     resolver: zodResolver(productSchema),
@@ -46,17 +63,30 @@ export default function AdminNewProductPage() {
       inStock: true,
       isActive: true,
       images: [],
+      isPreOwned: false,
     },
   });
 
   const watchImages = watch('images');
+  const watchIsPreOwned = watch('isPreOwned');
 
   const onSubmit = async (data: ProductFormData) => {
     try {
-      const product = await createProduct.mutateAsync({
+      const productData: any = {
         ...data,
         images: imageUrls.length > 0 ? imageUrls : ['https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800'],
-      });
+      };
+
+      if (data.isPreOwned) {
+        productData.preOwnedDetails = {
+          year: preOwnedYear ? parseInt(preOwnedYear) : undefined,
+          hours: preOwnedHours ? parseInt(preOwnedHours) : undefined,
+          condition: preOwnedCondition || undefined,
+          previousOwner: preOwnedOwner || undefined,
+        };
+      }
+
+      const product = await createProduct.mutateAsync(productData);
       router.push('/admin/products');
     } catch (error) {
       console.error('Failed to create product:', error);
@@ -171,6 +201,18 @@ export default function AdminNewProductPage() {
                     </div>
                   </div>
 
+                  <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                    <input
+                      type="checkbox"
+                      id="hidePrice"
+                      {...register('hidePrice')}
+                      className="w-4 h-4"
+                    />
+                    <Label htmlFor="hidePrice" className="cursor-pointer">
+                      Hide Price - Show "Inquire Now" button instead
+                    </Label>
+                  </div>
+
                   <div className="space-y-2">
                     <Label>Category *</Label>
                     <select
@@ -185,6 +227,41 @@ export default function AdminNewProductPage() {
                       ))}
                     </select>
                     {errors.categoryId && <p className="text-red-500 text-sm">{errors.categoryId.message}</p>}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Inquiry Contact Details</CardTitle>
+                  <CardDescription>
+                    These contacts will be shown when users click "Inquire Now" button. 
+                    Leave empty to use default company contacts.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label>Contact Email</Label>
+                      <Input 
+                        {...register('contactEmail')} 
+                        placeholder="agriculture@sq-bd.com"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Contact Phone</Label>
+                      <Input 
+                        {...register('contactPhone')} 
+                        placeholder="+880 1321-219223"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>WhatsApp Link</Label>
+                      <Input 
+                        {...register('contactWhatsApp')} 
+                        placeholder="wa.me/8801321219223"
+                      />
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -278,8 +355,73 @@ export default function AdminNewProductPage() {
                     />
                     <Label htmlFor="isActive">Active</Label>
                   </div>
+
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id="isPreOwned"
+                      {...register('isPreOwned')}
+                      className="rounded border-gray-300"
+                    />
+                    <Label htmlFor="isPreOwned">Pre-Owned Machine</Label>
+                  </div>
                 </CardContent>
               </Card>
+
+              {watchIsPreOwned && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Pre-Owned Details</CardTitle>
+                    <CardDescription>Fill in the details for pre-owned machines</CardDescription>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Year</Label>
+                        <Input 
+                          type="number" 
+                          placeholder="e.g., 2020"
+                          value={preOwnedYear}
+                          onChange={(e) => setPreOwnedYear(e.target.value)}
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Hours Used</Label>
+                        <Input 
+                          type="number" 
+                          placeholder="e.g., 1500"
+                          value={preOwnedHours}
+                          onChange={(e) => setPreOwnedHours(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Condition</Label>
+                        <select
+                          className="w-full h-10 px-3 rounded-md border border-input bg-white text-sm"
+                          value={preOwnedCondition}
+                          onChange={(e) => setPreOwnedCondition(e.target.value)}
+                        >
+                          <option value="">Select condition</option>
+                          <option value="Like New">Like New</option>
+                          <option value="Excellent">Excellent</option>
+                          <option value="Good">Good</option>
+                          <option value="Fair">Fair</option>
+                        </select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Previous Owner</Label>
+                        <Input 
+                          placeholder="e.g., Dhaka District Farmer"
+                          value={preOwnedOwner}
+                          onChange={(e) => setPreOwnedOwner(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               <div className="flex gap-4">
                 <Button 
