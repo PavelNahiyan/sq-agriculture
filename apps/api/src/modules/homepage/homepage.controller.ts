@@ -1,10 +1,10 @@
 import { Controller, Get, Patch, Body, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { HomepageService } from './homepage.service';
-import { UpdateHomepageDto } from '../dto';
+import { UpdateHomepageDto } from './dto';
 import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard';
 import { RolesGuard } from '@/common/guards/roles.guard';
-import { Roles } from '@/modules/auth/decorators/roles.decorator';
+import { Roles } from '@/common/decorators/roles.decorator';
 
 @ApiTags('Homepage')
 @Controller('homepage')
