@@ -22,6 +22,7 @@ import { HomepageModule } from './modules/homepage/homepage.module';
 import { PageConfigModule } from './modules/page-config/page-config.module';
 import { FloatingButtonModule } from './modules/floating-button/floating-button.module';
 import { SeedModule } from './modules/seed/seed.module';
+import { SyncMaterialsService } from './scripts/sync-materials';
 
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { AuditModule } from './common/audit.module';
@@ -74,6 +75,7 @@ import { PrismaModule } from './prisma/prisma/prisma.module';
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
     },
+    SyncMaterialsService,
   ],
 })
 export class AppModule {}
