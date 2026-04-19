@@ -30,10 +30,10 @@ export default function GalleryPage() {
   React.useEffect(() => {
     if (products && products.length > 0) {
       const images: GalleryImage[] = products
-        .filter(p => p.image)
+        .filter(p => p.images && p.images.length > 0)
         .map(product => ({
           id: product.id,
-          src: product.image || '',
+          src: product.images?.[0] || '',
           alt: product.name,
           productName: product.name,
           productSlug: product.slug,
