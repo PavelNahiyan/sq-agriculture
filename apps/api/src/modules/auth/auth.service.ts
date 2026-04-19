@@ -29,6 +29,14 @@ export class AuthService {
     private mailService: MailService,
   ) {}
 
+  private getSecret(key: string): string {
+    const secret = this.configService.get<string>(key);
+    if (!secret) {
+      throw new Error(`Missing required environment variable: ${key}`);
+    }
+    return secret;
+  }
+
   async register(dto: RegisterDto): Promise<AuthResponse> {
     const existingUser = await this.prisma.user.findUnique({
       where: { email: dto.email },
@@ -133,7 +141,7 @@ export class AuthService {
 
     const resetToken = this.jwtService.sign(
       { sub: user.id, type: 'password-reset' },
-      { secret: this.configService.get<string>('JWT_RESET_SECRET', 'reset-secret'), expiresIn: '1h' },
+      { secret: this.getSecret('JWT_RESET_SECRET'), expiresIn: '1h' },
     );
 
     await this.prisma.passwordResetToken.create({
@@ -156,7 +164,7 @@ export class AuthService {
   async resetPassword(token: string, newPassword: string): Promise<{ message: string }> {
     try {
       const payload = this.jwtService.verify(token, {
-        secret: this.configService.get<string>('JWT_RESET_SECRET', 'reset-secret'),
+        secret: this.getSecret('JWT_RESET_SECRET'),
       });
 
       if (payload.type !== 'password-reset') {
@@ -194,7 +202,7 @@ export class AuthService {
   async verifyEmail(token: string): Promise<{ message: string }> {
     try {
       const payload = this.jwtService.verify(token, {
-        secret: this.configService.get<string>('JWT_VERIFY_SECRET', 'verify-secret'),
+        secret: this.getSecret('JWT_VERIFY_SECRET'),
       });
 
       if (payload.type !== 'email-verification') {
@@ -238,7 +246,7 @@ export class AuthService {
 
     const verifyToken = this.jwtService.sign(
       { sub: user.id, email: user.email, type: 'email-verification' },
-      { secret: this.configService.get<string>('JWT_VERIFY_SECRET', 'verify-secret'), expiresIn: '24h' },
+      { secret: this.getSecret('JWT_VERIFY_SECRET'), expiresIn: '24h' },
     );
 
     try {

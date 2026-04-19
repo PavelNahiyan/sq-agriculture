@@ -6,6 +6,14 @@ import { UpdateHomepageDto } from './dto';
 export class HomepageService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private safeJsonParse(str: string, defaultValue: any): any {
+    try {
+      return typeof str === 'string' ? JSON.parse(str) : defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  }
+
   async getConfig() {
     let config = await this.prisma.homepageConfig.findFirst({
       where: { isActive: true },
@@ -26,11 +34,11 @@ export class HomepageService {
 
     return {
       ...config,
-      heroSlides: JSON.parse(config.heroSlides || '[]'),
-      sliderCategories: JSON.parse(config.sliderCategories || '[]'),
-      features: JSON.parse(config.features || '[]'),
-      videoUrls: JSON.parse(config.videoUrls || '[]'),
-      stats: JSON.parse(config.stats || '[]'),
+      heroSlides: this.safeJsonParse(config.heroSlides, []),
+      sliderCategories: this.safeJsonParse(config.sliderCategories, []),
+      features: this.safeJsonParse(config.features, []),
+      videoUrls: this.safeJsonParse(config.videoUrls, []),
+      stats: this.safeJsonParse(config.stats, []),
     };
   }
 
@@ -71,11 +79,11 @@ export class HomepageService {
 
     return {
       ...config,
-      heroSlides: JSON.parse(config.heroSlides || '[]'),
-      sliderCategories: JSON.parse(config.sliderCategories || '[]'),
-      features: JSON.parse(config.features || '[]'),
-      videoUrls: JSON.parse(config.videoUrls || '[]'),
-      stats: JSON.parse(config.stats || '[]'),
+      heroSlides: this.safeJsonParse(config.heroSlides, []),
+      sliderCategories: this.safeJsonParse(config.sliderCategories, []),
+      features: this.safeJsonParse(config.features, []),
+      videoUrls: this.safeJsonParse(config.videoUrls, []),
+      stats: this.safeJsonParse(config.stats, []),
     };
   }
 }

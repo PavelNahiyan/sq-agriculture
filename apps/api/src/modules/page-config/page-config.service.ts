@@ -6,6 +6,14 @@ import { UpdatePageConfigDto } from './dto';
 export class PageConfigService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private safeJsonParse(str: string, defaultValue: any): any {
+    try {
+      return typeof str === 'string' ? JSON.parse(str) : defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  }
+
   async getConfig(pageName: string) {
     let config = await this.prisma.pageConfig.findUnique({
       where: { pageName },
@@ -23,8 +31,8 @@ export class PageConfigService {
 
     return {
       ...config,
-      features: JSON.parse(config.features || '[]'),
-      customConfig: JSON.parse(config.customConfig || '{}'),
+      features: this.safeJsonParse(config.features, []),
+      customConfig: this.safeJsonParse(config.customConfig, {}),
     };
   }
 
@@ -35,8 +43,8 @@ export class PageConfigService {
 
     return configs.map(config => ({
       ...config,
-      features: JSON.parse(config.features || '[]'),
-      customConfig: JSON.parse(config.customConfig || '{}'),
+      features: this.safeJsonParse(config.features, []),
+      customConfig: this.safeJsonParse(config.customConfig, {}),
     }));
   }
 

@@ -95,6 +95,26 @@ export class CreateProductDto {
   @IsOptional()
   @ApiPropertyOptional({ type: [String] })
   dealerIds?: string[];
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiPropertyOptional({ default: false })
+  hidePrice?: boolean;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional()
+  contactEmail?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional()
+  contactPhone?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional()
+  contactWhatsApp?: string;
 }
 
 export class UpdateProductDto {
@@ -186,6 +206,26 @@ export class UpdateProductDto {
   @IsOptional()
   @ApiPropertyOptional({ type: [String] })
   dealerIds?: string[];
+
+  @IsBoolean()
+  @IsOptional()
+  @ApiPropertyOptional()
+  hidePrice?: boolean;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional()
+  contactEmail?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional()
+  contactPhone?: string;
+
+  @IsString()
+  @IsOptional()
+  @ApiPropertyOptional()
+  contactWhatsApp?: string;
 }
 
 export class ProductQueryDto {

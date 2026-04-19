@@ -5,6 +5,14 @@ import { PrismaService } from '@/prisma/prisma/prisma.service';
 export class ActivityService {
   constructor(private prisma: PrismaService) {}
 
+  private safeJsonParse(str: string | null, defaultValue: any): any {
+    try {
+      return typeof str === 'string' ? JSON.parse(str) : defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  }
+
   async getRecentActivities(limit: number = 50) {
     const activities = await this.prisma.activityLog.findMany({
       take: limit,
@@ -23,8 +31,8 @@ export class ActivityService {
 
     return activities.map(activity => ({
       ...activity,
-      oldValue: activity.oldValue ? JSON.parse(activity.oldValue) : null,
-      newValue: activity.newValue ? JSON.parse(activity.newValue) : null,
+      oldValue: this.safeJsonParse(activity.oldValue, null),
+      newValue: this.safeJsonParse(activity.newValue, null),
     }));
   }
 
@@ -82,8 +90,8 @@ export class ActivityService {
 
     return activities.map(activity => ({
       ...activity,
-      oldValue: activity.oldValue ? JSON.parse(activity.oldValue) : null,
-      newValue: activity.newValue ? JSON.parse(activity.newValue) : null,
+      oldValue: this.safeJsonParse(activity.oldValue, null),
+      newValue: this.safeJsonParse(activity.newValue, null),
     }));
   }
 
@@ -96,8 +104,8 @@ export class ActivityService {
 
     return activities.map(activity => ({
       ...activity,
-      oldValue: activity.oldValue ? JSON.parse(activity.oldValue) : null,
-      newValue: activity.newValue ? JSON.parse(activity.newValue) : null,
+      oldValue: this.safeJsonParse(activity.oldValue, null),
+      newValue: this.safeJsonParse(activity.newValue, null),
     }));
   }
 

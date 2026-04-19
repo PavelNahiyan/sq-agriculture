@@ -18,13 +18,21 @@ export class ProductsService {
       .replace(/(^-|-$)/g, '');
   }
 
+  private safeJsonParse(str: string, defaultValue: any): any {
+    try {
+      return typeof str === 'string' ? JSON.parse(str) : defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  }
+
   private parseProduct(product: any): any {
     if (!product) return product;
     return {
       ...product,
-      images: typeof product.images === 'string' ? JSON.parse(product.images || '[]') : product.images || [],
-      specs: typeof product.specs === 'string' ? JSON.parse(product.specs || '{}') : product.specs || {},
-      preOwnedDetails: product.preOwnedDetails ? JSON.parse(product.preOwnedDetails) : null,
+      images: this.safeJsonParse(product.images, []),
+      specs: this.safeJsonParse(product.specs, {}),
+      preOwnedDetails: product.preOwnedDetails ? this.safeJsonParse(product.preOwnedDetails, null) : null,
     };
   }
 

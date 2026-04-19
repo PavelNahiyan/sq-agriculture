@@ -7,11 +7,19 @@ import { Prisma } from '@prisma/client';
 export class BlogService {
   constructor(private prisma: PrismaService) {}
 
+  private safeJsonParse(str: string, defaultValue: any): any {
+    try {
+      return typeof str === 'string' ? JSON.parse(str) : defaultValue;
+    } catch {
+      return defaultValue;
+    }
+  }
+
   private parsePost(post: any): any {
     if (!post) return post;
     return {
       ...post,
-      tags: typeof post.tags === 'string' ? JSON.parse(post.tags || '[]') : post.tags || [],
+      tags: this.safeJsonParse(post.tags, []),
     };
   }
 

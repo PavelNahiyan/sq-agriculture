@@ -55,6 +55,8 @@ export const InquiryStatus = {
   CONTACTED: 'CONTACTED',
   QUALIFIED: 'QUALIFIED',
   PROPOSAL: 'PROPOSAL',
+  REPLIED: 'REPLIED',
+  ARCHIVED: 'ARCHIVED',
   WON: 'WON',
   LOST: 'LOST',
 } as const;
