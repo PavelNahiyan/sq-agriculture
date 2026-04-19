@@ -3,14 +3,13 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Leaf, Globe, ChevronDown } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
@@ -62,7 +61,6 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
     >
       <nav className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <img 
               src="/uploads/logo/Bended & Non-Bended SQ Agriculture Logo For Plate Design.png" 
@@ -71,7 +69,6 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
             />
           </Link>
 
-          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               item.hasDropdown ? (
@@ -117,9 +114,7 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
             ))}
           </div>
 
-          {/* Right Side Actions */}
           <div className="flex items-center gap-4">
-            {/* Mobile Menu Toggle */}
             <Button
               variant="ghost"
               size="icon"
@@ -135,9 +130,8 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden border-t py-4 animate-slide-down">
+          <div className="md:hidden border-t py-4">
             <div className="flex flex-col gap-4">
               {navItems.map((item) => (
                 <Link
@@ -155,7 +149,6 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
                 </Link>
               ))}
               
-              {/* Products Submenu for Mobile */}
               <div className="pl-4 flex flex-col gap-2 border-l-2 border-primary/20">
                 <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Products</span>
                 {categoryLinks.map((cat) => (
@@ -169,12 +162,6 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
                   </Link>
                 ))}
               </div>
-
-              <Link href="/admin" className="mt-2">
-                <Button variant="outline" className="w-full">
-                  Admin
-                </Button>
-              </Link>
             </div>
           </div>
         )}

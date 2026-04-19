@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers';
 import { FloatingContactButton } from '@/components/features/floating-contact-button';
-import { FloatingAdminButton } from '@/components/features/floating-admin-button';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,7 +30,6 @@ export default function RootLayout({
         <Providers>
           {children}
           <FloatingContactButton />
-          <FloatingAdminButton />
         </Providers>
       </body>
     </html>
