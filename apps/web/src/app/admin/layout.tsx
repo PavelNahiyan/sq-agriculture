@@ -3,9 +3,16 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, FolderTree, MessageSquare, Users, Settings, LogOut, Leaf, Menu, X, Bell, User } from 'lucide-react';
+import { LayoutDashboard, Package, FolderTree, MessageSquare, Users, Settings, LogOut, Leaf, Menu, X, Bell, User as UserIcon, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+
+interface StoredUser {
+  id: string;
+  email: string;
+  name: string;
+  role: string;
+}
 
 const adminNavItems = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
@@ -16,33 +23,77 @@ const adminNavItems = [
   { href: '/admin/settings', icon: Settings, label: 'Settings' },
 ];
 
-// Mock stats data
-const mockStats = {
-  totalProducts: 24,
-  totalLeads: 156,
-  newLeads: 12,
-  totalUsers: 8,
-};
+function getStoredUser(): StoredUser | null {
+  try {
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      return JSON.parse(userJson);
+    }
+  } catch {}
+  return null;
+}
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState<StoredUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // Check auth on mount
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    if (!token) {
+    const user = getStoredUser();
+    
+    if (!token || !user) {
       router.push('/admin/login');
+      return;
     }
+
+    if (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN') {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('user');
+      router.push('/admin/login');
+      return;
+    }
+
+    setCurrentUser(user);
+    setIsLoading(false);
   }, [router]);
 
-  const handleLogout = () => {
+  useEffect(() => {
+    const user = getStoredUser();
+    setCurrentUser(user);
+  }, [pathname]);
+
+  const handleLogout = async () => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const refreshToken = localStorage.getItem('refreshToken');
+      
+      if (refreshToken) {
+        await fetch(`${apiUrl}/api/v1/auth/logout`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ refreshToken }),
+        }).catch(() => {});
+      }
+    } catch {}
+
     localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     router.push('/admin/login');
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   // Don't render admin layout on login page
   if (pathname === '/admin/login') {
@@ -80,11 +131,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </Button>
             <div className="flex items-center gap-2 pl-2 border-l">
               <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <User className="w-4 h-4 text-primary" />
+                <UserIcon className="w-4 h-4 text-primary" />
               </div>
               <div className="hidden sm:block">
-                <p className="text-sm font-medium">Admin User</p>
-                <p className="text-xs text-gray-500">Administrator</p>
+                <p className="text-sm font-medium">{currentUser?.name || 'Admin User'}</p>
+                <p className="text-xs text-gray-500">{currentUser?.role === 'SUPER_ADMIN' ? 'Super Admin' : 'Administrator'}</p>
               </div>
             </div>
           </div>

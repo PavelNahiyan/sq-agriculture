@@ -5,8 +5,7 @@ export const dynamic = 'force-dynamic';
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff, Leaf, Check, CheckCircle } from 'lucide-react';
-import { AdminLayout } from '@/components/layout/admin-layout';
+import { Eye, EyeOff, Leaf, Check, CheckCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,23 +24,34 @@ export default function AdminLoginPage() {
     setError('');
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+      const response = await fetch(`${apiUrl}/api/v1/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (email === 'admin@sqagriculture.com' && password === 'admin123') {
-      localStorage.setItem('accessToken', 'mock-jwt-token');
-      localStorage.setItem('user', JSON.stringify({
-        id: '1',
-        email: 'admin@sqagriculture.com',
-        name: 'Admin User',
-        role: 'ADMIN',
-      }));
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      if (data.data.user.role !== 'ADMIN' && data.data.user.role !== 'SUPER_ADMIN') {
+        throw new Error('Access denied. Admin credentials required.');
+      }
+
+      localStorage.setItem('accessToken', data.data.accessToken);
+      localStorage.setItem('refreshToken', data.data.refreshToken);
+      localStorage.setItem('user', JSON.stringify(data.data.user));
+      
       router.push('/admin');
-    } else {
-      setError('Invalid email or password');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Invalid email or password');
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (

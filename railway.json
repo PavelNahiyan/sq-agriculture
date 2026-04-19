@@ -7,6 +7,16 @@
   },
   "deploy": {
     "numReplicas": 1,
-    "restartDelaySecs": 10
+    "restartDelaySecs": 10,
+    "healthcheckPath": "/api/v1/health",
+    "healthcheckInterval": 30
+  },
+  "environments": {
+    "production": {
+      "build": {
+        "builder": "NIXPACKS",
+        "buildCommand": "cd apps/api && npm install && npx prisma generate && npm run build"
+      }
+    }
   }
 }
