@@ -17,7 +17,8 @@ model User {
   name          String
   nameBn        String?
   phone         String?
-  role          String    @default("USER")
+  role          String    @default("PAGE_EDITOR") // SUPER_ADMIN, PAGE_EDITOR
+  assignedPages String    @default("[]") // JSON array of page names user can edit (for PAGE_EDITOR)
   isActive      Boolean   @default(true)
   emailVerified Boolean   @default(false)
   createdAt     DateTime  @default(now())
@@ -35,6 +36,7 @@ model User {
   updatedProducts Product[] @relation("UpdatedProducts")
   deletedProducts Product[] @relation("DeletedProducts")
   activityLogs    ActivityLog[]
+  pageConfigs     PageConfig[]
 
   @@map("users")
 }
@@ -353,4 +355,39 @@ model HomepageConfig {
   updatedAt      DateTime @updatedAt
   
   @@map("homepage_configs")
+}
+
+// Page configurations for each category
+model PageConfig {
+  id           String   @id @default(cuid())
+  pageName     String   @unique // seeds, pesticides, fertilizers, machinery, gallery, homepage
+  heroTitle    String?
+  heroSubtitle String?
+  heroImage    String?
+  features     String   @default("[]") // Array of page-specific features
+  customConfig String   @default("{}") // Page-specific settings
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  createdById  String?
+  createdBy    User?    @relation(fields: [createdById], references: [id])
+
+  @@map("page_configs")
+}
+
+// Floating button settings
+model FloatingButtonSettings {
+  id           String   @id @default(cuid())
+  whatsapp     String?  // WhatsApp number or link
+  facebook     String?  // Facebook page URL
+  email        String?  // Email address
+  isEnabled    Boolean  @default(true)
+  showWhatsapp Boolean  @default(true)
+  showFacebook Boolean  @default(true)
+  showEmail    Boolean  @default(true)
+  position     String   @default("bottom-right") // bottom-right, bottom-left
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("floating_button_settings")
 }

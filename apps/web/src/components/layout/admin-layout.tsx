@@ -31,6 +31,11 @@ interface AdminNavItem {
 const adminNavItems: AdminNavItem[] = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/homepage', label: 'Homepage', icon: Home },
+  { href: '/admin/pages/seeds', label: 'Seeds Page', icon: Leaf },
+  { href: '/admin/pages/pesticides', label: 'Pesticides Page', icon: Leaf },
+  { href: '/admin/pages/fertilizers', label: 'Fertilizers Page', icon: Leaf },
+  { href: '/admin/pages/machinery', label: 'Machinery Page', icon: Leaf },
+  { href: '/admin/pages/gallery', label: 'Gallery Page', icon: Leaf },
   { href: '/admin/products', label: 'Products', icon: Package },
   { href: '/admin/categories', label: 'Categories', icon: FolderTree },
   { href: '/admin/leads', label: 'Leads', icon: MessageSquare },

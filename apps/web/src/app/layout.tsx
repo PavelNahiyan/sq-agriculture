@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers';
+import { FloatingContactButton } from '@/components/features/floating-contact-button';
+import { FloatingAdminButton } from '@/components/features/floating-admin-button';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,6 +30,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           {children}
+          <FloatingContactButton />
+          <FloatingAdminButton />
         </Providers>
       </body>
     </html>

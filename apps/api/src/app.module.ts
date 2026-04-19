@@ -19,6 +19,8 @@ import { MailModule } from './modules/mail/mail.module';
 import { HealthModule } from './modules/health/health.module';
 import { ActivityModule } from './modules/activity/activity.module';
 import { HomepageModule } from './modules/homepage/homepage.module';
+import { PageConfigModule } from './modules/page-config/page-config.module';
+import { FloatingButtonModule } from './modules/floating-button/floating-button.module';
 
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { AuditModule } from './common/audit.module';
@@ -62,6 +64,8 @@ import { PrismaModule } from './prisma/prisma/prisma.module';
     HealthModule,
     ActivityModule,
     HomepageModule,
+    PageConfigModule,
+    FloatingButtonModule,
   ],
   providers: [
     {

@@ -7,7 +7,6 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { useProducts } from '@/hooks/use-products';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { ArrowLeft, Heart, MessageCircle, Share2, Instagram, RefreshCw, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -26,6 +25,7 @@ export default function GalleryPage() {
   const [galleryImages, setGalleryImages] = React.useState<GalleryImage[]>([]);
   const [displayImages, setDisplayImages] = React.useState<GalleryImage[]>([]);
   const [isRefreshing, setIsRefreshing] = React.useState(false);
+  const [lastFocused, setLastFocused] = React.useState<number>(0);
 
   // Initialize gallery images from products
   React.useEffect(() => {
@@ -66,21 +66,27 @@ export default function GalleryPage() {
     setTimeout(() => setIsRefreshing(false), 500);
   }, [galleryImages]);
 
-  // Initial load and auto-refresh
+  // Initial load
   React.useEffect(() => {
     if (galleryImages.length > 0) {
       shuffleImages();
     }
   }, [galleryImages.length]);
 
-  // Auto-refresh every 5 seconds
+  // Refresh when user returns to the page (focus)
   React.useEffect(() => {
-    const interval = setInterval(() => {
-      shuffleImages();
-    }, 5000);
+    const handleFocus = () => {
+      const now = Date.now();
+      // Only refresh if it's been at least 10 seconds since last focus
+      if (now - lastFocused > 10000) {
+        setLastFocused(now);
+        shuffleImages();
+      }
+    };
 
-    return () => clearInterval(interval);
-  }, [shuffleImages]);
+    window.addEventListener('focus', handleFocus);
+    return () => window.removeEventListener('focus', handleFocus);
+  }, [lastFocused, shuffleImages]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -121,43 +127,43 @@ export default function GalleryPage() {
         </section>
 
         {/* Stats Bar */}
-        <section className="py-6 bg-white border-b">
+        <section className="py-6 bg-[#2D5A27] border-b border-[#3d7a34]">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-center gap-8 text-sm">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
-                  <span className="text-[#2D5A27] font-bold">{galleryImages.length}</span>
+                <div className="w-8 h-8 rounded-full bg-[#85BF35]/20 flex items-center justify-center">
+                  <span className="text-[#85BF35] font-bold">{galleryImages.length}</span>
                 </div>
-                <span className="text-gray-600">Photos</span>
+                <span className="text-white/80">Photos</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
-                  <span className="text-[#2D5A27] font-bold">{products?.length || 0}</span>
+                <div className="w-8 h-8 rounded-full bg-[#85BF35]/20 flex items-center justify-center">
+                  <span className="text-[#85BF35] font-bold">{products?.length || 0}</span>
                 </div>
-                <span className="text-gray-600">Products</span>
+                <span className="text-white/80">Products</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
-                  <RefreshCw className="w-4 h-4 text-[#2D5A27]" />
+                <div className="w-8 h-8 rounded-full bg-[#85BF35]/20 flex items-center justify-center">
+                  <RefreshCw className="w-4 h-4 text-[#85BF35]" />
                 </div>
-                <span className="text-gray-600">Auto-refresh: 5s</span>
+                <span className="text-white/80">Refresh on visit</span>
               </div>
             </div>
           </div>
         </section>
 
         {/* Instagram-style Gallery Grid */}
-        <section className="py-12 bg-gray-50">
+        <section className="py-12 bg-gradient-to-b from-[#2D5A27] to-[#1a3d16]">
           <div className="container mx-auto px-4">
             {isLoading ? (
               <div className="flex items-center justify-center py-20">
-                <Loader2 className="w-10 h-10 text-[#2D5A27] animate-spin" />
+                <Loader2 className="w-10 h-10 text-[#85BF35] animate-spin" />
               </div>
             ) : displayImages.length === 0 ? (
               <div className="text-center py-20">
-                <Instagram className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">No images available yet</p>
-                <Button asChild className="mt-4 bg-[#2D5A27] hover:bg-[#3d7a34]">
+                <Instagram className="w-16 h-16 text-white/30 mx-auto mb-4" />
+                <p className="text-white/60">No images available yet</p>
+                <Button asChild className="mt-4 bg-[#85BF35] hover:bg-[#9AD44D] text-[#2D5A27]">
                   <Link href="/products">Browse Products</Link>
                 </Button>
               </div>
@@ -168,14 +174,14 @@ export default function GalleryPage() {
                     key={`${image.id}-${index}`} 
                     href={`/products/${image.productSlug}`}
                     className={cn(
-                      "group relative overflow-hidden rounded-lg",
-                      "transition-all duration-300 hover:shadow-xl",
+                      "group relative overflow-hidden rounded-lg border-2 border-white/20 hover:border-white/60",
+                      "transition-all duration-300 hover:shadow-xl hover:shadow-[#85BF35]/20",
                       "animate-fade-in"
                     )}
                     style={{ animationDelay: `${index * 50}ms` }}
                   >
                     <div 
-                      className="relative w-full"
+                      className="relative w-full bg-white"
                       style={{ height: image.height ? `${image.height}px` : '280px' }}
                     >
                       <img
@@ -210,7 +216,7 @@ export default function GalleryPage() {
                       </div>
 
                       {/* Always visible category badge */}
-                      <div className="absolute top-2 left-2 px-2 py-1 bg-[#2D5A27]/80 text-white text-xs rounded-full">
+                      <div className="absolute top-2 left-2 px-2 py-1 bg-[#85BF35]/90 text-[#2D5A27] text-xs rounded-full font-medium">
                         {image.category}
                       </div>
                     </div>
@@ -226,7 +232,7 @@ export default function GalleryPage() {
                   onClick={shuffleImages}
                   disabled={isRefreshing}
                   variant="outline"
-                  className="border-[#2D5A27] text-[#2D5A27] hover:bg-[#2D5A27] hover:text-white"
+                  className="border-[#85BF35] text-[#85BF35] hover:bg-[#85BF35] hover:text-[#2D5A27]"
                 >
                   {isRefreshing ? (
                     <Loader2 className="w-5 h-5 mr-2 animate-spin" />
@@ -241,7 +247,7 @@ export default function GalleryPage() {
         </section>
 
         {/* Call to Action */}
-        <section className="py-12 bg-gradient-to-r from-[#2D5A27] to-[#3d7a34] text-white">
+        <section className="py-12 bg-[#1a3d16] text-white">
           <div className="container mx-auto px-4 text-center">
             <h2 className="text-2xl font-bold mb-4">Want to see more?</h2>
             <p className="text-white/80 mb-6 max-w-xl mx-auto">
@@ -259,7 +265,7 @@ export default function GalleryPage() {
         </section>
 
         {/* Back Button */}
-        <section className="py-8 bg-white text-center">
+        <section className="py-8 bg-[#2D5A27] text-center border-t border-[#3d7a34]">
           <Button asChild variant="ghost">
             <Link href="/">
               <ArrowLeft className="w-4 h-4 mr-2" />

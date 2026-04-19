@@ -1,60 +1,69 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, Save } from 'lucide-react';
+import { Loader2, Save, MessageCircle, Facebook, Mail, MessageSquare } from 'lucide-react';
 import { AdminLayout } from '@/components/layout/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-
-const settingsSchema = z.object({
-  siteName: z.string().min(2, 'Site name must be at least 2 characters'),
-  siteDescription: z.string().optional(),
-  contactEmail: z.string().email('Invalid email address'),
-  contactPhone: z.string().optional(),
-  contactAddress: z.string().optional(),
-  facebookUrl: z.string().url().optional().or(z.literal('')),
-  twitterUrl: z.string().url().optional().or(z.literal('')),
-  youtubeUrl: z.string().url().optional().or(z.literal('')),
-});
-
-type SettingsFormData = z.infer<typeof settingsSchema>;
+import { Switch } from '@/components/ui/switch';
+import { useFloatingButtonSettings, useUpdateFloatingButton } from '@/hooks/use-floating-button';
 
 export default function AdminSettingsPage() {
+  const { data: floatingSettings, isLoading: loadingFloating } = useFloatingButtonSettings();
+  const updateFloatingButton = useUpdateFloatingButton();
   const [isSaving, setIsSaving] = React.useState(false);
   const [saved, setSaved] = React.useState(false);
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<SettingsFormData>({
-    resolver: zodResolver(settingsSchema),
-    defaultValues: {
-      siteName: 'SQ Agriculture',
-      siteDescription: 'Your trusted partner for quality agricultural products',
-      contactEmail: 'agriculture@sq-bd.com',
-      contactPhone: '+880 1321-219223',
-      contactAddress: '9th Floor, Suvastu Suraiya Trade Center, 57 Kemal Ataturk Avenue, Banani, Dhaka-1213',
-      facebookUrl: '',
-      twitterUrl: '',
-      youtubeUrl: '',
-    },
+  const [floatingData, setFloatingData] = React.useState({
+    whatsapp: '',
+    facebook: '',
+    email: '',
+    isEnabled: true,
+    showWhatsapp: true,
+    showFacebook: true,
+    showEmail: true,
+    position: 'bottom-right',
   });
 
-  const onSubmit = async (data: SettingsFormData) => {
+  React.useEffect(() => {
+    if (floatingSettings) {
+      setFloatingData({
+        whatsapp: floatingSettings.whatsapp || '',
+        facebook: floatingSettings.facebook || '',
+        email: floatingSettings.email || '',
+        isEnabled: floatingSettings.isEnabled ?? true,
+        showWhatsapp: floatingSettings.showWhatsapp ?? true,
+        showFacebook: floatingSettings.showFacebook ?? true,
+        showEmail: floatingSettings.showEmail ?? true,
+        position: floatingSettings.position || 'bottom-right',
+      });
+    }
+  }, [floatingSettings]);
+
+  const handleSaveFloating = async () => {
     setIsSaving(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      console.log('Settings saved:', data);
+      await updateFloatingButton.mutateAsync(floatingData);
       setSaved(true);
       setTimeout(() => setSaved(false), 3000);
     } catch (error) {
-      console.error('Failed to save settings:', error);
+      console.error('Failed to save:', error);
     } finally {
       setIsSaving(false);
     }
   };
+
+  if (loadingFloating) {
+    return (
+      <AdminLayout>
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </div>
+      </AdminLayout>
+    );
+  }
 
   return (
     <AdminLayout>
@@ -64,94 +73,127 @@ export default function AdminSettingsPage() {
           <p className="text-gray-500">Manage your application settings</p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>General Settings</CardTitle>
-              <CardDescription>Basic information about your website</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Site Name *</Label>
-                <Input {...register('siteName')} placeholder="Your site name" />
-                {errors.siteName && <p className="text-red-500 text-sm">{errors.siteName.message}</p>}
+        {/* Floating Contact Button Settings */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MessageSquare className="w-5 h-5" />
+              Floating Contact Button
+            </CardTitle>
+            <CardDescription>Configure the floating contact button that appears on all pages</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Enable/Disable */}
+            <div className="flex items-center justify-between">
+              <div>
+                <Label className="text-base">Enable Floating Button</Label>
+                <p className="text-sm text-gray-500">Show the floating contact button on your website</p>
               </div>
+              <Switch
+                checked={floatingData.isEnabled}
+                onCheckedChange={(checked) => setFloatingData({ ...floatingData, isEnabled: checked })}
+              />
+            </div>
 
-              <div className="space-y-2">
-                <Label>Site Description</Label>
-                <Input {...register('siteDescription')} placeholder="Brief description" />
-              </div>
-            </CardContent>
-          </Card>
+            {/* Position */}
+            <div className="space-y-2">
+              <Label>Button Position</Label>
+              <select
+                className="w-full p-2 border rounded-md"
+                value={floatingData.position}
+                onChange={(e) => setFloatingData({ ...floatingData, position: e.target.value })}
+              >
+                <option value="bottom-right">Bottom Right</option>
+                <option value="bottom-left">Bottom Left</option>
+              </select>
+            </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Contact Information</CardTitle>
-              <CardDescription>How customers can reach you</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label>Email *</Label>
-                  <Input type="email" {...register('contactEmail')} placeholder="email@example.com" />
-                  {errors.contactEmail && <p className="text-red-500 text-sm">{errors.contactEmail.message}</p>}
+            {/* WhatsApp */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <MessageCircle className="w-5 h-5 text-[#25D366]" />
+                  <Label className="text-base">WhatsApp</Label>
                 </div>
-
-                <div className="space-y-2">
-                  <Label>Phone</Label>
-                  <Input {...register('contactPhone')} placeholder="+880 1XXX-XXXXXX" />
-                </div>
+                <Switch
+                  checked={floatingData.showWhatsapp}
+                  onCheckedChange={(checked) => setFloatingData({ ...floatingData, showWhatsapp: checked })}
+                />
               </div>
-
-              <div className="space-y-2">
-                <Label>Address</Label>
-                <Input {...register('contactAddress')} placeholder="Your address" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Social Media</CardTitle>
-              <CardDescription>Your social media profile links</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Facebook URL</Label>
-                <Input {...register('facebookUrl')} placeholder="https://facebook.com/..." />
-                {errors.facebookUrl && <p className="text-red-500 text-sm">{errors.facebookUrl.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label>Twitter URL</Label>
-                <Input {...register('twitterUrl')} placeholder="https://twitter.com/..." />
-                {errors.twitterUrl && <p className="text-red-500 text-sm">{errors.twitterUrl.message}</p>}
-              </div>
-
-              <div className="space-y-2">
-                <Label>YouTube URL</Label>
-                <Input {...register('youtubeUrl')} placeholder="https://youtube.com/..." />
-                {errors.youtubeUrl && <p className="text-red-500 text-sm">{errors.youtubeUrl.message}</p>}
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="flex items-center justify-end gap-4">
-            <Button type="button" variant="outline" onClick={() => reset()}>
-              Reset
-            </Button>
-            <Button type="submit" disabled={isSaving}>
-              {isSaving ? (
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              ) : saved ? (
-                <span className="text-green-600">Saved!</span>
-              ) : (
-                <Save className="w-4 h-4 mr-2" />
+              {floatingData.showWhatsapp && (
+                <Input
+                  placeholder="WhatsApp number (e.g., +8801321219223)"
+                  value={floatingData.whatsapp}
+                  onChange={(e) => setFloatingData({ ...floatingData, whatsapp: e.target.value })}
+                />
               )}
-              {saved ? 'Saved!' : 'Save Changes'}
-            </Button>
-          </div>
-        </form>
+            </div>
+
+            {/* Facebook */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Facebook className="w-5 h-5 text-[#1877F2]" />
+                  <Label className="text-base">Facebook</Label>
+                </div>
+                <Switch
+                  checked={floatingData.showFacebook}
+                  onCheckedChange={(checked) => setFloatingData({ ...floatingData, showFacebook: checked })}
+                />
+              </div>
+              {floatingData.showFacebook && (
+                <Input
+                  placeholder="Facebook page URL"
+                  value={floatingData.facebook}
+                  onChange={(e) => setFloatingData({ ...floatingData, facebook: e.target.value })}
+                />
+              )}
+            </div>
+
+            {/* Email */}
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Mail className="w-5 h-5 text-[#2D5A27]" />
+                  <Label className="text-base">Email</Label>
+                </div>
+                <Switch
+                  checked={floatingData.showEmail}
+                  onCheckedChange={(checked) => setFloatingData({ ...floatingData, showEmail: checked })}
+                />
+              </div>
+              {floatingData.showEmail && (
+                <Input
+                  type="email"
+                  placeholder="Email address"
+                  value={floatingData.email}
+                  onChange={(e) => setFloatingData({ ...floatingData, email: e.target.value })}
+                />
+              )}
+            </div>
+
+            <div className="flex justify-end pt-4 border-t">
+              <Button onClick={handleSaveFloating} disabled={isSaving}>
+                {isSaving ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Saving...
+                  </>
+                ) : saved ? (
+                  <>
+                    <span className="text-green-600 mr-2">✓</span>
+                    Saved!
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4 mr-2" />
+                    Save Floating Button Settings
+                  </>
+                )}
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );

@@ -49,7 +49,6 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
     { href: '/store-locator', label: 'Where to Buy' },
     { href: '/services', label: 'Services' },
     { href: '/about', label: 'About' },
-    { href: '/contact', label: 'Contact' },
   ];
 
   return (
@@ -120,13 +119,6 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-4">
-            {/* Admin Link */}
-            <Link href="/admin" className="hidden md:block">
-              <Button variant="outline" size="sm" className="border-white text-white hover:bg-white hover:text-teal-700">
-                Admin
-              </Button>
-            </Link>
-
             {/* Mobile Menu Toggle */}
             <Button
               variant="ghost"
