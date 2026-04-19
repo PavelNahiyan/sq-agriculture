@@ -171,4 +171,11 @@ products: {
     byEntity: (type: string, id: string) => `/api/activity/entity/${type}/${id}`,
     byUser: (userId: string) => `/api/activity/user/${userId}`,
   },
+  // Settings
+  settings: {
+    floatingButton: '/api/settings/floating-button',
+  },
+  pages: {
+    byName: (pageName: string) => `/api/pages/${pageName}`,
+  },
 };

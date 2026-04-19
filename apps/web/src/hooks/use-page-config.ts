@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { api, apiEndpoints } from '@/lib/api';
 
 interface PageConfig {
   id: string;
@@ -16,9 +16,9 @@ export function usePageConfig(pageName: string) {
   return useQuery<PageConfig>({
     queryKey: ['page-config', pageName],
     queryFn: async () => {
-      return api.get<PageConfig>(`/api/pages/${pageName}`);
+      return api.get<PageConfig>(apiEndpoints.pages.byName(pageName));
     },
-    staleTime: 5 * 60 * 1000, // 5 minutes
+    staleTime: 5 * 60 * 1000,
   });
 }
 
@@ -27,7 +27,7 @@ export function useUpdatePageConfig() {
   
   return useMutation({
     mutationFn: async ({ pageName, data }: { pageName: string; data: any }) => {
-      return api.patch<any>(`/api/pages/${pageName}`, data);
+      return api.patch<any>(apiEndpoints.pages.byName(pageName), data);
     },
     onSuccess: (_, { pageName }) => {
       queryClient.invalidateQueries({ queryKey: ['page-config', pageName] });

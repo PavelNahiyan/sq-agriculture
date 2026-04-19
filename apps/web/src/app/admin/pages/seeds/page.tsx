@@ -12,12 +12,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { usePageConfig, useUpdatePageConfig, AVAILABLE_PAGES } from '@/hooks/use-page-config';
 
-interface PageConfigFormProps {
-  pageName: string;
-  pageTitle: string;
+interface Props {
+  params: { pageName: string };
 }
 
-export default function PageConfigForm({ pageName, pageTitle }: PageConfigFormProps) {
+export default function SeedsPageConfig({ params }: Props) {
+  const pageName = 'seeds';
+  const pageTitle = 'Seeds';
   const { data: config, isLoading, error } = usePageConfig(pageName);
   const updateConfig = useUpdatePageConfig();
   const [isSaving, setIsSaving] = React.useState(false);

@@ -17,7 +17,7 @@ export function useFloatingButtonSettings() {
   return useQuery<FloatingButtonSettings>({
     queryKey: ['floating-button'],
     queryFn: async () => {
-      return api.get<FloatingButtonSettings>(apiEndpoints.settings?.floatingButton || '/api/settings/floating-button');
+      return api.get<FloatingButtonSettings>(apiEndpoints.settings.floatingButton);
     },
   });
 }
@@ -27,7 +27,7 @@ export function useUpdateFloatingButton() {
   
   return useMutation({
     mutationFn: async (data: Partial<FloatingButtonSettings>) => {
-      return api.patch<any>(apiEndpoints.settings?.floatingButton || '/api/settings/floating-button', data);
+      return api.patch<any>(apiEndpoints.settings.floatingButton, data);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['floating-button'] });
