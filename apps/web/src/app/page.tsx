@@ -57,9 +57,11 @@ export default function HomePage() {
     if (!homepageConfig?.sliderCategories?.length && !categories) {
       return [
         { id: 'seeds', name: 'Seeds', image: '/uploads/products/Seeds.png', slug: 'seeds' },
-        { id: 'fertilizers', name: 'Fertilizers', image: '/uploads/products/SQ Fertilizer.png', slug: 'fertilizers-micronutrients' },
+        { id: 'fertilizers', name: 'Fertilizers & Micronutrients', image: '/uploads/products/SQ Fertilizer.png', slug: 'fertilizers-micronutrients' },
         { id: 'pesticides', name: 'Pesticides', image: '/uploads/products/pesticide/Dtuch.png', slug: 'pesticide' },
-        { id: 'machinery', name: 'Machinery', image: '/uploads/products/machinery/TT47.png', slug: 'field-machinery' },
+        { id: 'machinery', name: 'Field Machinery', image: '/uploads/products/machinery/TT47.png', slug: 'field-machinery' },
+        { id: 'preowned', name: 'Pre-Owned Machines', image: '/uploads/products/machinery/TT47.png', slug: 'pre-owned-machines' },
+        { id: 'all', name: 'All Products', image: '/uploads/products/Seeds.png', slug: 'products' },
       ];
     }
     

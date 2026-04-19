@@ -56,8 +56,8 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-white/95 backdrop-blur-sm shadow-md'
-          : 'bg-white'
+          ? 'bg-gradient-to-r from-teal-700 via-teal-600 to-teal-700/95 backdrop-blur-sm shadow-md'
+          : 'bg-gradient-to-r from-teal-700 via-teal-600 to-teal-700'
       )}
     >
       <nav className="container mx-auto px-4">
@@ -79,10 +79,10 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
                   <DropdownMenuTrigger asChild>
                     <button
                       className={cn(
-                        'text-sm font-medium transition-colors hover:text-primary flex items-center gap-1',
+                        'text-sm font-medium transition-colors hover:text-white flex items-center gap-1 text-white',
                         pathname?.startsWith('/products')
-                          ? 'text-primary'
-                          : 'text-gray-600'
+                          ? 'text-white'
+                          : 'text-white/80'
                       )}
                     >
                       {item.label}
@@ -105,10 +105,10 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'text-sm font-medium transition-colors hover:text-primary',
+                    'text-sm font-medium transition-colors hover:text-white',
                     pathname === item.href
-                      ? 'text-primary'
-                      : 'text-gray-600'
+                      ? 'text-white'
+                      : 'text-white/80'
                   )}
                 >
                   {item.label}
@@ -121,7 +121,7 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
           <div className="flex items-center gap-4">
             {/* Admin Link */}
             <Link href="/admin" className="hidden md:block">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-white text-white hover:bg-white hover:text-teal-700">
                 Admin
               </Button>
             </Link>
