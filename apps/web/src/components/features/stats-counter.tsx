@@ -80,7 +80,7 @@ export function StatsCounter({ stats, className = '' }: StatsCounterProps) {
             {formatNumber(counters[index])}
             {stat.suffix && <span className="text-2xl">{stat.suffix}</span>}
           </div>
-          <div className="text-gray-600">{stat.label}</div>
+          <div className="text-gray-300">{stat.label}</div>
         </div>
       ))}
     </div>
