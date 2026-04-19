@@ -56,8 +56,8 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
         isScrolled
-          ? 'bg-gradient-to-r from-teal-700 via-teal-600 to-teal-700/95 backdrop-blur-sm shadow-md'
-          : 'bg-gradient-to-r from-teal-700 via-teal-600 to-teal-700'
+          ? 'bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#2D5A27] shadow-md'
+          : 'bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#2D5A27]'
       )}
     >
       <nav className="container mx-auto px-4">
