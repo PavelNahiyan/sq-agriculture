@@ -1,42 +1,58 @@
-# AWS Deployment Guide for SQ Agriculture
+# Deployment Guide for SQ Agriculture
 
-This guide covers deploying the SQ Agriculture application to AWS EC2 with PostgreSQL on RDS.
+This guide covers deploying to Vercel (Frontend) + Railway (Backend API).
 
-## Architecture Overview
+## Quick Deploy Checklist
 
+### Step 1: Deploy Railway API
+1. Go to https://railway.app
+2. Create new project → "Deploy from GitHub repo"
+3. Select `sq-agriculture` repo
+4. Railway will auto-detect `railway.json`
+5. Add Environment Variables:
+   - `DATABASE_URL` (Railway PostgreSQL - auto provisioned)
+   - `JWT_SECRET` = Generate random string
+   - `JWT_REFRESH_SECRET` = Generate random string
+   - `JWT_RESET_SECRET` = Generate random string
+   - `JWT_VERIFY_SECRET` = Generate random string
+   - `SEED_SECRET` = Generate random string (for seeding admin user)
+   - `FRONTEND_URL` = Your Vercel URL (to be added later)
+   - `CORS_ORIGIN` = Your Vercel URL
+
+### Step 2: Deploy Vercel
+1. Go to https://vercel.com
+2. Import from GitHub → Select `sq-agriculture`
+3. Framework Preset: Next.js
+4. Build Command: `npm run build`
+5. Output Directory: `apps/web/.next`
+6. Add Environment Variables:
+   - `NEXT_PUBLIC_APP_URL` = Your Vercel URL
+   - `NEXT_PUBLIC_API_URL` = Your Railway API URL (after Step 1)
+
+### Step 3: Seed Admin User
+After Railway deploys, run:
+```bash
+curl -X POST https://your-railway-api.railway.app/api/v1/seed \
+  -H "Content-Type: application/json" \
+  -d '{"secret": "YOUR_SEED_SECRET"}'
 ```
-                    ┌─────────────────┐
-                    │   Route 53      │
-                    │   (DNS)         │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │    ALB (HTTPS)   │
-                    │   (SSL/TLS)      │
-                    └────────┬────────┘
-                             │
-                    ┌────────▼────────┐
-                    │   Nginx (EC2)    │
-                    │   Reverse Proxy  │
-                    └────────┬────────┘
-                             │
-          ┌──────────────────┼──────────────────┐
-          │                  │                  │
-┌────────▼────────┐  ┌──────▼──────┐  ┌────────▼────────┐
-│   API (NestJS)   │  │  Web (Next) │  │   PostgreSQL    │
-│   Port 3001      │  │  Port 3000  │  │   (RDS)         │
-└─────────────────┘  └─────────────┘  └─────────────────┘
-```
 
-## Prerequisites
-
-- AWS Account
-- Domain name (sqagriculture.com)
-- SSH key pair for EC2
+### Step 4: Access Admin Panel
+- URL: `https://your-vercel.vercel.app/admin/login`
+- Email: `admin@sqagriculture.com`
+- Password: `admin123`
 
 ---
 
-## Step 1: AWS RDS PostgreSQL Setup
+## Generate Secrets
+
+```bash
+openssl rand -hex 32
+```
+
+---
+
+## Step 1: Railway Setup
 
 ### 1.1 Create Subnet Group
 
