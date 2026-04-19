@@ -18,6 +18,7 @@ interface GalleryImage {
   productName: string;
   productSlug: string;
   category: string;
+  height?: number;
 }
 
 export default function GalleryPage() {
@@ -175,7 +176,7 @@ export default function GalleryPage() {
                   >
                     <div 
                       className="relative w-full"
-                      style={{ height: `${image.height}px` }}
+                      style={{ height: image.height ? `${image.height}px` : '280px' }}
                     >
                       <img
                         src={image.src}
