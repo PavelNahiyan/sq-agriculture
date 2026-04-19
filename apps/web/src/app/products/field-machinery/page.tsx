@@ -401,6 +401,61 @@ export default function FieldMachineryPage() {
             </Link>
           </Button>
         </section>
+
+        {/* SQ Lubricants Section */}
+        <section className="py-20 bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#1a3d16] text-white">
+          <div className="container mx-auto px-4">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#85BF35]/20 border border-[#85BF35]/30 mb-4">
+                  <Cog className="w-4 h-4 text-[#85BF35]" />
+                  <span className="text-[#85BF35] text-sm font-medium">Premium Quality</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">SQ Lubricants</h2>
+                <p className="text-white/80 mb-6">
+                  Keep your machinery running smoothly with our premium lubricants. Specially formulated for 
+                  agricultural equipment in Bangladesh's climate conditions.
+                </p>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="flex items-center gap-2">
+                    <Check className="w-5 h-5 text-[#85BF35]" />
+                    <span className="text-sm">Engine Oils</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-5 h-5 text-[#85BF35]" />
+                    <span className="text-sm">Hydraulic Fluids</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-5 h-5 text-[#85BF35]" />
+                    <span className="text-sm">Gear Oils</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Check className="w-5 h-5 text-[#85BF35]" />
+                    <span className="text-sm">Greases</span>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <Button variant="secondary" size="lg">
+                    <Link href="/products/lubricants">
+                      View Lubricants <ArrowRight className="w-5 h-5 ml-2" />
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="lg" className="border-white text-white hover:bg-white hover:text-[#2D5A27]">
+                    <Phone className="w-5 h-5 mr-2" /> Enquire Now
+                  </Button>
+                </div>
+              </div>
+              <div className="relative">
+                <div className="aspect-video rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 overflow-hidden flex items-center justify-center">
+                  <Cog className="w-24 h-24 text-white/30" />
+                </div>
+                <div className="absolute -bottom-4 -right-4 px-6 py-3 bg-[#FFD700] text-[#333333] font-bold rounded-lg shadow-lg">
+                  +50 Products
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />
