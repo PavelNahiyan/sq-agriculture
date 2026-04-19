@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Leaf, Check, CheckCircle } from 'lucide-react';
 import { AdminLayout } from '@/components/layout/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -51,7 +51,7 @@ export default function AdminLoginPage() {
         <div className="max-w-md text-white">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center">
-              <span className="text-3xl">🌾</span>
+              <Leaf className="w-8 h-8" />
             </div>
             <div>
               <h1 className="text-2xl font-bold">SQ Agriculture</h1>
@@ -66,7 +66,7 @@ export default function AdminLoginPage() {
             {['Manage Products & Categories', 'Track Customer Leads', 'Manage Team Members'].map((item, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                  <span className="text-lg">✓</span>
+                  <CheckCircle className="w-5 h-5" />
                 </div>
                 <span>{item}</span>
               </div>
@@ -80,7 +80,7 @@ export default function AdminLoginPage() {
         <div className="w-full max-w-md">
           <div className="lg:hidden flex items-center gap-2 mb-8 justify-center">
             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-xl">🌾</span>
+              <Leaf className="w-6 h-6" />
             </div>
             <span className="font-bold text-xl text-primary">SQ Agriculture</span>
           </div>

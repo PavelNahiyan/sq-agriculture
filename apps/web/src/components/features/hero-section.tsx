@@ -4,6 +4,7 @@ import * as React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { Leaf } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface HeroSectionProps {
@@ -80,8 +81,8 @@ export function HeroSection({
           align === 'center' && 'mx-auto',
           align === 'right' && 'ml-auto'
         )}>
-          <span className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium border border-white/20">
-            🌾 SQ Agriculture Ltd.
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium border border-white/20">
+            <Leaf className="w-4 h-4" /> SQ Agriculture Ltd.
           </span>
         </div>
 

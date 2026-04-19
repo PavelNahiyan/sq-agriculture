@@ -279,7 +279,7 @@ export default function HomePage() {
                   <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:scale-105 transition-all cursor-pointer h-full group animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
                     <CardContent className="p-4 text-center">
                       <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <span className="text-2xl">🌾</span>
+                        <Sprout className="w-8 h-8" />
                       </div>
                       <h3 className="text-base font-bold mb-1">{category.name}</h3>
                       <p className="text-white/70 text-xs">Click to view</p>

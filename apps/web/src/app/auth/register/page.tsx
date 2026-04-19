@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, Leaf, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -66,7 +66,7 @@ export default function RegisterPage() {
         <div className="max-w-md text-white">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center">
-              <span className="text-3xl">🌾</span>
+              <Leaf className="w-10 h-10" />
             </div>
             <div>
               <h1 className="text-2xl font-bold">SQ Agriculture</h1>
@@ -81,7 +81,7 @@ export default function RegisterPage() {
             {['Exclusive Product Access', 'Personalized Recommendations', 'Order History'].map((item, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-                  <span>✓</span>
+                  <CheckCircle className="w-5 h-5" />
                 </div>
                 <span>{item}</span>
               </div>
@@ -94,7 +94,7 @@ export default function RegisterPage() {
         <div className="w-full max-w-md">
           <div className="lg:hidden flex items-center gap-2 mb-8 justify-center">
             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-xl">🌾</span>
+              <Leaf className="w-6 h-6" />
             </div>
             <span className="font-bold text-xl text-primary">SQ Agriculture</span>
           </div>

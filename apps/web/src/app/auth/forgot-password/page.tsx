@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Leaf, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { api, apiEndpoints } from '@/lib/api';
 
@@ -37,7 +38,7 @@ export default function ForgotPasswordPage() {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1 text-center">
             <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
-              <span className="text-3xl text-green-600">✓</span>
+              <CheckCircle className="w-10 h-10 text-green-600" />
             </div>
             <CardTitle className="text-2xl">Check Your Email</CardTitle>
             <CardDescription>
@@ -63,7 +64,7 @@ export default function ForgotPasswordPage() {
         <div className="max-w-md text-white">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center">
-              <span className="text-3xl">🌾</span>
+              <Leaf className="w-10 h-10" />
             </div>
             <div>
               <h1 className="text-2xl font-bold">SQ Agriculture</h1>
@@ -81,7 +82,7 @@ export default function ForgotPasswordPage() {
         <div className="w-full max-w-md">
           <div className="lg:hidden flex items-center gap-2 mb-8 justify-center">
             <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-              <span className="text-xl">🌾</span>
+              <Leaf className="w-6 h-6" />
             </div>
             <span className="font-bold text-xl text-primary">SQ Agriculture</span>
           </div>
