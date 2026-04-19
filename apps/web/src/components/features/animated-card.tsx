@@ -39,12 +39,12 @@ interface FeatureCardProps {
 export function FeatureCard({ icon, title, description, index = 0 }: FeatureCardProps) {
   return (
     <div 
-      className="relative group p-6 bg-white dark:bg-gray-900 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+      className="relative group p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-transparent hover:border-primary/30"
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/10 via-green-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       <div className="relative">
-        <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+        <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300 border-2 border-primary/20 group-hover:border-primary/50">
           <div className="text-primary">{icon}</div>
         </div>
         <h3 className="font-semibold text-lg mb-2 text-center group-hover:text-primary transition-colors">{title}</h3>

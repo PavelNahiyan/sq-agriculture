@@ -128,7 +128,7 @@ export default function HomePage() {
 
         {/* Video Section */}
         {videoEnabled && (
-          <section className="py-16 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative overflow-hidden">
+          <section className="py-16 bg-gradient-to-br from-green-50 via-white to-green-100 relative overflow-hidden border-b border-green-200">
             <div className="absolute inset-0 opacity-30">
               <div className="absolute top-10 left-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float" />
               <div className="absolute bottom-10 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1.5s' }} />
@@ -145,12 +145,12 @@ export default function HomePage() {
         )}
 
         {/* Product Slider Section with animations */}
-        <section className="py-20 bg-gray-900 relative">
+        <section className="py-20 bg-white relative border-b border-gray-200">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-12">
               <div>
-<h2 className="text-3xl md:text-4xl font-bold mb-2 animate-fade-in-up text-white">Explore Our Products</h2>
-                  <p className="text-gray-400 animate-fade-in-up delay-100">Quality agricultural solutions for every need</p>
+<h2 className="text-3xl md:text-4xl font-bold mb-2 animate-fade-in-up">Explore Our Products</h2>
+                  <p className="text-gray-600 animate-fade-in-up delay-100">Quality agricultural solutions for every need</p>
               </div>
               <Button asChild variant="outline" className="hover-glow animate-fade-in-up">
                 <Link href="/products">
@@ -168,7 +168,7 @@ export default function HomePage() {
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   <Link href={`/products/${category.slug}`}>
-                    <div className="relative h-80 rounded-xl overflow-hidden group category-card">
+                    <div className="relative h-80 rounded-xl overflow-hidden group category-card border-2 border-gray-200 hover:border-primary/50 shadow-lg hover:shadow-xl transition-all">
                       <img 
                         src={category.image || '/placeholder.svg'} 
                         alt={category.name} 
@@ -191,7 +191,7 @@ export default function HomePage() {
         </section>
 
         {/* Features Section with animated borders */}
-        <section className="py-20 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
+        <section className="py-20 bg-gradient-to-br from-green-50 via-white to-green-100 relative border-b border-green-200">
           <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5" />
           <div className="container mx-auto px-4 relative">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -293,14 +293,14 @@ export default function HomePage() {
 
         {/* Featured Machinery */}
         {machineryProducts.length > 0 && (
-          <section className="py-20 bg-gray-900">
+          <section className="py-20 bg-white border-b border-gray-200">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3 animate-slide-in-left">
                   <Tractor className="w-8 h-8 text-green-600" />
                   <div>
-                    <h2 className="text-3xl font-bold text-white">Featured Machinery</h2>
-                    <p className="text-gray-400">Premium tractors and farm equipment</p>
+                    <h2 className="text-3xl font-bold">Featured Machinery</h2>
+                    <p className="text-gray-600">Premium tractors and farm equipment</p>
                   </div>
                 </div>
                 <Button asChild variant="outline" className="animate-slide-in-right">
@@ -321,7 +321,7 @@ export default function HomePage() {
         )}
 
         {/* Stats Section with animated counters */}
-        <section className="py-20 bg-gray-900 relative overflow-hidden">
+        <section className="py-20 bg-white relative overflow-hidden border-t border-b border-gray-200">
           <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
           <div className="container mx-auto px-4 relative">
             <StatsCounter stats={stats} />
