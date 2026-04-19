@@ -4,6 +4,38 @@ All notable changes to the SQ Agriculture project will be documented in this fil
 
 ---
 
+## [Version 1.1.2] - 2026-04-19
+
+### Bug Fixes - Local Deployment
+
+#### Image Paths Fixed
+- Fixed seed product images path: `/uploads/products/seed/` → `/uploads/products/seeds/`
+- Fixed Pango pesticide image: `Pango.png` → `Pango PNG.png`
+- All 11 seed product images now load correctly
+
+#### API Endpoints Fixed
+- Updated API endpoints from `/api/v1/*` to `/api/*` to match local Next.js API routes
+- Fixed `.env` to use `NEXT_PUBLIC_API_URL=http://localhost:3000`
+- Removed duplicate `categories` entry in api.ts
+
+#### TypeScript Fixes
+- Fixed duplicate property name error in `api.ts`
+
+### Local Deployment Scripts Added
+- `start-server.bat` - Quick start script for Windows
+- `run-local.bat` - Build and start script
+- `LOCAL_DEPLOYMENT.md` - Complete local deployment guide
+
+### How to Run Locally
+```bash
+cd apps/web
+npm run build
+npm run start
+```
+Then open http://localhost:3000
+
+---
+
 ## [Version 1.1.1] - 2026-04-11
 
 ### 🐛 Bug Fixes

@@ -123,57 +123,52 @@ export const api = new ApiClient(API_BASE_URL);
 export const apiEndpoints = {
   // Auth
   auth: {
-    login: '/api/v1/auth/login',
-    register: '/api/v1/auth/register',
-    refresh: '/api/v1/auth/refresh',
-    logout: '/api/v1/auth/logout',
-    profile: '/api/v1/auth/profile',
-    forgotPassword: '/api/v1/auth/forgot-password',
-    resetPassword: '/api/v1/auth/reset-password',
+    login: '/api/auth/login',
+    register: '/api/auth/register',
+    refresh: '/api/auth/refresh',
+    logout: '/api/auth/logout',
+    profile: '/api/auth/profile',
+    forgotPassword: '/api/auth/forgot-password',
+    resetPassword: '/api/auth/reset-password',
   },
   // Products
-  products: {
-    list: '/api/v1/products',
-    public: '/api/v1/products/public',
-    featured: '/api/v1/products/featured',
-    bySlug: (slug: string) => `/api/v1/products/slug/${slug}`,
-    byId: (id: string) => `/api/v1/products/${id}`,
-    related: (id: string) => `/api/v1/products/${id}/related`,
+products: {
+    list: '/api/products',
+    public: '/api/products',
+    featured: '/api/products?featured=true',
+    bySlug: (slug: string) => `/api/products/${slug}`,
+    byId: (id: string) => `/api/products/${id}`,
+    related: (id: string) => `/api/products/${id}/related`,
   },
-  // Categories
   categories: {
-    list: '/api/v1/categories',
-    public: '/api/v1/categories/public',
-    bySlug: (slug: string) => `/api/v1/categories/slug/${slug}`,
-    byId: (id: string) => `/api/v1/categories/${id}`,
+    list: '/api/categories',
+    public: '/api/categories',
+    bySlug: (slug: string) => `/api/categories/${slug}`,
+    byId: (id: string) => `/api/categories/${id}`,
   },
-  // Leads
   leads: {
-    list: '/api/v1/leads',
-    byId: (id: string) => `/api/v1/leads/${id}`,
-    stats: '/api/v1/leads/stats',
+    list: '/api/leads',
+    byId: (id: string) => `/api/leads/${id}`,
+    stats: '/api/leads/stats',
   },
-  // Users
   users: {
-    list: '/api/v1/users',
-    byId: (id: string) => `/api/v1/users/${id}`,
+    list: '/api/users',
+    byId: (id: string) => `/api/users/${id}`,
   },
   // Uploads
   uploads: {
-    single: '/api/v1/uploads/single',
-    multiple: '/api/v1/uploads/multiple',
+    single: '/api/uploads/single',
+    multiple: '/api/uploads/multiple',
   },
-  // Wishlist
   wishlist: {
-    list: '/api/v1/wishlist',
-    add: '/api/v1/wishlist',
-    remove: (productId: string) => `/api/v1/wishlist/${productId}`,
+    list: '/api/wishlist',
+    add: '/api/wishlist',
+    remove: (productId: string) => `/api/wishlist/${productId}`,
   },
-  // Activity Log
   activity: {
-    list: '/api/v1/activity',
-    stats: '/api/v1/activity/stats',
-    byEntity: (type: string, id: string) => `/api/v1/activity/entity/${type}/${id}`,
-    byUser: (userId: string) => `/api/v1/activity/user/${userId}`,
+    list: '/api/activity',
+    stats: '/api/activity/stats',
+    byEntity: (type: string, id: string) => `/api/activity/entity/${type}/${id}`,
+    byUser: (userId: string) => `/api/activity/user/${userId}`,
   },
 };

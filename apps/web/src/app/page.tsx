@@ -1,7 +1,8 @@
 'use client';
 
+import * as React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Leaf, Shield, Truck, Sprout, Tractor, Cog } from 'lucide-react';
+import { ArrowRight, Leaf, Shield, Truck, Sprout, Tractor, Cog, Play, Loader2 } from 'lucide-react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ImageSlider, heroSlides } from '@/components/features/image-slider';
@@ -9,204 +10,227 @@ import { ProductCard, ProductCardSkeleton } from '@/components/features/product-
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useFeaturedProducts, useProducts } from '@/hooks/use-products';
+import { useHomepageConfig } from '@/hooks/use-homepage';
+import { useCategories } from '@/hooks/use-categories';
+import { VideoPlayer } from '@/components/features/video-player';
+import { StatsCounter } from '@/components/features/stats-counter';
+
+const DEFAULT_FEATURES = [
+  { icon: Leaf, title: 'Premium Quality Seeds', description: 'High-yielding varieties developed for Bangladesh climate' },
+  { icon: Shield, title: 'Crop Protection', description: 'Effective solutions for pest and disease management' },
+  { icon: Truck, title: 'Nationwide Delivery', description: 'Products available across all 64 districts' },
+  { icon: Sprout, title: 'Expert Support', description: 'Agricultural specialists ready to assist farmers' },
+];
+
+const DEFAULT_STATS = [
+  { value: 500, label: 'Products', suffix: '+' },
+  { value: 10000, label: 'Happy Farmers', suffix: '+' },
+  { value: 64, label: 'Districts', suffix: '' },
+  { value: 15, label: 'Years Experience', suffix: '+' },
+];
 
 export default function HomePage() {
+  const { data: homepageConfig, isLoading: configLoading } = useHomepageConfig();
   const { data: featuredProducts, isLoading } = useFeaturedProducts();
   const { data: allProducts } = useProducts();
+  const { data: categories } = useCategories();
 
   const machineryProducts = allProducts?.filter(p => 
     p.category?.type === 'MACHINERY' || 
     p.name.toLowerCase().includes('tractor')
   ).slice(0, 4) || [];
 
-  const features = [
-    { icon: Leaf, title: 'Premium Quality Seeds', description: 'High-yielding varieties developed for Bangladesh climate' },
-    { icon: Shield, title: 'Crop Protection', description: 'Effective solutions for pest and disease management' },
-    { icon: Truck, title: 'Nationwide Delivery', description: 'Products available across all 64 districts' },
-    { icon: Sprout, title: 'Expert Support', description: 'Agricultural specialists ready to assist farmers' },
-  ];
+  const features = homepageConfig?.features?.length ? homepageConfig.features : DEFAULT_FEATURES;
+  const stats = homepageConfig?.stats?.length ? homepageConfig.stats : DEFAULT_STATS;
+  const videoEnabled = homepageConfig?.videoEnabled ?? true;
+  const videoTitle = homepageConfig?.videoTitle || 'Watch Our Video';
+  const videoSubtitle = homepageConfig?.videoSubtitle || 'Learn more about SQ Agriculture';
+  const videoPlaylistId = homepageConfig?.videoPlaylistId;
+  const videoUrls = homepageConfig?.videoUrls || [];
+
+  const getCategoryImage = (categoryId: string) => {
+    const category = categories?.find(c => c.id === categoryId);
+    return category?.image || '';
+  };
+
+  const getSliderCategories = () => {
+    if (!homepageConfig?.sliderCategories?.length && !categories) {
+      return [
+        { id: 'seeds', name: 'Seeds', image: '/uploads/products/Seeds.png', slug: 'seeds' },
+        { id: 'fertilizers', name: 'Fertilizers', image: '/uploads/products/SQ Fertilizer.png', slug: 'fertilizers-micronutrients' },
+        { id: 'pesticides', name: 'Pesticides', image: '/uploads/products/pesticide/Dtuch.png', slug: 'pesticide' },
+        { id: 'machinery', name: 'Machinery', image: '/uploads/products/machinery/TT47.png', slug: 'field-machinery' },
+      ];
+    }
+    
+    if (homepageConfig?.heroUseCategories && categories) {
+      return homepageConfig.sliderCategories
+        .sort((a, b) => a.order - b.order)
+        .map(sc => {
+          const cat = categories.find(c => c.id === sc.categoryId);
+          return cat ? { id: cat.id, name: cat.name, image: cat.image || '', slug: cat.slug } : null;
+        })
+        .filter(Boolean);
+    }
+
+    return categories?.slice(0, 6).map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      image: cat.image || '',
+      slug: cat.slug,
+    })) || [];
+  };
+
+  const sliderCategories = getSliderCategories();
+
+  const getHeroSlides = () => {
+    if (homepageConfig?.heroSlides?.length) {
+      return homepageConfig.heroSlides.map(slide => ({
+        image: slide.categoryId && !slide.image ? getCategoryImage(slide.categoryId) : slide.image || '',
+        title: slide.title,
+        subtitle: slide.subtitle,
+        ctaText: slide.ctaText,
+        ctaLink: slide.ctaLink,
+      }));
+    }
+    return heroSlides;
+  };
+
+  if (configLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 animate-spin text-primary" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
 
       <main className="flex-1">
-        {/* Hero Image Slider */}
-        <ImageSlider
-          slides={heroSlides}
-          autoPlay={true}
-          interval={5000}
-          height="h-[70vh] min-h-[500px]"
-          showArrows={true}
-          showDots={true}
-        />
+        {/* Hero Image Slider with overlay */}
+        <div className="relative">
+          <ImageSlider
+            slides={getHeroSlides()}
+            autoPlay={true}
+            interval={5000}
+            height="h-[70vh] min-h-[500px]"
+            showArrows={true}
+            showDots={true}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/10 pointer-events-none" />
+        </div>
 
-        {/* YouTube Video Section */}
-        <section className="py-16 bg-gray-100">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl md:text-4xl font-bold mb-2">Watch Our Video</h2>
-              <p className="text-gray-600">Learn more about SQ Agriculture</p>
+        {/* Video Section */}
+        {videoEnabled && (
+          <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-100 relative overflow-hidden">
+            <div className="absolute inset-0 opacity-30">
+              <div className="absolute top-10 left-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float" />
+              <div className="absolute bottom-10 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1.5s' }} />
             </div>
-            <div className="max-w-4xl mx-auto">
-              <div className="relative aspect-video rounded-xl overflow-hidden shadow-2xl">
-                <iframe
-                  className="w-full h-full"
-                  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                  title="SQ Agriculture Video"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </div>
+            <div className="container mx-auto px-4 relative">
+              <VideoPlayer
+                videos={videoUrls}
+                playlistId={videoPlaylistId || undefined}
+                title={videoTitle}
+                subtitle={videoSubtitle}
+              />
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
-        {/* Product Slider Section */}
-        <section className="py-20">
+        {/* Product Slider Section with animations */}
+        <section className="py-20 bg-white relative">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-12">
-              <div></div>
-              <Button asChild variant="outline">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-bold mb-2 animate-fade-in-up">Explore Our Products</h2>
+                <p className="text-gray-600 animate-fade-in-up delay-100">Quality agricultural solutions for every need</p>
+              </div>
+              <Button asChild variant="outline" className="hover-glow animate-fade-in-up">
                 <Link href="/products">
                   View All Products <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
             </div>
             
-            {/* Horizontal scroll product slider */}
+            {/* Horizontal scroll product slider with animated cards */}
             <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
-              <div className="flex-shrink-0 w-72 snap-start">
-                <Link href="/products/seeds">
-                  <div className="relative h-80 rounded-xl overflow-hidden group">
-                    <img 
-                      src="/uploads/products/Seeds.png" 
-                      alt="Seeds" 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-2xl font-bold text-white mb-1">Seeds</h3>
-                      <p className="text-white/80">Premium quality seeds for better harvest</p>
+              {sliderCategories.slice(0, 6).map((category, index) => (
+                <div 
+                  key={category.id} 
+                  className="flex-shrink-0 w-72 snap-start animate-fade-in-up"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <Link href={`/products/${category.slug}`}>
+                    <div className="relative h-80 rounded-xl overflow-hidden group category-card">
+                      <img 
+                        src={category.image || '/placeholder.svg'} 
+                        alt={category.name} 
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-6">
+                        <h3 className="text-2xl font-bold text-white mb-1 group-hover:translate-x-2 transition-transform">{category.name}</h3>
+                        <p className="text-white/80 text-sm">Click to explore</p>
+                      </div>
+                      <div className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ArrowRight className="w-5 h-5 text-white" />
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              </div>
-              
-              <div className="flex-shrink-0 w-72 snap-start">
-                <Link href="/products/fertilizer">
-                  <div className="relative h-80 rounded-xl overflow-hidden group">
-                    <img 
-                      src="/uploads/products/SQ Fertilizer.png" 
-                      alt="Fertilizers" 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-2xl font-bold text-white mb-1">Fertilizers</h3>
-                      <p className="text-white/80">Plant nutrition for maximum yield</p>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-              
-              <div className="flex-shrink-0 w-72 snap-start">
-                <Link href="/products/pesticide">
-                  <div className="relative h-80 rounded-xl overflow-hidden group">
-                    <img 
-                      src="/uploads/products/pesticide/Dtuch.png" 
-                      alt="Pesticides" 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-2xl font-bold text-white mb-1">Pesticides</h3>
-                      <p className="text-white/80">Crop protection solutions</p>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-              
-              <div className="flex-shrink-0 w-72 snap-start">
-                <Link href="/products/field-machinery">
-                  <div className="relative h-80 rounded-xl overflow-hidden group">
-                    <img 
-                      src="/uploads/products/machinery/TT47.png" 
-                      alt="Machinery" 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-2xl font-bold text-white mb-1">Machinery</h3>
-                      <p className="text-white/80">Modern tractors and equipment</p>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-              
-              <div className="flex-shrink-0 w-72 snap-start">
-                <Link href="/products/field-machinery">
-                  <div className="relative h-80 rounded-xl overflow-hidden group">
-                    <img 
-                      src="/uploads/products/machinery/Rotavator.png" 
-                      alt="Rotavator" 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-2xl font-bold text-white mb-1">Rotavators</h3>
-                      <p className="text-white/80">Soil preparation equipment</p>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-              
-              <div className="flex-shrink-0 w-72 snap-start">
-                <Link href="/products">
-                  <div className="relative h-80 rounded-xl overflow-hidden group">
-                    <img 
-                      src="/uploads/products/lube/Tractor Pro Engine Oil.png" 
-                      alt="Lubricants" 
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-6">
-                      <h3 className="text-2xl font-bold text-white mb-1">Lubricants</h3>
-                      <p className="text-white/80">Quality oils for your machinery</p>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {features.map((feature, index) => (
-                <Card key={index} className="border-0 shadow-lg">
-                  <CardContent className="pt-6 text-center">
-                    <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
-                      <feature.icon className="w-7 h-7 text-primary" />
-                    </div>
-                    <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                    <p className="text-gray-600 text-sm">{feature.description}</p>
-                  </CardContent>
-                </Card>
+                  </Link>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
+        {/* Features Section with animated borders */}
+        <section className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative">
+          <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5" />
+          <div className="container mx-auto px-4 relative">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {features.map((feature, index) => {
+                const IconComponent = feature.icon === 'Shield' ? Shield : 
+                                   feature.icon === 'Truck' ? Truck : 
+                                   feature.icon === 'Sprout' ? Sprout : Leaf;
+                return (
+                  <Card 
+                    key={index} 
+                    className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group gradient-border"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <CardContent className="pt-6 text-center relative">
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="relative">
+                        <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
+                          <IconComponent className="w-7 h-7 text-primary" />
+                        </div>
+                        <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
+                        <p className="text-gray-600 text-sm">{feature.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Featured Products */}
         <section className="py-20">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-12">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-2">Featured Products</h2>
-                <p className="text-gray-600">Discover our most popular products</p>
+                <h2 className="text-3xl md:text-4xl font-bold mb-2 animate-fade-in-up">Featured Products</h2>
+                <p className="text-gray-600 animate-fade-in-up delay-100">Discover our most popular products</p>
               </div>
-              <Button asChild variant="outline">
+              <Button asChild variant="outline" className="hover-glow animate-fade-in-up">
                 <Link href="/products">
                   View All <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
@@ -221,8 +245,14 @@ export default function HomePage() {
               </div>
             ) : featuredProducts && featuredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {featuredProducts.slice(0, 4).map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {featuredProducts.slice(0, 4).map((product, index) => (
+                  <div 
+                    key={product.id} 
+                    className="animate-fade-in-up"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <ProductCard product={product} />
+                  </div>
                 ))}
               </div>
             ) : (
@@ -233,87 +263,30 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="py-20 bg-primary text-white">
+        {/* Product Categories */}
+        <section className="py-20 bg-gradient-to-r from-primary text-white">
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Product Categories</h2>
-              <p className="text-white/80 max-w-2xl mx-auto">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in-up">Our Product Categories</h2>
+              <p className="text-white/80 max-w-2xl mx-auto animate-fade-in-up delay-100">
                 Comprehensive solutions for every farming need
               </p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-              <Link href="/products/seeds">
-                <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-2xl">🌾</span>
-                    </div>
-                    <h3 className="text-base font-bold mb-1">Seeds</h3>
-                    <p className="text-white/70 text-xs">Premium quality seeds</p>
-                  </CardContent>
-                </Card>
-              </Link>
-
-              <Link href="/products/fertilizer">
-                <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-2xl">🧪</span>
-                    </div>
-                    <h3 className="text-base font-bold mb-1">Fertilizers</h3>
-                    <p className="text-white/70 text-xs">Plant nutrition</p>
-                  </CardContent>
-                </Card>
-              </Link>
-
-              <Link href="/products/pesticide">
-                <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-2xl">🛡️</span>
-                    </div>
-                    <h3 className="text-base font-bold mb-1">Pesticides</h3>
-                    <p className="text-white/70 text-xs">Crop protection</p>
-                  </CardContent>
-                </Card>
-              </Link>
-
-              <Link href="/products/micronutrients">
-                <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-2xl">🌱</span>
-                    </div>
-                    <h3 className="text-base font-bold mb-1">Micronutrients</h3>
-                    <p className="text-white/70 text-xs">Essential nutrients</p>
-                  </CardContent>
-                </Card>
-              </Link>
-
-              <Link href="/products/field-machinery">
-                <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-2xl">🚜</span>
-                    </div>
-                    <h3 className="text-base font-bold mb-1">Machinery</h3>
-                    <p className="text-white/70 text-xs">Tractors & equipment</p>
-                  </CardContent>
-                </Card>
-              </Link>
-
-              <Link href="/products">
-                <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 transition-colors cursor-pointer h-full">
-                  <CardContent className="p-4 text-center">
-                    <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center">
-                      <span className="text-2xl">⚙️</span>
-                    </div>
-                    <h3 className="text-base font-bold mb-1">All Products</h3>
-                    <p className="text-white/70 text-xs">View all items</p>
-                  </CardContent>
-                </Card>
-              </Link>
+              {categories?.slice(0, 6).map((category, index) => (
+                <Link key={category.id} href={`/products/${category.slug}`}>
+                  <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:scale-105 transition-all cursor-pointer h-full group animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
+                    <CardContent className="p-4 text-center">
+                      <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span className="text-2xl">🌾</span>
+                      </div>
+                      <h3 className="text-base font-bold mb-1">{category.name}</h3>
+                      <p className="text-white/70 text-xs">Click to view</p>
+                    </CardContent>
+                  </Card>
+                </Link>
+              ))}
             </div>
           </div>
         </section>
@@ -323,60 +296,59 @@ export default function HomePage() {
           <section className="py-20 bg-gray-50">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 animate-slide-in-left">
                   <Tractor className="w-8 h-8 text-green-600" />
                   <div>
                     <h2 className="text-3xl font-bold">Featured Machinery</h2>
                     <p className="text-gray-600">Premium tractors and farm equipment</p>
                   </div>
                 </div>
-                <Button asChild variant="outline">
+                <Button asChild variant="outline" className="animate-slide-in-right">
                   <Link href="/products/field-machinery">
                     View All <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
                 </Button>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {machineryProducts.map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {machineryProducts.map((product, index) => (
+                  <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
+                    <ProductCard product={product} />
+                  </div>
                 ))}
               </div>
             </div>
           </section>
         )}
 
-        <section className="py-20 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div>
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">500+</div>
-                <div className="text-gray-600">Products</div>
-              </div>
-              <div>
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">10K+</div>
-                <div className="text-gray-600">Happy Farmers</div>
-              </div>
-              <div>
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">64</div>
-                <div className="text-gray-600">Districts</div>
-              </div>
-              <div>
-                <div className="text-4xl md:text-5xl font-bold text-primary mb-2">15+</div>
-                <div className="text-gray-600">Years Experience</div>
-              </div>
-            </div>
+        {/* Stats Section with animated counters */}
+        <section className="py-20 bg-white relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
+          <div className="container mx-auto px-4 relative">
+            <StatsCounter stats={stats} />
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Farm?</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-              Get in touch with our agricultural experts today and discover the best solutions for your farming needs.
+        {/* CTA Section */}
+        <section className="py-20 bg-gradient-to-r from-primary to-primary-light relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float" />
+            <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1.5s' }} />
+          </div>
+          <div className="container mx-auto px-4 text-center relative">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white animate-fade-in-up">
+              {homepageConfig?.ctaTitle || 'Ready to Transform Your Farm?'}
+            </h2>
+            <p className="text-white/80 max-w-2xl mx-auto mb-8 animate-fade-in-up delay-100">
+              {homepageConfig?.ctaSubtitle || 'Get in touch with our agricultural experts today and discover the best solutions for your farming needs.'}
             </p>
-            <Button asChild size="lg">
-              <Link href="/contact">
-                Contact Us <ArrowRight className="w-4 h-4 ml-2" />
+            <Button 
+              asChild 
+              size="lg" 
+              variant="secondary"
+              className="cta-button animate-scale-in delay-200"
+            >
+              <Link href={homepageConfig?.ctaButtonLink || '/contact'}>
+                {homepageConfig?.ctaButtonText || 'Contact Us'} <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
           </div>

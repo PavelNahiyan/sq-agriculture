@@ -18,6 +18,7 @@ import { WishlistModule } from './modules/wishlist/wishlist.module';
 import { MailModule } from './modules/mail/mail.module';
 import { HealthModule } from './modules/health/health.module';
 import { ActivityModule } from './modules/activity/activity.module';
+import { HomepageModule } from './modules/homepage/homepage.module';
 
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { AuditModule } from './common/audit.module';
@@ -60,6 +61,7 @@ import { PrismaModule } from './prisma/prisma/prisma.module';
     MailModule,
     HealthModule,
     ActivityModule,
+    HomepageModule,
   ],
   providers: [
     {

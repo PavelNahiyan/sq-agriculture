@@ -322,3 +322,35 @@ model ActivityLog {
   @@index([timestamp])
   @@map("activity_logs")
 }
+
+model HomepageConfig {
+  id                  String   @id @default(uuid())
+  
+  heroTitle            String?
+  heroSubtitle        String?
+  heroSlides         String   @default("[]")
+  heroUseCategories Boolean  @default(false)
+  
+  sliderCategories   String   @default("[]")
+  
+  features          String   @default("[]")
+  
+  videoEnabled      Boolean  @default(true)
+  videoTitle       String?
+  videoSubtitle   String?
+  videoPlaylistId String?
+  videoUrls       String   @default("[]")
+  
+  stats           String   @default("[]")
+  
+  ctaTitle        String?
+  ctaSubtitle    String?
+  ctaButtonText  String?
+  ctaButtonLink  String?
+  
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  
+  @@map("homepage_configs")
+}

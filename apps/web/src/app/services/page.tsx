@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Sprout, Droplets, Tractor, Phone, ArrowRight, CheckCircle } from 'lucide-react';
+import { Sprout, Droplets, Tractor, Phone, ArrowRight, CheckCircle, Beaker, Leaf } from 'lucide-react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
@@ -12,50 +12,49 @@ export default function ServicesPage() {
 
   const services = [
     {
-      icon: Sprout,
-      title: 'Quality Seeds Supply',
-      description: 'We provide high-yielding, disease-resistant seed varieties suitable for Bangladeshi climate and soil conditions.',
+      icon: Tractor,
+      title: 'High-Performance Farm Machinery',
+      description: 'Reliability is the backbone of a successful farm. We provide heavy-duty machinery engineered to handle the toughest terrains and the most demanding schedules.',
       features: [
-        'BRRI & BARI recommended varieties',
-        'Hybrid seeds for maximum yield',
-        'Quality certified seeds',
-        'Expert guidance on seed selection',
+        'Tractors & Harvesters: From compact utility tractors to high-capacity harvesters, we offer power and precision for every farm size',
+        'Rotavators: Achieve the perfect soil tilth. Our rotavators ensure superior soil mixing and seedbed preparation',
+        'Spray Machines: Advanced manual and automated sprayers designed for uniform coverage and minimal chemical waste',
       ],
-      image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
+      image: '/uploads/products/machinery/TT47.png',
+    },
+    {
+      icon: Sprout,
+      title: 'Premium Seeds for Every Season',
+      description: 'A great harvest begins with superior genetics. Our seeds are selected for high germination rates, disease resistance, and climate adaptability.',
+      features: [
+        'Staple Crops: High-yielding Rice and Maize varieties optimized for regional soil types',
+        'Vegetables: A wide selection of hybrid and heirloom seeds for commercial vegetable farming',
+        'Quality certified seeds with high germination rates',
+        'Expert guidance on seed selection for your specific land',
+      ],
+      image: '/uploads/products/Seeds.png',
     },
     {
       icon: Droplets,
-      title: 'Crop Protection Solutions',
-      description: 'Comprehensive range of pesticides, herbicides, and fungicides to protect your crops from pests and diseases.',
+      title: 'Crop Protection & Nutrition',
+      description: 'Healthy plants need a balanced "diet" and a strong defense system. We provide the science-backed inputs required to keep your fields thriving.',
       features: [
-        'Insecticides for pest control',
-        'Herbicides for weed management',
-        'Fungicides for disease control',
+        'Fertilizers: Essential NPK blends to fuel core plant growth and root development',
+        'Micronutrients: Specialized Zinc, Boron, and Magnesium treatments to fix soil deficiencies',
+        'Pesticides: Targeted solutions to eliminate pests while preserving your crop integrity',
         'Integrated pest management advice',
       ],
-      image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=800',
-    },
-    {
-      icon: Tractor,
-      title: 'Agricultural Machinery',
-      description: 'Modern farming equipment and machinery to improve efficiency and reduce labor costs.',
-      features: [
-        'Tractors (35-75 HP)',
-        'Irrigation systems',
-        'Harvesting equipment',
-        'After-sales service & support',
-      ],
-      image: 'https://images.unsplash.com/photo-1605338198613-2c8c3b97c4bb?w=800',
+      image: '/uploads/products/SQ Fertilizer.png',
     },
   ];
 
   const whyChooseUs = [
-    { icon: CheckCircle, text: 'Genuine & certified products' },
-    { icon: CheckCircle, text: 'Competitive pricing' },
-    { icon: CheckCircle, text: 'Technical support & training' },
-    { icon: CheckCircle, text: 'Home delivery available' },
-    { icon: CheckCircle, text: 'Easy credit facility for dealers' },
-    { icon: CheckCircle, text: '24/7 customer support' },
+    { icon: CheckCircle, text: 'Expert Guidance: Our team provides on-ground support to help you choose the right machinery and inputs' },
+    { icon: CheckCircle, text: 'Genuine Parts & Service: Authentic products with full manufacturer warranty' },
+    { icon: CheckCircle, text: 'Competitive pricing with flexible payment options' },
+    { icon: CheckCircle, text: 'Technical support & farmer training programs' },
+    { icon: CheckCircle, text: 'Home delivery available across Bangladesh' },
+    { icon: CheckCircle, text: '24/7 customer support for urgent needs' },
   ];
 
   return (
@@ -72,12 +71,12 @@ export default function ServicesPage() {
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-dark/90 to-primary/70" />
+            <div className="absolute inset-0 bg-gradient-to-r from-green-900/90 to-green-700/70" />
           </div>
           <div className="relative z-10 container mx-auto px-4 text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Our Services</h1>
-            <p className="text-lg text-white/90 max-w-2xl mx-auto">
-              Comprehensive agricultural solutions to help you grow more, grow better
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">Empowering Your Farm from Seed to Harvest</h1>
+            <p className="text-lg text-white/90 max-w-3xl mx-auto">
+              At SQ Agriculture Ltd, we don't just sell products; we partner with you to ensure every season is more productive than the last. Whether you are prepping the soil, protecting your crop, or bringing in the harvest, our comprehensive suite of agricultural solutions is designed to maximize your yield and minimize your downtime.
             </p>
           </div>
         </section>
@@ -94,21 +93,21 @@ export default function ServicesPage() {
                   }`}
                 >
                   <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
-                    <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6">
-                      <service.icon className="w-8 h-8 text-primary" />
+                    <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-6">
+                      <service.icon className="w-8 h-8 text-green-600" />
                     </div>
                     <h2 className="text-3xl font-bold mb-4">{service.title}</h2>
                     <p className="text-gray-600 mb-6">{service.description}</p>
                     <ul className="space-y-3 mb-6">
                       {service.features.map((feature, fIndex) => (
-                        <li key={fIndex} className="flex items-center gap-3">
-                          <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
+                        <li key={fIndex} className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
                           <span className="text-gray-700">{feature}</span>
                         </li>
                       ))}
                     </ul>
                     <Link href="/products">
-                      <Button variant="outline">
+                      <Button className="bg-green-600 hover:bg-green-700">
                         View Products
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
@@ -119,7 +118,7 @@ export default function ServicesPage() {
                       src={service.image}
                       alt={service.title}
                       fill
-                      className="object-cover"
+                      className="object-contain bg-gray-50"
                     />
                   </div>
                 </div>
@@ -134,18 +133,18 @@ export default function ServicesPage() {
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4">Why Choose SQ Agriculture?</h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                We are committed to providing the best agricultural solutions to farmers across Bangladesh
+                "Modern farming requires more than just hard work—it requires the right technology and the right chemistry."
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-4xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
               {whyChooseUs.map((item, index) => (
-                <Card key={index} className="flex items-center gap-4">
-                  <CardContent className="py-4 flex items-center gap-4 w-full">
-                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                      <item.icon className="w-5 h-5 text-primary" />
+                <Card key={index} className="flex items-start gap-4">
+                  <CardContent className="py-4 flex items-start gap-4 w-full">
+                    <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
+                      <item.icon className="w-5 h-5 text-green-600" />
                     </div>
-                    <span className="font-medium">{item.text}</span>
+                    <span className="font-medium text-gray-700">{item.text}</span>
                   </CardContent>
                 </Card>
               ))}
@@ -154,15 +153,15 @@ export default function ServicesPage() {
         </section>
 
         {/* CTA */}
-        <section className="py-20 bg-primary text-white">
+        <section className="py-20 bg-green-800 text-white">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Need Expert Advice?</h2>
+            <h2 className="text-3xl font-bold mb-4">Ready to Transform Your Farm?</h2>
             <p className="text-white/90 max-w-2xl mx-auto mb-8">
-              Our agricultural experts are ready to help you choose the right products for your farming needs.
+              Our agricultural experts are ready to help you choose the right products and machinery for your farming needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
-                <Button size="lg" className="bg-white text-primary hover:bg-white/90 gap-2">
+                <Button size="lg" className="bg-white text-green-800 hover:bg-green-100 gap-2">
                   <Phone className="w-4 h-4" />
                   Contact Us
                 </Button>
