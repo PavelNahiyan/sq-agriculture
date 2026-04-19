@@ -45,6 +45,7 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
     { href: '/', label: 'Home' },
     { href: '/products', label: 'Products', hasDropdown: true },
     { href: '/promotional-offers', label: 'Promotional Offers' },
+    { href: '/gallery', label: 'Gallery' },
     { href: '/store-locator', label: 'Where to Buy' },
     { href: '/services', label: 'Services' },
     { href: '/about', label: 'About' },
