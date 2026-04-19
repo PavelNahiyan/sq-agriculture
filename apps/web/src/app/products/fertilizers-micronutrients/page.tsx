@@ -22,8 +22,8 @@ export default function FertilizersMicronutrientsPage() {
 
       <main className="flex-1 pt-16">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-blue-800 via-blue-600 to-amber-600 text-white py-20">
-          <div className="absolute inset-0 opacity-20">
+        <section className="relative bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#1a3d16] text-white py-20">
+          <div className="absolute inset-0 opacity-10">
             <Image 
               src="/uploads/products/SQ Fertilizer.png" 
               alt="Fertilizers and Micronutrients"
@@ -34,20 +34,56 @@ export default function FertilizersMicronutrientsPage() {
           </div>
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#85BF35]/20 border border-[#85BF35]/30 mb-4">
+                <Leaf className="w-4 h-4 text-[#85BF35]" />
+                <span className="text-[#85BF35] text-sm font-medium">Plant Nutrition</span>
+              </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
                 Fertilizers & Micronutrients
               </h1>
-              <p className="text-xl text-white/90 mb-6">
+              <p className="text-xl text-white/80 mb-6">
                 Complete plant nutrition solutions. Quality fertilizers and essential micronutrients 
                 for optimal crop growth and maximum yield.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg" className="bg-white text-blue-800 hover:bg-blue-100">
+                <Button asChild size="lg" className="bg-[#85BF35] text-[#2D5A27] hover:bg-[#9AD44D] font-semibold">
                   <Link href="#fertilizers">Fertilizers</Link>
                 </Button>
                 <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white/10">
                   <Link href="#micronutrients">Micronutrients</Link>
                 </Button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Bar */}
+        <section className="py-8 bg-white border-b">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
+                  <Leaf className="w-5 h-5 text-[#2D5A27]" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">High Yield</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
+                  <Beaker className="w-5 h-5 text-[#2D5A27]" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">Research Based</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
+                  <Droplets className="w-5 h-5 text-[#2D5A27]" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">Water Soluble</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
+                  <Check className="w-5 h-5 text-[#2D5A27]" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">Certified Quality</span>
               </div>
             </div>
           </div>

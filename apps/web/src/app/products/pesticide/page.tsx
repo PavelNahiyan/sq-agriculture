@@ -21,8 +21,8 @@ export default function PesticidePage() {
 
       <main className="flex-1 pt-16">
         {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-red-700 to-red-600 text-white py-20">
-          <div className="absolute inset-0 opacity-20">
+        <section className="relative bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#1a3d16] text-white py-20">
+          <div className="absolute inset-0 opacity-10">
             <Image 
               src="/uploads/products/Spec Zoom.png" 
               alt="Pesticides"
@@ -33,16 +33,52 @@ export default function PesticidePage() {
           </div>
           <div className="container mx-auto px-4 relative z-10">
             <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#85BF35]/20 border border-[#85BF35]/30 mb-4">
+                <Bug className="w-4 h-4 text-[#85BF35]" />
+                <span className="text-[#85BF35] text-sm font-medium">Crop Protection</span>
+              </div>
               <h1 className="text-4xl md:text-5xl font-bold mb-4">
                 Pesticides
               </h1>
-              <p className="text-xl text-red-100 mb-6">
+              <p className="text-xl text-white/80 mb-6">
                 Effective pest control solutions for protecting your crops. 
-                Insecticides, fungicides, and herbicides.
+                Advanced insecticides, fungicides, and herbicides for maximum yield protection.
               </p>
-              <Button asChild size="lg" className="bg-white text-red-800 hover:bg-red-100">
+              <Button asChild size="lg" className="bg-[#85BF35] text-[#2D5A27] hover:bg-[#9AD44D] font-semibold">
                 <Link href="#insecticides">View Products</Link>
               </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Features Bar */}
+        <section className="py-8 bg-white border-b">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
+                  <Shield className="w-5 h-5 text-[#2D5A27]" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">Expert Formulated</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
+                  <Check className="w-5 h-5 text-[#2D5A27]" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">Quality Assured</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
+                  <Bug className="w-5 h-5 text-[#2D5A27]" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">Effective Control</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-[#2D5A27]/10 flex items-center justify-center">
+                  <Phone className="w-5 h-5 text-[#2D5A27]" />
+                </div>
+                <span className="text-sm font-medium text-gray-700">Technical Support</span>
+              </div>
             </div>
           </div>
         </section>
