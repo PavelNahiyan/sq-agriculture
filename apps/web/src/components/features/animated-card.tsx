@@ -3,7 +3,7 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { Button } from './button';
+import { Button } from '@/components/ui/button';
 
 interface AnimatedCardProps {
   children: React.ReactNode;

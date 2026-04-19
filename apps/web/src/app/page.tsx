@@ -53,7 +53,7 @@ export default function HomePage() {
     return category?.image || '';
   };
 
-  const getSliderCategories = () => {
+  const getSliderCategories = (): { id: string; name: string; image: string; slug: string }[] => {
     if (!homepageConfig?.sliderCategories?.length && !categories) {
       return [
         { id: 'seeds', name: 'Seeds', image: '/uploads/products/Seeds.png', slug: 'seeds' },
@@ -70,7 +70,7 @@ export default function HomePage() {
           const cat = categories.find(c => c.id === sc.categoryId);
           return cat ? { id: cat.id, name: cat.name, image: cat.image || '', slug: cat.slug } : null;
         })
-        .filter(Boolean);
+        .filter((c): c is { id: string; name: string; image: string; slug: string } => c !== null);
     }
 
     return categories?.slice(0, 6).map(cat => ({
