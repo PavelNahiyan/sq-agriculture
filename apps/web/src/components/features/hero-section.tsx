@@ -35,10 +35,10 @@ export function HeroSection({
   className,
 }: HeroSectionProps) {
   const heightClasses = {
-    full: 'h-screen min-h-[600px]',
-    large: 'h-[70vh] min-h-[500px]',
-    medium: 'h-[50vh] min-h-[400px]',
-    small: 'h-[35vh] min-h-[300px]',
+    full: 'h-[85vh] sm:h-[90vh] min-h-[500px] sm:min-h-[600px]',
+    large: 'h-[55vh] sm:h-[60vh] md:h-[70vh] min-h-[350px] sm:min-h-[450px] md:min-h-[500px]',
+    medium: 'h-[40vh] sm:h-[45vh] md:h-[50vh] min-h-[300px] sm:min-h-[350px] md:min-h-[400px]',
+    small: 'h-[30vh] sm:h-[32vh] md:h-[35vh] min-h-[220px] sm:min-h-[250px] md:min-h-[300px]',
   };
 
   const overlayClasses = {

@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -390,4 +390,19 @@ model FloatingButtonSettings {
   updatedAt    DateTime @updatedAt
 
   @@map("floating_button_settings")
+}
+
+model SeedPartner {
+  id          String   @id @default(cuid())
+  name       String
+  nameBn     String?
+  logo       String?  // Logo image URL
+  description String?
+  website    String?
+  sortOrder  Int      @default(0)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("seed_partners")
 }

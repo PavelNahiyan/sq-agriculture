@@ -1,8 +1,9 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, Save, Leaf, ArrowLeft } from 'lucide-react';
+import { Loader2, Save, Leaf, ArrowLeft, Plus, Pencil, Trash2 } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { AdminLayout } from '@/components/layout/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -11,6 +12,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { usePageConfig, useUpdatePageConfig } from '@/hooks/use-page-config';
+import { useProducts, useDeleteProduct } from '@/hooks/use-products';
+import { useAdminCategories, useCreateCategory, useUpdateCategory, useDeleteCategory } from '@/hooks/use-categories';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
 export default function MachineryPageConfig() {
   const pageName = 'machinery';
@@ -18,6 +23,26 @@ export default function MachineryPageConfig() {
   
   const { data: config, isLoading } = usePageConfig(pageName);
   const updateConfig = useUpdatePageConfig();
+  const { data: allProducts } = useProducts({ categoryType: 'MACHINERY', limit: 100 });
+  const { data: allCategories } = useAdminCategories();
+  const createCategory = useCreateCategory();
+  const updateCategory = useUpdateCategory();
+  const deleteCategory = useDeleteCategory();
+  const [productSearch, setProductSearch] = React.useState('');
+  const [categoryDialogOpen, setCategoryDialogOpen] = React.useState(false);
+  const [editingCategory, setEditingCategory] = React.useState<any>(null);
+  const [categoryForm, setCategoryForm] = React.useState({ name: '', nameBn: '', description: '', slug: '' });
+  
+  const machineryCategories = React.useMemo(() => {
+    if (!allCategories) return [];
+    return allCategories.filter((c: any) => c.type === 'MACHINERY');
+  }, [allCategories]);
+  
+  const machineryProducts = React.useMemo(() => {
+    if (!allProducts) return [];
+    return allProducts.filter(p => p.name.toLowerCase().includes(productSearch.toLowerCase()));
+  }, [allProducts, productSearch]);
+  
   const [isSaving, setIsSaving] = React.useState(false);
   const [saved, setSaved] = React.useState(false);
 
@@ -113,6 +138,153 @@ export default function MachineryPageConfig() {
             </Button>
           </div>
         </form>
+
+        {/* Machinery Categories Section */}
+        <Card className="mt-8">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>Machinery Categories</CardTitle>
+              <CardDescription>Manage machinery categories</CardDescription>
+            </div>
+            <Dialog open={categoryDialogOpen} onOpenChange={setCategoryDialogOpen}>
+              <DialogTrigger asChild>
+                <Button onClick={() => { setEditingCategory(null); setCategoryForm({ name: '', nameBn: '', description: '', slug: '' }); }}>
+                  <Plus className="w-4 h-4 mr-2" />Add Category
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{editingCategory ? 'Edit' : 'Add'} Category</DialogTitle>
+                </DialogHeader>
+                <div className="space-y-3 py-3">
+                  <Input placeholder="Category Name" value={categoryForm.name} onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value, slug: e.target.value.toLowerCase().replace(/\s+/g, '-') })} />
+                  <Input placeholder="Name (Bengali)" value={categoryForm.nameBn} onChange={(e) => setCategoryForm({ ...categoryForm, nameBn: e.target.value })} />
+                  <Textarea placeholder="Description" value={categoryForm.description} onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })} />
+                  <Button className="w-full" onClick={async () => {
+                    try {
+                      if (editingCategory) {
+                        await updateCategory.mutateAsync({ id: editingCategory.id, data: { ...categoryForm, type: 'MACHINERY' } });
+                      } else {
+                        await createCategory.mutateAsync({ ...categoryForm, type: 'MACHINERY' });
+                      }
+                      setCategoryDialogOpen(false);
+                    } catch (e) { console.error(e); }
+                  }}>{editingCategory ? 'Update' : 'Create'}</Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              {machineryCategories.map((cat: any) => (
+                <Card key={cat.id} className="p-3">
+                  <h4 className="font-medium text-sm">{cat.name}</h4>
+                  <p className="text-xs text-gray-500">{cat.slug}</p>
+                  <div className="flex gap-2 mt-2">
+                    <Button variant="outline" size="sm" onClick={() => { setEditingCategory(cat); setCategoryForm({ name: cat.name || '', nameBn: cat.nameBn || '', description: cat.description || '', slug: cat.slug || '' }); setCategoryDialogOpen(true); }}>
+                      <Pencil className="w-3 h-3" />
+                    </Button>
+                    <Button variant="outline" size="sm" onClick={async () => { if (confirm('Delete category?')) { await deleteCategory.mutateAsync(cat.id); } }}>
+                      <Trash2 className="w-3 h-3 text-red-500" />
+                    </Button>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Machinery Products Section */}
+        <Card className="mt-8">
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>Machinery Products</CardTitle>
+              <CardDescription>Manage machinery products in this category</CardDescription>
+            </div>
+            <Link href="/admin/products/new?category=MACHINERY">
+              <Button>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Product
+              </Button>
+            </Link>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <Input
+                  placeholder="Search products..."
+                  value={productSearch}
+                  onChange={(e) => setProductSearch(e.target.value)}
+                  className="max-w-sm"
+                />
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {machineryProducts.slice(0, 12).map((product) => (
+                  <Card key={product.id} className="overflow-hidden">
+                    <div className="relative h-32 bg-gray-100">
+                      {product.images?.[0] ? (
+                        <Image src={product.images[0]} alt={product.name} fill className="object-contain p-2" />
+                      ) : (
+                        <div className="flex items-center justify-center h-full">
+                          <Leaf className="w-8 h-8 text-gray-400" />
+                        </div>
+                      )}
+                    </div>
+                    <CardContent className="p-3">
+                      <h4 className="font-medium text-sm truncate">{product.name}</h4>
+                      <p className="text-blue-600 font-bold text-sm">
+                        {product.price ? `৳${product.price.toLocaleString()}/${product.priceUnit}` : 'Price on request'}
+                      </p>
+                      <div className="flex gap-2 mt-2">
+                        <Link href={`/admin/products/${product.id}/edit`}>
+                          <Button variant="outline" size="sm">
+                            <Pencil className="w-3 h-3" />
+                          </Button>
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* All Products Table */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>All Machinery Products</CardTitle>
+            <CardDescription>Complete list of all products in this category</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Product Name</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead>Created</TableHead>
+                  <TableHead>Last Updated</TableHead>
+                  <TableHead>Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {machineryProducts.map((product: any) => (
+                  <TableRow key={product.id}>
+                    <TableCell className="font-medium">{product.name}</TableCell>
+                    <TableCell>{product.price ? `৳${product.price.toLocaleString()}/${product.priceUnit}` : '-'}</TableCell>
+                    <TableCell>{product.createdAt ? new Date(product.createdAt).toLocaleDateString() : '-'}</TableCell>
+                    <TableCell>{product.updatedAt ? new Date(product.updatedAt).toLocaleDateString() : '-'}</TableCell>
+                    <TableCell>
+                      <Link href={`/admin/products/${product.id}/edit`}>
+                        <Button variant="outline" size="sm"><Pencil className="w-3 h-3" /></Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
       </div>
     </AdminLayout>
   );

@@ -17,6 +17,7 @@ async function main() {
   await prisma.$connect();
 
   // Clear existing data
+  await prisma.seedPartner.deleteMany();
   await prisma.refreshToken.deleteMany();
   await prisma.upload.deleteMany();
   await prisma.inquiry.deleteMany();
@@ -28,6 +29,44 @@ async function main() {
   await prisma.user.deleteMany();
 
   console.log('Cleared existing data');
+
+  // Seed Partners
+  await Promise.all([
+    prisma.seedPartner.create({
+      data: {
+        name: 'BARI',
+        nameBn: 'বারি',
+        logo: null,
+        description: 'Bangladesh Agricultural Research Institute',
+        website: 'https://www.bari.gov.bd',
+        sortOrder: 1,
+        isActive: true,
+      },
+    }),
+    prisma.seedPartner.create({
+      data: {
+        name: 'BRRI',
+        nameBn: 'ব্রি',
+        logo: null,
+        description: 'Bangladesh Rice Research Institute',
+        website: 'https://www.brri.gov.bd',
+        sortOrder: 2,
+        isActive: true,
+      },
+    }),
+    prisma.seedPartner.create({
+      data: {
+        name: 'SQ Seeds',
+        nameBn: 'এসকিউ সিডস',
+        logo: null,
+        description: 'Premium Quality Seeds',
+        website: null,
+        sortOrder: 3,
+        isActive: true,
+      },
+    }),
+  ]);
+  console.log('Created seed partners');
 
   // Create Admin User
   const adminPassword = await bcrypt.hash('admin123', 10);
@@ -71,6 +110,84 @@ async function main() {
   const categories = await Promise.all([
     prisma.category.create({
       data: {
+        name: 'Rice Seeds',
+        nameBn: 'ধানের বীজ',
+        slug: 'rice-seeds',
+        description: 'Premium quality rice seeds for Boro, Aman, and Aus seasons',
+        descriptionBn: 'বোরো, আমন এবং আউস মৌসুমের জন্য প্রিমিয়াম মানের ধানের বীজ',
+        image: 'https://images.unsplash.com/photo-1500367880906-9a5b3dc0c8d3?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 1,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Maize Seeds',
+        nameBn: 'ভুট্টার বীজ',
+        slug: 'maize-seeds',
+        description: 'High-yielding hybrid maize/corn seeds for commercial farming',
+        descriptionBn: 'বাণিজ্যিক চাষের জন্য উচ্চ ফলনশীল হাইব্রিড ভুট্টার বীজ',
+        image: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 2,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Vegetable Seeds',
+        nameBn: 'সবজির বীজ',
+        slug: 'vegetable-seeds',
+        description: 'Wide variety of vegetable seeds for commercial and home farming',
+        descriptionBn: 'বাণিজ্যিক এবং বাড়ির চাষের জন্য সবজির বীজের বিস্তৃত পরিসর',
+        image: 'https://images.unsplash.com/photo-1518977676601-b53f82ber1?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 3,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Fruit Seeds',
+        nameBn: 'ফলের বীজ',
+        slug: 'fruit-seeds',
+        description: 'Premium quality fruit seeds for orchard development',
+        descriptionBn: 'বাগান তৈরির জন্য প্রিমিয়াম মানের ফলের বীজ',
+        image: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 4,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Potato Seeds',
+        nameBn: 'আলুর বীজ',
+        slug: 'potato-seeds',
+        description: 'Certified disease-free potato seeds for commercial cultivation',
+        descriptionBn: 'বাণিজ্যিক চাষের জন্য সার্টিফাইড রোগমুক্ত আলুর বীজ',
+        image: 'https://images.unsplash.com/photo-1518977676601-b53f82ber1?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 5,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Onion Seeds',
+        nameBn: 'পেঁয়াজের বীজ',
+        slug: 'onion-seeds',
+        description: 'Premium quality onion and garlic seeds for Rabi season',
+        descriptionBn: 'রবি মৌসুমের জন্য প্রিমিয়াম মানের পেঁয়াজ এবং রসুনের বীজ',
+        image: 'https://images.unsplash.com/photo-1518977676601-b53f82ber1?w=800',
+        type: CategoryType.SEEDS,
+        sortOrder: 6,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
         name: 'Hybrid Seeds',
         nameBn: 'হাইব্রিড বীজ',
         slug: 'hybrid-seeds',
@@ -78,7 +195,7 @@ async function main() {
         descriptionBn: 'বিভিন্ন ফসলের জন্য উচ্চ ফলনশীল হাইব্রিড বীজ',
         image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
         type: CategoryType.SEEDS,
-        sortOrder: 1,
+        sortOrder: 7,
         isActive: true,
       },
     }),
@@ -91,33 +208,7 @@ async function main() {
         descriptionBn: 'টেকসই চাষের জন্য সার্টিফাইড জৈব বীজ',
         image: 'https://images.unsplash.com/photo-1595855759920-86582396756a?w=800',
         type: CategoryType.SEEDS,
-        sortOrder: 2,
-        isActive: true,
-      },
-    }),
-    prisma.category.create({
-      data: {
-        name: 'Rice Seeds',
-        nameBn: 'ধানের বীজ',
-        slug: 'rice-seeds',
-        description: 'Premium quality rice seeds for Boro, Aman, and Aus seasons',
-        descriptionBn: 'বোরো, আমন এবং আউস মৌসুমের জন্য প্রিমিয়াম মানের ধানের বীজ',
-        image: 'https://images.unsplash.com/photo-1500367880906-9a5b3dc0c8d3?w=800',
-        type: CategoryType.SEEDS,
-        sortOrder: 3,
-        isActive: true,
-      },
-    }),
-    prisma.category.create({
-      data: {
-        name: 'Vegetable Seeds',
-        nameBn: 'সবজির বীজ',
-        slug: 'vegetable-seeds',
-        description: 'Wide variety of vegetable seeds',
-        descriptionBn: 'সবজির বীজের বিস্তৃত পরিসর',
-        image: 'https://images.unsplash.com/photo-1518977676601-b53f82ber1?w=800',
-        type: CategoryType.SEEDS,
-        sortOrder: 4,
+        sortOrder: 8,
         isActive: true,
       },
     }),
@@ -130,7 +221,7 @@ async function main() {
         descriptionBn: 'কার্যকরী কীট নিয়ন্ত্রণ সমাধান',
         image: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=800',
         type: CategoryType.PESTICIDES,
-        sortOrder: 5,
+        sortOrder: 9,
         isActive: true,
       },
     }),
@@ -143,7 +234,7 @@ async function main() {
         descriptionBn: 'উন্নত ফসল ফলনের জন্য মানসম্মত সার',
         image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
         type: CategoryType.FERTILIZERS,
-        sortOrder: 6,
+        sortOrder: 10,
         isActive: true,
       },
     }),
@@ -156,7 +247,7 @@ async function main() {
         descriptionBn: 'আধুনিক সেচ ব্যবস্থা এবং সরঞ্জাম',
         image: 'https://images.unsplash.com/photo-1595326964291-59296d629562?w=800',
         type: CategoryType.MACHINERY,
-        sortOrder: 7,
+        sortOrder: 11,
         isActive: true,
       },
     }),
@@ -169,7 +260,7 @@ async function main() {
         descriptionBn: 'দক্ষ ফসল কাটার যন্ত্র',
         image: 'https://images.unsplash.com/photo-1630398442022-b4c9c04e5b3b?w=800',
         type: CategoryType.MACHINERY,
-        sortOrder: 8,
+        sortOrder: 12,
         isActive: true,
       },
     }),
@@ -182,7 +273,7 @@ async function main() {
         descriptionBn: 'সকল কৃষি কাজের জন্য এসকিউ এটিয়ান ট্র্যাক্টর',
         image: '/uploads/products/machinery/TT47.png',
         type: CategoryType.MACHINERY,
-        sortOrder: 9,
+        sortOrder: 13,
         isActive: true,
       },
     }),
@@ -195,7 +286,46 @@ async function main() {
         descriptionBn: 'দক্ষ মাটি প্রস্তুতির জন্য উচ্চ-মানের রোটাভেটর',
         image: '/uploads/products/machinery/Rotavator.png',
         type: CategoryType.MACHINERY,
-        sortOrder: 10,
+        sortOrder: 14,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Spray Machines',
+        nameBn: 'স্প্রে মেশিন',
+        slug: 'spray-machines',
+        description: 'Professional spray equipment for crop protection',
+        descriptionBn: 'ফসল সুরক্ষার জন্য পেশাদার স্প্রে সরঞ্জাম',
+        image: '/uploads/products/machinery/Real Sprayer PNG 1.png',
+        type: CategoryType.MACHINERY,
+        sortOrder: 15,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'Replacement Parts',
+        nameBn: 'রিপ্লেসমেন্ট পার্টস',
+        slug: 'replacement-parts',
+        description: 'Genuine replacement parts for tractors and machinery',
+        descriptionBn: 'ট্র্যাক্টর ও যন্ত্রের জেনুইন রিপ্লেসমেন্ট পার্টস',
+        image: null,
+        type: CategoryType.MACHINERY,
+        sortOrder: 16,
+        isActive: true,
+      },
+    }),
+    prisma.category.create({
+      data: {
+        name: 'On Call Service',
+        nameBn: 'অন কল সার্ভিস',
+        slug: 'on-call-service',
+        description: 'On-call service and maintenance for machinery',
+        descriptionBn: 'যন্ত্রের জন্য অন কল সার্ভিস ও রক্ষণাবেক্ষণ',
+        image: null,
+        type: CategoryType.MACHINERY,
+        sortOrder: 17,
         isActive: true,
       },
     }),
@@ -208,7 +338,7 @@ async function main() {
         descriptionBn: 'ট্র্যাক্টর ও যন্ত্রের জন্য প্রিমিয়াম লুব্রিকেন্ট',
         image: '/uploads/products/lube/Tractor Pro Engine Oil.png',
         type: CategoryType.LUBRICANTS,
-        sortOrder: 11,
+        sortOrder: 15,
         isActive: true,
       },
     }),
@@ -221,7 +351,7 @@ async function main() {
         descriptionBn: 'গাছের স্বাস্থ্যের জন্য অপরিহার্য মাইক্রোনিউট্রিয়েন্টস',
         image: 'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=800',
         type: CategoryType.MICRONUTRIENTS,
-        sortOrder: 12,
+        sortOrder: 16,
         isActive: true,
       },
     }),

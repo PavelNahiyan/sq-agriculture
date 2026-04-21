@@ -9,41 +9,75 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, Leaf, Sprout, Phone, Mail, MapPin } from 'lucide-react';
 
+function formatPrice(product: any) {
+  if (product.price && product.price > 0) {
+    return `৳${product.price.toLocaleString()}/${product.priceUnit || 'kg'}`;
+  }
+  return 'Price On Request';
+}
+
 export default function SeedsPage() {
-  const { data: products, isLoading } = useProducts({ categoryType: 'SEEDS', limit: 200 });
+  const { data: products, isLoading } = useProducts({ categoryType: 'SEEDS', limit: 500 });
 
   const seeds = products || [];
 
   const riceSeeds = seeds.filter(p => 
     p.name.toLowerCase().includes('rice') ||
     p.name.toLowerCase().includes('dhan') ||
-    p.name.toLowerCase().includes('paddy')
+    p.name.toLowerCase().includes('paddy') ||
+    p.name.toLowerCase().includes('brri') ||
+    p.name.toLowerCase().includes('brd')
   );
 
-  const vegetableSeeds = seeds.filter(p => 
-    p.name.toLowerCase().includes('tomato') ||
-    p.name.toLowerCase().includes('cucumber') ||
-    p.name.toLowerCase().includes('chilli') ||
-    p.name.toLowerCase().includes('brinjal') ||
-    p.name.toLowerCase().includes('eggplant') ||
-    p.name.toLowerCase().includes('cabbage') ||
-    p.name.toLowerCase().includes('cauliflower') ||
+  const maizeSeeds = seeds.filter(p => 
     p.name.toLowerCase().includes('maize') ||
     p.name.toLowerCase().includes('corn') ||
-    p.name.toLowerCase().includes('okra') ||
-    p.name.toLowerCase().includes('bottle gourd') ||
-    p.name.toLowerCase().includes('bitter gourd') ||
-    p.name.toLowerCase().includes('ridge gourd') ||
-    p.name.toLowerCase().includes('sponge gourd') ||
-    p.name.toLowerCase().includes('pumpkin') ||
-    p.name.toLowerCase().includes('watermelon') ||
-    p.name.toLowerCase().includes('capsicum') ||
-    p.name.toLowerCase().includes('ladys finger')
+    p.name.toLowerCase().includes('sweet corn')
+  );
+
+  const onionSeeds = seeds.filter(p => 
+    p.name.toLowerCase().includes('onion') ||
+    p.name.toLowerCase().includes('piaz') ||
+    p.name.toLowerCase().includes('garlic') ||
+    p.name.toLowerCase().includes('lemon')
+  );
+
+  const potatoSeeds = seeds.filter(p => 
+    p.name.toLowerCase().includes('potato') ||
+    p.name.toLowerCase().includes('alu')
+  );
+
+  const hybridVegetables = seeds.filter(p => 
+    p.name.toLowerCase().includes('p1') ||
+    p.name.toLowerCase().includes('p2') ||
+    p.name.toLowerCase().includes('p3') ||
+    p.name.toLowerCase().includes('p4') ||
+    p.name.toLowerCase().includes('p5') ||
+    p.name.toLowerCase().includes('p6') ||
+    p.name.toLowerCase().includes('p7') ||
+    p.name.toLowerCase().includes('p8') ||
+    p.name.toLowerCase().includes('p9') ||
+    p.name.toLowerCase().includes('p10') ||
+    p.name.toLowerCase().includes('p11') ||
+    p.name.toLowerCase().includes('hybrid') ||
+    p.name.toLowerCase().includes('king') ||
+    p.name.toLowerCase().includes('pilot') ||
+    p.name.toLowerCase().includes('millenium') ||
+    p.name.toLowerCase().includes('ononna') ||
+    p.name.toLowerCase().includes('agnila') ||
+    p.name.toLowerCase().includes('captain') ||
+    p.name.toLowerCase().includes('green') ||
+    p.name.toLowerCase().includes('magic') ||
+    p.name.toLowerCase().includes('queen') ||
+    p.name.toLowerCase().includes('kumra')
   );
 
   const otherSeeds = seeds.filter(p => 
     !riceSeeds.includes(p) &&
-    !vegetableSeeds.includes(p)
+    !maizeSeeds.includes(p) &&
+    !onionSeeds.includes(p) &&
+    !potatoSeeds.includes(p) &&
+    !hybridVegetables.includes(p)
   );
 
   return (
@@ -111,13 +145,13 @@ export default function SeedsPage() {
             </p>
 
             {isLoading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {[1, 2, 3, 4].map(i => (
                   <div key={i} className="bg-gray-200 rounded-lg h-80 animate-pulse" />
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {riceSeeds.length > 0 ? riceSeeds.map(product => (
                   <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
                     <div className="relative h-48 bg-gray-100">
@@ -141,9 +175,7 @@ export default function SeedsPage() {
                     </div>
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-                      <p className="text-amber-600 font-bold text-xl mb-3">
-                        Price On Request
-                      </p>
+                      <p className="text-amber-600 font-bold text-xl mb-3">{formatPrice(product)}</p>
                       <div className="text-sm text-gray-600 mb-4">
                         {product.specs && (
                           <div className="space-y-1">
@@ -169,29 +201,24 @@ export default function SeedsPage() {
           </div>
         </section>
 
-        {/* Vegetable Seeds */}
-        <section id="vegetable-seeds" className="py-16 bg-gray-50">
+        {/* Hybrid Vegetables */}
+        <section id="hybrid-vegetables" className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-3 mb-8">
               <Sprout className="w-8 h-8 text-green-600" />
-              <h2 className="text-3xl font-bold">Vegetable Seeds</h2>
+              <h2 className="text-3xl font-bold">Hybrid Vegetables</h2>
             </div>
             <p className="text-gray-600 mb-8 max-w-2xl">
-              High-quality vegetable seeds for commercial and home farming. 
-              Tomatoes, cucumbers, and more.
+              Premium hybrid vegetable seeds for commercial farming. 
+              High yield varieties including P1-P11 and branded varieties.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {vegetableSeeds.length > 0 ? vegetableSeeds.map(product => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {hybridVegetables.length > 0 ? hybridVegetables.map(product => (
                 <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
                   <div className="relative h-48 bg-gray-100">
                     {product.images?.[0] ? (
-                      <Image
-                        src={product.images[0]}
-                        alt={product.name}
-                        fill
-                        className="object-contain p-4"
-                      />
+                      <Image src={product.images[0]} alt={product.name} fill className="object-contain p-4" />
                     ) : (
                       <div className="flex items-center justify-center h-full">
                         <Sprout className="w-16 h-16 text-gray-400" />
@@ -200,51 +227,126 @@ export default function SeedsPage() {
                   </div>
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-                    <p className="text-green-600 font-bold text-xl mb-3">
-                      Price On Request
-                    </p>
-                    <Button asChild className="w-full">
-                      <Link href={`/products/${product.slug}`}>View Details</Link>
-                    </Button>
+                    <p className="text-green-600 font-bold text-xl mb-3">{formatPrice(product)}</p>
+                    <Button asChild className="w-full"><Link href={`/products/${product.slug}`}>View Details</Link></Button>
                   </CardContent>
                 </Card>
               )) : (
-                <p className="col-span-full text-gray-500">No vegetable seeds available</p>
+                <p className="col-span-full text-gray-500">No hybrid vegetable seeds available</p>
               )}
             </div>
           </div>
         </section>
+
+        {/* Maize Seeds */}
+        {maizeSeeds.length > 0 && (
+          <section id="maize-seeds" className="py-16 bg-yellow-50">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center gap-3 mb-8">
+                <Leaf className="w-8 h-8 text-yellow-600" />
+                <h2 className="text-3xl font-bold">Maize Seeds</h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                {maizeSeeds.map(product => (
+                  <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                    <div className="relative h-48 bg-gray-100">
+                      {product.images?.[0] ? (
+                        <Image src={product.images[0]} alt={product.name} fill className="object-contain p-4" />
+                      ) : (
+                        <div className="flex items-center justify-center h-full"><Leaf className="w-16 h-16 text-gray-400" /></div>
+                      )}
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                      <p className="text-green-600 font-bold text-xl mb-3">{formatPrice(product)}</p>
+                      <Button asChild className="w-full"><Link href={`/products/${product.slug}`}>View Details</Link></Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Onion Seeds */}
+        {onionSeeds.length > 0 && (
+          <section className="py-16 bg-purple-50">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center gap-3 mb-8">
+                <Leaf className="w-8 h-8 text-purple-600" />
+                <h2 className="text-3xl font-bold">Onion & Garlic Seeds</h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                {onionSeeds.map(product => (
+                  <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                    <div className="relative h-48 bg-gray-100">
+                      {product.images?.[0] ? (
+                        <Image src={product.images[0]} alt={product.name} fill className="object-contain p-4" />
+                      ) : (
+                        <div className="flex items-center justify-center h-full"><Leaf className="w-16 h-16 text-gray-400" /></div>
+                      )}
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                      <p className="text-green-600 font-bold text-xl mb-3">{formatPrice(product)}</p>
+                      <Button asChild className="w-full"><Link href={`/products/${product.slug}`}>View Details</Link></Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* Potato Seeds */}
+        {potatoSeeds.length > 0 && (
+          <section className="py-16 bg-amber-50">
+            <div className="container mx-auto px-4">
+              <div className="flex items-center gap-3 mb-8">
+                <Leaf className="w-8 h-8 text-amber-600" />
+                <h2 className="text-3xl font-bold">Potato Seeds</h2>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                {potatoSeeds.map(product => (
+                  <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                    <div className="relative h-48 bg-gray-100">
+                      {product.images?.[0] ? (
+                        <Image src={product.images[0]} alt={product.name} fill className="object-contain p-4" />
+                      ) : (
+                        <div className="flex items-center justify-center h-full"><Leaf className="w-16 h-16 text-gray-400" /></div>
+                      )}
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                      <p className="text-green-600 font-bold text-xl mb-3">{formatPrice(product)}</p>
+                      <Button asChild className="w-full"><Link href={`/products/${product.slug}`}>View Details</Link></Button>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
         {/* Other Seeds */}
         {otherSeeds.length > 0 && (
           <section className="py-16">
             <div className="container mx-auto px-4">
               <h2 className="text-2xl font-bold mb-8">Other Seeds</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                 {otherSeeds.map(product => (
                   <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
                     <div className="relative h-48 bg-gray-100">
                       {product.images?.[0] ? (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          className="object-contain p-4"
-                        />
+                        <Image src={product.images[0]} alt={product.name} fill className="object-contain p-4" />
                       ) : (
-                        <div className="flex items-center justify-center h-full">
-                          <Leaf className="w-16 h-16 text-gray-400" />
-                        </div>
+                        <div className="flex items-center justify-center h-full"><Leaf className="w-16 h-16 text-gray-400" /></div>
                       )}
                     </div>
                     <CardContent className="p-4">
                       <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-                      <p className="text-green-600 font-bold text-xl mb-3">
-                        Price On Request
-                      </p>
-                      <Button asChild className="w-full">
-                        <Link href={`/products/${product.slug}`}>View Details</Link>
-                      </Button>
+                      <p className="text-green-600 font-bold text-xl mb-3">{formatPrice(product)}</p>
+                      <Button asChild className="w-full"><Link href={`/products/${product.slug}`}>View Details</Link></Button>
                     </CardContent>
                   </Card>
                 ))}

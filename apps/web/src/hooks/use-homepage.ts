@@ -62,6 +62,8 @@ export function useHomepageConfig() {
       const response = await api.get<HomepageConfig>('/homepage');
       return response;
     },
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 }
 

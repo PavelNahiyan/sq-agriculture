@@ -16,6 +16,8 @@ export function useCategories() {
       const response = await api.get<any>(apiEndpoints.categories.public);
       return extractArrayData<Category>(response);
     },
+    staleTime: 10 * 60 * 1000,
+    gcTime: 30 * 60 * 1000,
   });
 }
 
@@ -26,6 +28,7 @@ export function useCategoryBySlug(slug: string) {
       return api.get<Category>(apiEndpoints.categories.bySlug(slug));
     },
     enabled: !!slug,
+    staleTime: 10 * 60 * 1000,
   });
 }
 
@@ -36,6 +39,7 @@ export function useAdminCategories() {
       const response = await api.get<any>(apiEndpoints.categories.list);
       return extractArrayData<Category>(response);
     },
+    staleTime: 5 * 60 * 1000,
   });
 }
 
@@ -46,6 +50,7 @@ export function useAdminCategory(id: string) {
       return api.get<Category>(apiEndpoints.categories.byId(id));
     },
     enabled: !!id,
+    staleTime: 5 * 60 * 1000,
   });
 }
 

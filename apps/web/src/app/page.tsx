@@ -121,7 +121,7 @@ export default function HomePage() {
             slides={getHeroSlides()}
             autoPlay={true}
             interval={5000}
-            height="h-[70vh] min-h-[500px]"
+            height="h-[55vh] sm:h-[60vh] md:h-[70vh] min-h-[300px] sm:min-h-[400px] md:min-h-[500px]"
             showArrows={true}
             showDots={true}
           />

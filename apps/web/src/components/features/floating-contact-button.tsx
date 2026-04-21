@@ -40,8 +40,8 @@ export function FloatingContactButton() {
   return (
     <div
       className={cn(
-        "fixed bottom-6 z-50 flex flex-col items-end gap-3",
-        settings.position === 'bottom-left' ? "left-6 right-auto" : "right-6"
+        "fixed bottom-20 md:bottom-6 z-50 flex flex-col items-end gap-3",
+        settings.position === 'bottom-left' ? "left-4 md:left-6 right-auto" : "right-4 md:right-6"
       )}
     >
       {/* Expanded Options */}

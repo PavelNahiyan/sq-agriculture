@@ -10,6 +10,7 @@ const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://sq-agriculture.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(APP_URL),
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes',
   title: {
     default: 'SQ Agriculture Ltd. | Growing Tomorrow\'s Harvest Today',
     template: '%s | SQ Agriculture Ltd.',

@@ -311,3 +311,61 @@ html {
 .cta-button:hover::before {
   left: 100%;
 }
+
+/* Mobile-first responsive utilities */
+@layer utilities {
+  /* Safe area padding for mobile browsers */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+  
+  /* Touch-friendly tap targets (min 44px for accessibility) */
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Smooth scrolling for mobile */
+  .smooth-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  
+  /* Prevent text zoom on iOS inputs */
+  .input-no-zoom {
+    font-size: 16px;
+  }
+  
+  /* Hardware acceleration for smooth animations */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Touch-friendly button defaults */
+button, 
+[role="button"] {
+  @apply tap-target;
+}
+
+/* Input field optimizations for mobile */
+input, 
+select, 
+textarea {
+  @apply input-no-zoom;
+}

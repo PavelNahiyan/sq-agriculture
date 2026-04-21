@@ -29,6 +29,8 @@ export function useProducts(params?: { category?: string; categoryType?: string;
       const response = await api.get<any>(apiEndpoints.products.public, queryParams);
       return extractArrayData<Product>(response);
     },
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 }
 
@@ -39,6 +41,7 @@ export function useProduct(slug: string) {
       return api.get<Product>(apiEndpoints.products.bySlug(slug));
     },
     enabled: !!slug,
+    staleTime: 5 * 60 * 1000,
   });
 }
 
@@ -49,6 +52,8 @@ export function useFeaturedProducts() {
       const response = await api.get<any>(apiEndpoints.products.featured);
       return extractArrayData<Product>(response);
     },
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
   });
 }
 

@@ -11,23 +11,27 @@ import { ArrowLeft, ArrowRight, Check, Tractor, Cog, Settings, Phone, Mail, MapP
 
 export default function FieldMachineryPage() {
   const { data: products, isLoading } = useProducts({ categoryType: 'MACHINERY', limit: 200 });
+  const { data: lubricants } = useProducts({ categoryType: 'LUBRICANTS', limit: 50 });
 
   const fieldMachinery = products || [];
 
   const tractors = fieldMachinery.filter(p => 
+    p.category?.slug === 'tractors' ||
     p.name.toLowerCase().includes('tractor')
   );
 
-  const rotavators = fieldMachinery.filter(p => 
-    p.name.toLowerCase().includes('rotavator')
-  );
-
   const harvestors = fieldMachinery.filter(p => 
+    p.category?.slug === 'harvesting-machinery' ||
     p.name.toLowerCase().includes('harvester') || 
     p.name.toLowerCase().includes('combine') ||
     p.name.toLowerCase().includes('reaper') ||
     p.name.toLowerCase().includes('3037') ||
     p.name.toLowerCase().includes('zoomlion')
+  );
+
+  const rotavators = fieldMachinery.filter(p => 
+    p.category?.slug === 'rotavators' ||
+    p.name.toLowerCase().includes('rotavator')
   );
 
   const sprayMachines = fieldMachinery.filter(p => 
@@ -36,11 +40,19 @@ export default function FieldMachineryPage() {
     p.name.toLowerCase().includes('spray')
   );
 
-  const others = fieldMachinery.filter(p => 
-    p.name.toLowerCase().includes('tiller') ||
-    p.name.toLowerCase().includes('transplanter') ||
-    p.name.toLowerCase().includes('fieldking') ||
-    p.name.toLowerCase().includes('etian')
+  const replacementParts = fieldMachinery.filter(p => 
+    p.category?.slug === 'replacement-parts' ||
+    p.name.toLowerCase().includes('part') ||
+    p.name.toLowerCase().includes('spare') ||
+    p.name.toLowerCase().includes('blade') ||
+    p.name.toLowerCase().includes('belt')
+  );
+
+  const onCallService = fieldMachinery.filter(p => 
+    p.category?.slug === 'on-call-service' ||
+    p.name.toLowerCase().includes('service') ||
+    p.name.toLowerCase().includes('maintenance') ||
+    p.name.toLowerCase().includes('repair')
   );
 
   return (
@@ -67,14 +79,34 @@ export default function FieldMachineryPage() {
               <p className="text-xl text-green-100 mb-6">
                 High-performance tractors, harvesters, and rotavators for efficient farming operations.
               </p>
-              <Button asChild size="lg" className="bg-white text-green-800 hover:bg-green-100">
-                <Link href="#tractors">View Tractors</Link>
-              </Button>
+              <div className="flex flex-wrap gap-3">
+                <Button asChild size="lg" className="bg-white text-green-800 hover:bg-green-100">
+                  <Link href="#tractors">Tractors</Link>
+                </Button>
+                <Button asChild size="lg" className="bg-white text-amber-800 hover:bg-amber-100">
+                  <Link href="#harvestors">Harvestors</Link>
+                </Button>
+                <Button asChild size="lg" className="bg-white text-green-800 hover:bg-green-100">
+                  <Link href="#rotavators">Rotavators</Link>
+                </Button>
+                <Button asChild size="lg" className="bg-white text-blue-800 hover:bg-blue-100">
+                  <Link href="#spray-machines">Spray Machines</Link>
+                </Button>
+                <Button asChild size="lg" className="bg-white text-yellow-800 hover:bg-yellow-100">
+                  <Link href="#lubricants">SQ Lubricants</Link>
+                </Button>
+                <Button asChild size="lg" className="bg-white text-red-800 hover:bg-red-100">
+                  <Link href="#replacement-parts">Replacement Parts</Link>
+                </Button>
+                <Button asChild size="lg" className="bg-white text-purple-800 hover:bg-purple-100">
+                  <Link href="#on-call-service">On Call Service</Link>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Tractors Section */}
+        {/* Tractors Section - First */}
         <section id="tractors" className="py-16">
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-3 mb-8">
@@ -82,7 +114,7 @@ export default function FieldMachineryPage() {
               <h2 className="text-3xl font-bold">Tractors</h2>
             </div>
             <p className="text-gray-600 mb-8 max-w-2xl">
-              Powerful and reliable tractors from Etian, Daedong, and Zoomlion. 
+              Powerful and reliable tractors from SQ Etian. 
               From compact 32HP to heavy-duty 70HP models.
             </p>
 
@@ -145,7 +177,53 @@ export default function FieldMachineryPage() {
           </div>
         </section>
 
-        {/* Rotavators Section */}
+        {/* Harvestors Section - Second */}
+        <section id="harvestors" className="py-16 bg-amber-50">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center gap-3 mb-8">
+              <Cog className="w-8 h-8 text-amber-600" />
+              <h2 className="text-3xl font-bold">Harvestors & Combine Machines</h2>
+            </div>
+            <p className="text-gray-600 mb-8 max-w-2xl">
+              High-efficiency harvestors for fast and safe crop harvesting. 
+              Advanced technology for minimum grain loss.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {harvestors.length > 0 ? harvestors.map(product => (
+                <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className="relative h-48 bg-gray-100">
+                    {product.images?.[0] ? (
+                      <Image
+                        src={product.images[0]}
+                        alt={product.name}
+                        fill
+                        className="object-contain p-4"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <Cog className="w-16 h-16 text-gray-400" />
+                      </div>
+                    )}
+                  </div>
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                    <p className="text-green-600 font-bold text-xl mb-3">
+                      Price On Request
+                    </p>
+                    <Button asChild className="w-full">
+                      <Link href={`/products/${product.slug}`}>View Details</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              )) : (
+                <p className="col-span-full text-gray-500">No harvestors available</p>
+              )}
+            </div>
+          </div>
+        </section>
+
+        {/* Rotavators Section - Third */}
         <section id="rotavators" className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
             <div className="flex items-center gap-3 mb-8">
@@ -191,138 +269,51 @@ export default function FieldMachineryPage() {
           </div>
         </section>
 
-        {/* Harvestors Section */}
-        {harvestors.length > 0 && (
-          <section id="harvestors" className="py-16 bg-amber-50">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center gap-3 mb-8">
-                <Cog className="w-8 h-8 text-amber-600" />
-                <h2 className="text-3xl font-bold">Harvestors & Combine Machines</h2>
-              </div>
-              <p className="text-gray-600 mb-8 max-w-2xl">
-                High-efficiency harvestors for fast and safe crop harvesting. 
-                Advanced technology for minimum grain loss.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {harvestors.map(product => (
-                  <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
-                    <div className="relative h-48 bg-gray-100">
-                      {product.images?.[0] ? (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          className="object-contain p-4"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-full">
-                          <Cog className="w-16 h-16 text-gray-400" />
-                        </div>
-                      )}
-                    </div>
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-                      <p className="text-green-600 font-bold text-xl mb-3">
-                        Price On Request
-                      </p>
-                      <Button asChild className="w-full">
-                        <Link href={`/products/${product.slug}`}>View Details</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+        {/* Spray Machines Section - Fourth */}
+        <section id="spray-machines" className="py-16 bg-blue-50">
+          <div className="container mx-auto px-4">
+            <div className="flex items-center gap-3 mb-8">
+              <Cog className="w-8 h-8 text-blue-600" />
+              <h2 className="text-3xl font-bold">Spray Machines & Equipment</h2>
             </div>
-          </section>
-        )}
+            <p className="text-gray-600 mb-8 max-w-2xl">
+              Professional spray equipment for effective crop protection. 
+              Available in various capacities for different farm sizes.
+            </p>
 
-        {/* Spray Machines Section */}
-        {sprayMachines.length > 0 && (
-          <section id="spray-machines" className="py-16 bg-blue-50">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center gap-3 mb-8">
-                <Cog className="w-8 h-8 text-blue-600" />
-                <h2 className="text-3xl font-bold">Spray Machines & Equipment</h2>
-              </div>
-              <p className="text-gray-600 mb-8 max-w-2xl">
-                Professional spray equipment for effective crop protection. 
-                Available in various capacities for different farm sizes.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {sprayMachines.map(product => (
-                  <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
-                    <div className="relative h-48 bg-gray-100">
-                      {product.images?.[0] ? (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          className="object-contain p-4"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-full">
-                          <Cog className="w-16 h-16 text-gray-400" />
-                        </div>
-                      )}
-                    </div>
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-                      <p className="text-green-600 font-bold text-xl mb-3">
-                        Price On Request
-                      </p>
-                      <Button asChild className="w-full">
-                        <Link href={`/products/${product.slug}`}>View Details</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {sprayMachines.length > 0 ? sprayMachines.map(product => (
+                <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
+                  <div className="relative h-48 bg-gray-100">
+                    {product.images?.[0] ? (
+                      <Image
+                        src={product.images[0]}
+                        alt={product.name}
+                        fill
+                        className="object-contain p-4"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <Cog className="w-16 h-16 text-gray-400" />
+                      </div>
+                    )}
+                  </div>
+                  <CardContent className="p-4">
+                    <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                    <p className="text-green-600 font-bold text-xl mb-3">
+                      Price On Request
+                    </p>
+                    <Button asChild className="w-full">
+                      <Link href={`/products/${product.slug}`}>View Details</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              )) : (
+                <p className="col-span-full text-gray-500">No spray machines available</p>
+              )}
             </div>
-          </section>
-        )}
-
-        {/* Other Machinery */}
-        {others.length > 0 && (
-          <section className="py-16">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center gap-3 mb-8">
-                <Cog className="w-8 h-8 text-green-600" />
-                <h2 className="text-3xl font-bold">Other Equipment</h2>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {others.map(product => (
-                  <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
-                    <div className="relative h-48 bg-gray-100">
-                      {product.images?.[0] ? (
-                        <Image
-                          src={product.images[0]}
-                          alt={product.name}
-                          fill
-                          className="object-contain p-4"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-full">
-                          <Cog className="w-16 h-16 text-gray-400" />
-                        </div>
-                      )}
-                    </div>
-                    <CardContent className="p-4">
-                      <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-                      <p className="text-green-600 font-bold text-xl mb-3">
-                        Price On Request
-                      </p>
-                      <Button asChild className="w-full">
-                        <Link href={`/products/${product.slug}`}>View Details</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
+          </div>
+        </section>
 
         {/* Features */}
         <section className="py-16 bg-gray-50">

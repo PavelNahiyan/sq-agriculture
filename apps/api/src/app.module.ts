@@ -22,6 +22,7 @@ import { HomepageModule } from './modules/homepage/homepage.module';
 import { PageConfigModule } from './modules/page-config/page-config.module';
 import { FloatingButtonModule } from './modules/floating-button/floating-button.module';
 import { SeedModule } from './modules/seed/seed.module';
+import { SeedPartnersModule } from './modules/seed-partners/seed-partners.module';
 import { SyncMaterialsService } from './scripts/sync-materials';
 
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
@@ -69,6 +70,7 @@ import { PrismaModule } from './prisma/prisma/prisma.module';
     PageConfigModule,
     FloatingButtonModule,
     SeedModule,
+    SeedPartnersModule,
   ],
   providers: [
     {

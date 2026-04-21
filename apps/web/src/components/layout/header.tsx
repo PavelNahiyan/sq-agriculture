@@ -59,13 +59,13 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
           : 'bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#2D5A27]'
       )}
     >
-      <nav className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
+      <nav className="container mx-auto px-3 sm:px-4">
+        <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
           <Link href="/" className="flex items-center gap-2">
             <img 
               src="/uploads/logo/Bended & Non-Bended SQ Agriculture Logo For Plate Design.png" 
               alt="SQ Agriculture" 
-              className="h-12 w-auto object-contain"
+              className="h-10 sm:h-12 md:h-12 w-auto object-contain max-w-[140px] sm:max-w-none"
             />
           </Link>
 
@@ -131,16 +131,16 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
         </div>
 
         {isMenuOpen && (
-          <div className="md:hidden border-t py-4">
-            <div className="flex flex-col gap-4">
+          <div className="md:hidden border-t py-4 max-h-[70vh] overflow-y-auto">
+            <div className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    'text-sm font-medium transition-colors hover:text-primary',
+                    'text-sm font-medium transition-colors hover:bg-gray-50 px-3 py-2 rounded-lg',
                     pathname === item.href
-                      ? 'text-primary'
+                      ? 'text-primary bg-primary-50'
                       : 'text-gray-600'
                   )}
                   onClick={() => setIsMenuOpen(false)}
@@ -149,13 +149,13 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
                 </Link>
               ))}
               
-              <div className="pl-4 flex flex-col gap-2 border-l-2 border-primary/20">
-                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Products</span>
+              <div className="mt-2 pt-2 border-t">
+                <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 block mb-2">Products</span>
                 {categoryLinks.map((cat) => (
                   <Link
                     key={cat.href}
                     href={cat.href}
-                    className="text-sm font-medium text-gray-600 hover:text-primary transition-colors"
+                    className="text-sm font-medium text-gray-600 hover:text-primary transition-colors hover:bg-gray-50 px-3 py-2 rounded-lg block"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {cat.label}

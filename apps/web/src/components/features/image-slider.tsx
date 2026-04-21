@@ -29,7 +29,7 @@ export function ImageSlider({
   slides,
   autoPlay = true,
   interval = 5000,
-  height = 'h-[70vh] min-h-[500px]',
+  height = 'h-[55vh] sm:h-[60vh] md:h-[70vh] min-h-[300px] sm:min-h-[400px] md:min-h-[500px]',
   showArrows = true,
   showDots = true,
 }: ImageSliderProps) {
@@ -90,19 +90,19 @@ export function ImageSlider({
       ))}
 
       {/* Content */}
-      <div className="absolute inset-0 z-20 flex items-center">
-        <div className="container mx-auto px-4">
-          <div className="max-w-2xl">
-            {currentSlide.title && (
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 animate-fade-in">
-                {currentSlide.title}
-              </h1>
-            )}
-            {currentSlide.subtitle && (
-              <p className="text-lg md:text-xl text-white/90 mb-8 animate-fade-in">
-                {currentSlide.subtitle}
-              </p>
-            )}
+<div className="absolute inset-0 z-20 flex items-center">
+          <div className="container mx-auto px-3 sm:px-4">
+            <div className="max-w-xl lg:max-w-2xl">
+              {currentSlide.title && (
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-4 animate-fade-in">
+                  {currentSlide.title}
+                </h1>
+              )}
+              {currentSlide.subtitle && (
+                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-4 sm:mb-8 animate-fade-in">
+                  {currentSlide.subtitle}
+                </p>
+              )}
             <div className="flex flex-wrap gap-4 animate-fade-in">
               {currentSlide.ctaText && currentSlide.ctaLink && (
                 <Link href={currentSlide.ctaLink}>
