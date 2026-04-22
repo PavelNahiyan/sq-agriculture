@@ -89,7 +89,7 @@ export default function SeedsPage() {
         <section className="relative bg-gradient-to-r from-amber-700 to-amber-600 text-white py-20">
           <div className="absolute inset-0 opacity-20">
             <Image 
-              src="/uploads/products/Seeds.png" 
+              src="/uploads/covers/tormujer bichi.jpg" 
               alt="Seeds"
               fill
               className="object-cover"

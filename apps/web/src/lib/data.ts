@@ -47,6 +47,7 @@ export const categories: Category[] = [
   { id: 'cat-7', name: 'Rotavators', nameBn: 'রোটাভেটর', slug: 'rotavators', description: 'Soil preparation equipment', type: 'MACHINERY', sortOrder: 7, isActive: true, image: '/uploads/products/machinery/Rotavator.png' },
   { id: 'cat-8', name: 'Spray Machines', nameBn: 'স্প্রে মেশিন', slug: 'spray-machines', description: 'Professional spray equipment', type: 'MACHINERY', sortOrder: 8, isActive: true, image: '/uploads/products/pesticide/Real Sprayer PNG 1.png' },
   { id: 'cat-9', name: 'Lubricants', nameBn: 'লুব্রিকেন্ট', slug: 'lubricants', description: 'Quality oils for machinery', type: 'LUBRICANTS', sortOrder: 9, isActive: true, image: '/uploads/products/lube/Tractor Pro Engine Oil.png' },
+  { id: 'cat-10', name: 'Genuine Spare Parts', nameBn: 'খাঁটি খুচরা যন্ত্রাংশ', slug: 'spare-parts', description: 'Genuine spare parts for all machinery', type: 'SPARE_PARTS', sortOrder: 10, isActive: true, image: '/uploads/products/lube/GearTech Extra.png' },
 ];
 
 // Products

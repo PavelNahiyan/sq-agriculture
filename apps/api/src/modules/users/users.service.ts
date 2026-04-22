@@ -147,4 +147,22 @@ export class UsersService {
       where: { id },
     });
   }
+
+  async updateRole(id: string, role: string): Promise<Omit<User, 'password'>> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: { role },
+    });
+
+    const { password: _, ...userWithoutPassword } = updatedUser;
+    return userWithoutPassword;
+  }
 }

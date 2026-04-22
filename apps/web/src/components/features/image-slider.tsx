@@ -167,7 +167,7 @@ export function ImageSlider({
 // Default hero slider data
 export const heroSlides: SliderSlide[] = [
   {
-    image: '/uploads/sliders/slider-1.jpg',
+    image: '/uploads/covers/tractor covers.jpg',
     title: "Empowering Bangladesh's Agricultural Future",
     subtitle: 'Your trusted partner for quality seeds, crop protection, and modern farming machinery',
     ctaText: 'Explore Products',
@@ -176,7 +176,7 @@ export const heroSlides: SliderSlide[] = [
     secondaryCtaLink: '/contact',
   },
   {
-    image: '/uploads/sliders/slider-2.jpg',
+    image: '/uploads/covers/tormujer bichi.jpg',
     title: 'Premium Quality Seeds',
     subtitle: 'High-yielding hybrid varieties developed for Bangladesh climate and soil conditions',
     ctaText: 'View Seeds',
@@ -185,7 +185,7 @@ export const heroSlides: SliderSlide[] = [
     secondaryCtaLink: '/services',
   },
   {
-    image: '/uploads/sliders/slider-3.jpg',
+    image: '/uploads/covers/tractor cover 3.jpg',
     title: 'Modern Farming Machinery',
     subtitle: 'SQ Etian tractors and equipment for efficient agricultural operations',
     ctaText: 'View Machinery',
@@ -194,14 +194,14 @@ export const heroSlides: SliderSlide[] = [
     secondaryCtaLink: '/contact',
   },
   {
-    image: '/uploads/sliders/slider-4.jpg',
-    title: 'Crop Protection Solutions',
-    subtitle: 'Effective pesticides and micronutrients for healthier crops and better yields',
+    image: '/uploads/covers/harvestor cvr.jpg',
+    title: 'High-Efficiency Harvesting Solutions',
+    subtitle: 'Advanced combine harvesters for fast and safe crop harvesting',
     ctaText: 'View Products',
-    ctaLink: '/products/pesticide',
+    ctaLink: '/products/field-machinery',
   },
   {
-    image: '/uploads/sliders/slider-5.jpg',
+    image: '/uploads/covers/cover.jpg',
     title: 'Expert Agricultural Support',
     subtitle: 'Our team of agronomists is ready to help farmers across all 64 districts',
     ctaText: 'Get Support',

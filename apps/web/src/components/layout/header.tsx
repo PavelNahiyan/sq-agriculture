@@ -18,6 +18,7 @@ const categoryLinks = [
   { href: '/products/fertilizers-micronutrients', label: 'Fertilizers & Micronutrients', description: 'Plant nutrition' },
   { href: '/products/pesticide', label: 'Pesticides', description: 'Crop protection' },
   { href: '/products/field-machinery', label: 'Field Machinery', description: 'Tractors & equipment' },
+  { href: '/products/service-spare-parts', label: 'Service & Spare Parts', description: 'Lubricants, Parts & 24X7 Service' },
   { href: '/products/pre-owned-machines', label: 'Pre-Owned Machines', description: 'Certified used tractors & harvesters' },
   { href: '/products', label: 'All Products', description: 'View all products' },
 ];

@@ -3,8 +3,19 @@ import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
-// SQLite uses strings instead of enums
-const Role = { ADMIN: 'ADMIN', MANAGER: 'MANAGER', CUSTOMER: 'CUSTOMER', USER: 'USER' };
+// Updated role constants matching constants.ts
+const Role = { 
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  PAGE_EDITOR: 'PAGE_EDITOR',
+  SEED_ADMIN: 'SEED_ADMIN',
+  PESTICIDE_ADMIN: 'PESTICIDE_ADMIN',
+  FERTILIZER_ADMIN: 'FERTILIZER_ADMIN',
+  MACHINERY_ADMIN: 'MACHINERY_ADMIN',
+  ADMIN: 'ADMIN',
+  MANAGER: 'MANAGER',
+  CUSTOMER: 'CUSTOMER',
+  USER: 'USER'
+};
 const CategoryType = { SEEDS: 'SEEDS', PESTICIDES: 'PESTICIDES', FERTILIZERS: 'FERTILIZERS', MACHINERY: 'MACHINERY', MICRONUTRIENTS: 'MICRONUTRIENTS', LUBRICANTS: 'LUBRICANTS' };
 const ProductUnit = { KG: 'KG', GRAM: 'GRAM', BAG: 'BAG', UNIT: 'UNIT', LITER: 'LITER', PIECE: 'PIECE' };
 const UserType = { FARMER: 'FARMER', DEALER: 'DEALER', CORPORATE: 'CORPORATE' };
@@ -68,43 +79,100 @@ async function main() {
   ]);
   console.log('Created seed partners');
 
-  // Create Admin User
+  // Create Super Admin User
   const adminPassword = await bcrypt.hash('admin123', 10);
-  const admin = await prisma.user.create({
+  await prisma.user.create({
     data: {
       email: 'admin@sq-agriculture.com',
       password: adminPassword,
-      name: 'Admin User',
+      name: 'Super Admin',
       phone: '+8801700000000',
-      role: Role.ADMIN,
+      role: Role.SUPER_ADMIN,
       isActive: true,
     },
   });
-  console.log('Created admin user');
+  console.log('Created super admin user');
 
-  // Create Customer
-  const customerPassword = await bcrypt.hash('customer123', 10);
+  // Create Page Editor
   await prisma.user.create({
     data: {
-      email: 'customer@test.com',
-      password: customerPassword,
-      name: 'Test Customer',
-      phone: '+8801700000002',
-      role: Role.CUSTOMER,
+      email: 'page-editor@sq-agriculture.com',
+      password: adminPassword,
+      name: 'Page Editor',
+      phone: '+8801700000001',
+      role: Role.PAGE_EDITOR,
       isActive: true,
     },
   });
-  const managerPassword = await bcrypt.hash('manager123', 10);
+  console.log('Created page editor');
+
+  // Create Section Admins
+  await prisma.user.create({
+    data: {
+      email: 'seed.admin@sq-agriculture.com',
+      password: adminPassword,
+      name: 'Seed Admin',
+      phone: '+8801700000002',
+      role: Role.SEED_ADMIN,
+      isActive: true,
+    },
+  });
+  await prisma.user.create({
+    data: {
+      email: 'pesticide.admin@sq-agriculture.com',
+      password: adminPassword,
+      name: 'Pesticide Admin',
+      phone: '+8801700000003',
+      role: Role.PESTICIDE_ADMIN,
+      isActive: true,
+    },
+  });
+  await prisma.user.create({
+    data: {
+      email: 'fertilizer.admin@sq-agriculture.com',
+      password: adminPassword,
+      name: 'Fertilizer Admin',
+      phone: '+8801700000004',
+      role: Role.FERTILIZER_ADMIN,
+      isActive: true,
+    },
+  });
+  await prisma.user.create({
+    data: {
+      email: 'machinery.admin@sq-agriculture.com',
+      password: adminPassword,
+      name: 'Machinery Admin',
+      phone: '+8801700000005',
+      role: Role.MACHINERY_ADMIN,
+      isActive: true,
+    },
+  });
+  console.log('Created section admin users');
+
+  // Create Manager
   await prisma.user.create({
     data: {
       email: 'manager@sq-agriculture.com',
-      password: managerPassword,
+      password: await bcrypt.hash('manager123', 10),
       name: 'Sales Manager',
-      phone: '+8801700000001',
+      phone: '+8801700000006',
       role: Role.MANAGER,
       isActive: true,
     },
   });
+
+  // Create Customer
+  await prisma.user.create({
+    data: {
+      email: 'customer@test.com',
+      password: await bcrypt.hash('customer123', 10),
+      name: 'Test Customer',
+      phone: '+8801700000007',
+      role: Role.CUSTOMER,
+      isActive: true,
+    },
+  });
+  console.log('Created manager and customer');
 
   // Categories
   const categories = await Promise.all([
@@ -3266,7 +3334,6 @@ async function main() {
         productInterest: 'BRRI Dhan-88, Urea Fertilizer',
         message: 'Interested in bulk order for my 5 bigha paddy field.',
         status: LeadStatus.NEW,
-        assignedToId: admin.id,
       },
       {
         name: 'Green Fields Ltd.',
@@ -3277,7 +3344,6 @@ async function main() {
         productInterest: 'Power Tiller 12HP',
         message: 'Looking to purchase 10 power tillers for our contract farming operations.',
         status: LeadStatus.CONTACTED,
-        assignedToId: admin.id,
       },
       {
         name: 'Mostafa Kamal',
@@ -3288,7 +3354,6 @@ async function main() {
         productInterest: 'Organic Seeds, Drip Irrigation',
         message: 'We are looking for organic seeds and irrigation equipment for our cooperative members.',
         status: LeadStatus.QUALIFIED,
-        assignedToId: admin.id,
       },
     ],
   });
@@ -3328,14 +3393,60 @@ async function main() {
     ],
   });
 
-  console.log('Created leads and inquiries');
-  console.log('');
-  console.log('Database seeding completed successfully!');
-  console.log('');
-  console.log('Login Credentials:');
-  console.log('   Admin: admin@sq-agriculture.com / admin123');
-  console.log('   Manager: manager@sqagriculture.com / manager123');
-  console.log('   Customer: customer@test.com / customer123');
+console.log('Created leads and inquiries');
+
+  // Get super admin for leads assignment
+  const superAdmin = await prisma.user.findUnique({ where: { email: 'admin@sq-agriculture.com' } });
+  if (superAdmin) {
+    await prisma.lead.updateMany({
+      where: { status: LeadStatus.NEW },
+      data: { assignedToId: superAdmin.id },
+    });
+  }
+
+  // Create PageConfigs for each section
+  await prisma.pageConfig.upsert({
+    where: { pageName: 'seeds' },
+    update: {},
+    create: {
+      pageName: 'seeds',
+      heroTitle: 'Premium Quality Seeds',
+      heroSubtitle: 'High-yielding seeds for better harvest',
+      isActive: true,
+    },
+  });
+  await prisma.pageConfig.upsert({
+    where: { pageName: 'pesticides' },
+    update: {},
+    create: {
+      pageName: 'pesticides',
+      heroTitle: 'Effective Pesticides',
+      heroSubtitle: 'Quality pest control solutions',
+      isActive: true,
+    },
+  });
+  await prisma.pageConfig.upsert({
+    where: { pageName: 'fertilizers' },
+    update: {},
+    create: {
+      pageName: 'fertilizers',
+      heroTitle: 'Quality Fertilizers',
+      heroSubtitle: 'Essential nutrients for your crops',
+      isActive: true,
+    },
+  });
+  await prisma.pageConfig.upsert({
+    where: { pageName: 'machinery' },
+    update: {},
+    create: {
+      pageName: 'machinery',
+      heroTitle: 'Agricultural Machinery',
+      heroSubtitle: 'Modern equipment for efficient farming',
+      isActive: true,
+    },
+  });
+  console.log('Created page configs');
+
 }
 
 main()

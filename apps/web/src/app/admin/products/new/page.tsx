@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { ImageUpload } from '@/components/ui/image-upload';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -276,53 +277,18 @@ export default function AdminNewProductPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Images</CardTitle>
+                  <CardDescription>Upload product images or paste image URLs</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label>Add Image URL</Label>
-                    <div className="flex gap-2">
-                      <Input 
-                        placeholder="https://example.com/image.jpg" 
-                        id="imageUrl"
-                        className="flex-1"
-                      />
-                      <Button 
-                        type="button"
-                        variant="outline"
-                        onClick={() => {
-                          const input = document.getElementById('imageUrl') as HTMLInputElement;
-                          if (input?.value) {
-                            handleAddImageUrl(input.value);
-                            input.value = '';
-                          }
-                        }}
-                      >
-                        <Upload className="w-4 h-4 mr-2" />
-                        Add
-                      </Button>
-                    </div>
-                  </div>
-
-                  {imageUrls.length > 0 && (
-                    <div className="grid grid-cols-3 gap-4">
-                      {imageUrls.map((url, index) => (
-                        <div key={index} className="relative group">
-                          <img 
-                            src={url} 
-                            alt={`Image ${index + 1}`} 
-                            className="w-full h-24 object-cover rounded-lg border"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveImage(index)}
-                            className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                <CardContent>
+                  <ImageUpload
+                    value={imageUrls}
+                    onChange={(urls) => {
+                      setImageUrls(urls);
+                      setValue('images', urls);
+                    }}
+                    max={10}
+                    placeholder="Drop product images here or click to browse"
+                  />
                 </CardContent>
               </Card>
             </div>

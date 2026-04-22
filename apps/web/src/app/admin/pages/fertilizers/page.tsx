@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { usePageConfig, useUpdatePageConfig } from '@/hooks/use-page-config';
+import { SingleImageUpload } from '@/components/ui/image-upload';
 import { useProducts } from '@/hooks/use-products';
 import { useAdminCategories, useCreateCategory, useUpdateCategory, useDeleteCategory } from '@/hooks/use-categories';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -126,8 +127,12 @@ export default function FertilizersPageConfig() {
                 <Textarea value={formData.heroSubtitle} onChange={(e) => setFormData({ ...formData, heroSubtitle: e.target.value })} placeholder="Enter hero subtitle" rows={3} />
               </div>
               <div className="space-y-2">
-                <Label>Hero Image URL</Label>
-                <Input value={formData.heroImage} onChange={(e) => setFormData({ ...formData, heroImage: e.target.value })} placeholder="Enter image URL" />
+                <Label>Hero Image</Label>
+                <SingleImageUpload
+                  value={formData.heroImage}
+                  onChange={(url) => setFormData({ ...formData, heroImage: url })}
+                  placeholder="Upload or select hero image"
+                />
               </div>
             </CardContent>
           </Card>

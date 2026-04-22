@@ -25,7 +25,7 @@ export default function FertilizersMicronutrientsPage() {
         <section className="relative bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#1a3d16] text-white py-20">
           <div className="absolute inset-0 opacity-10">
             <Image 
-              src="/uploads/products/SQ Fertilizer.png" 
+              src="/uploads/covers/cover.jpg" 
               alt="Fertilizers and Micronutrients"
               fill
               className="object-cover"

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { SingleImageUpload } from '@/components/ui/image-upload';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { useHomepageConfig, useUpdateHomepageConfig, type HeroSlide, type Feature, type VideoUrl, type Stat, type SliderCategory } from '@/hooks/use-homepage';
@@ -261,12 +262,12 @@ export default function AdminHomepagePage() {
                         <Card key={index} className="p-4">
                           <div className="flex items-start gap-4">
                             <div className="flex-1 grid grid-cols-2 gap-4">
-                              <div>
-                                <Label className="text-xs">Image URL</Label>
-                                <Input 
+                              <div className="col-span-2">
+                                <Label className="text-xs">Hero Image</Label>
+                                <SingleImageUpload
                                   value={slide.image}
-                                  onChange={(e) => updateHeroSlide(index, 'image', e.target.value)}
-                                  placeholder="/uploads/hero1.jpg"
+                                  onChange={(url) => updateHeroSlide(index, 'image', url)}
+                                  placeholder="Upload hero slide image"
                                 />
                               </div>
                               <div>

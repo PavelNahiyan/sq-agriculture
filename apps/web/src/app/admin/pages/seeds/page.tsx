@@ -29,6 +29,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { usePageConfig, useUpdatePageConfig } from '@/hooks/use-page-config';
+import { SingleImageUpload } from '@/components/ui/image-upload';
 import { useSeedPartners, useCreateSeedPartner, useUpdateSeedPartner, useDeleteSeedPartner } from '@/hooks/use-seed-partners';
 import { useProducts, useDeleteProduct } from '@/hooks/use-products';
 import { useAdminCategories, useCreateCategory, useUpdateCategory, useDeleteCategory } from '@/hooks/use-categories';
@@ -238,11 +239,11 @@ export default function SeedsPageConfig() {
                 />
               </div>
               <div className="space-y-2">
-                <Label>Hero Image URL</Label>
-                <Input
+                <Label>Hero Image</Label>
+                <SingleImageUpload
                   value={formData.heroImage}
-                  onChange={(e) => setFormData({ ...formData, heroImage: e.target.value })}
-                  placeholder="Enter image URL or leave empty for default"
+                  onChange={(url) => setFormData({ ...formData, heroImage: url })}
+                  placeholder="Upload or select hero image"
                 />
               </div>
             </CardContent>

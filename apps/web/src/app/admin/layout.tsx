@@ -3,9 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, FolderTree, MessageSquare, Users, Settings, LogOut, Leaf, Menu, X, Bell, User as UserIcon, Loader2 } from 'lucide-react';
+import { LayoutDashboard, Package, FolderTree, MessageSquare, Users, Settings, LogOut, Leaf, Menu, X, Bell, User as UserIcon, Loader2, Shield, Bug, Droplet, Tractor, Wrench, Cog } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { ROLE_DISPLAY_NAMES, ROLE_DEFAULT_PAGES, PAGE_ROLE_MAP } from '@/lib/shared-types';
+import { AccessDenied } from '@/components/admin/access-denied';
 
 interface StoredUser {
   id: string;
@@ -14,14 +16,39 @@ interface StoredUser {
   role: string;
 }
 
-const adminNavItems = [
+const SUPER_ADMIN_NAV = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/admin/products', icon: Package, label: 'Products' },
+  { href: '/admin/products', icon: Package, label: 'All Products' },
   { href: '/admin/categories', icon: FolderTree, label: 'Categories' },
   { href: '/admin/leads', icon: MessageSquare, label: 'Leads' },
   { href: '/admin/users', icon: Users, label: 'Users' },
+  { href: '/admin/access', icon: Shield, label: 'Access Control' },
   { href: '/admin/settings', icon: Settings, label: 'Settings' },
 ];
+
+const SECTION_ADMIN_NAV = {
+  'SEED_ADMIN': [
+    { href: '/admin/pages/seeds', icon: Bug, label: 'Seeds' },
+  ],
+  'PESTICIDE_ADMIN': [
+    { href: '/admin/pages/pesticides', icon: Droplet, label: 'Pesticides' },
+  ],
+  'FERTILIZER_ADMIN': [
+    { href: '/admin/pages/fertilizers', icon: Leaf, label: 'Fertilizers' },
+  ],
+  'MACHINERY_ADMIN': [
+    { href: '/admin/pages/machinery', icon: Tractor, label: 'Machinery' },
+  ],
+  'SERVICE_ADMIN': [
+    { href: '/admin/products', icon: Package, label: 'Products' },
+    { href: '/admin/categories', icon: FolderTree, label: 'Categories' },
+    { href: '/admin/service-spare-parts', icon: Wrench, label: 'Service & Spare Parts' },
+  ],
+};
+
+const SECTION_PAGES = ['seeds', 'pesticides', 'fertilizers', 'machinery', 'service-spare-parts'];
+
+const adminRoles = ['SUPER_ADMIN', 'PAGE_EDITOR', 'SEED_ADMIN', 'PESTICIDE_ADMIN', 'FERTILIZER_ADMIN', 'MACHINERY_ADMIN', 'SERVICE_ADMIN', 'ADMIN', 'MANAGER'];
 
 function getStoredUser(): StoredUser | null {
   try {
@@ -31,6 +58,13 @@ function getStoredUser(): StoredUser | null {
     }
   } catch {}
   return null;
+}
+
+function getNavItems(role: string) {
+  if (role === 'SUPER_ADMIN') {
+    return SUPER_ADMIN_NAV;
+  }
+  return SECTION_ADMIN_NAV[role as keyof typeof SECTION_ADMIN_NAV] || [];
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -50,7 +84,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       return;
     }
 
-    if (user.role !== 'ADMIN' && user.role !== 'SUPER_ADMIN') {
+    if (!adminRoles.includes(user.role)) {
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('user');
@@ -61,6 +95,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     setCurrentUser(user);
     setIsLoading(false);
   }, [router]);
+
+  // Check page access for section admins
+  const checkPageAccess = (pathname: string, role: string): boolean => {
+    if (role === 'SUPER_ADMIN') return true;
+    if (role === 'PAGE_EDITOR' || role === 'ADMIN' || role === 'MANAGER') return true;
+    
+    // Check if accessing a section page
+    const isSectionPage = SECTION_PAGES.some(page => pathname.includes(`/admin/pages/${page}`));
+    if (!isSectionPage) return true;
+    
+    // Map page to required role
+    const page = SECTION_PAGES.find(p => pathname.includes(`/admin/pages/${p}`));
+    if (page && PAGE_ROLE_MAP[page]) {
+      return role === PAGE_ROLE_MAP[page];
+    }
+    
+    return true;
+  };
 
   useEffect(() => {
     const user = getStoredUser();
@@ -100,6 +152,21 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return <>{children}</>;
   }
 
+  // Check page access for section admins
+  if (currentUser && !checkPageAccess(pathname, currentUser.role)) {
+    const assignedPage = ROLE_DEFAULT_PAGES[currentUser.role as keyof typeof ROLE_DEFAULT_PAGES];
+    return (
+      <div className="min-h-screen bg-gray-100">
+        <AccessDenied 
+          message="You can only access your assigned pages. Contact Super Admin for access."
+          assignedPage={assignedPage}
+        />
+      </div>
+    );
+  }
+
+  const navItems = getNavItems(currentUser?.role || '');
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Top Navigation */}
@@ -135,7 +202,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
               <div className="hidden sm:block">
                 <p className="text-sm font-medium">{currentUser?.name || 'Admin User'}</p>
-                <p className="text-xs text-gray-500">{currentUser?.role === 'SUPER_ADMIN' ? 'Super Admin' : 'Administrator'}</p>
+                <p className="text-xs text-gray-500">{ROLE_DISPLAY_NAMES[currentUser?.role as keyof typeof ROLE_DISPLAY_NAMES] || 'Administrator'}</p>
               </div>
             </div>
           </div>
@@ -149,8 +216,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           isSidebarOpen ? 'w-64' : 'w-20'
         )}>
           <nav className="p-4 space-y-1">
-            {adminNavItems.map((item) => {
-              const isActive = pathname === item.href;
+            {navItems.map((item) => {
+              const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
               return (
                 <Link
                   key={item.href}
@@ -196,8 +263,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 </Link>
               </div>
               <nav className="p-4 space-y-1">
-                {adminNavItems.map((item) => {
-                  const isActive = pathname === item.href;
+                {navItems.map((item) => {
+                  const isActive = pathname === item.href || (item.href !== '/admin' && pathname.startsWith(item.href));
                   return (
                     <Link
                       key={item.href}

@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { usePageConfig, useUpdatePageConfig } from '@/hooks/use-page-config';
+import { SingleImageUpload } from '@/components/ui/image-upload';
 
 export default function GalleryPageConfig() {
   const pageName = 'gallery';
@@ -100,8 +101,12 @@ export default function GalleryPageConfig() {
                 <Input value={formData.heroSubtitle} onChange={(e) => setFormData({ ...formData, heroSubtitle: e.target.value })} placeholder="Enter page description" />
               </div>
               <div className="space-y-2">
-                <Label>Background Image URL</Label>
-                <Input value={formData.heroImage} onChange={(e) => setFormData({ ...formData, heroImage: e.target.value })} placeholder="Enter image URL" />
+                <Label>Background Image</Label>
+                <SingleImageUpload
+                  value={formData.heroImage}
+                  onChange={(url) => setFormData({ ...formData, heroImage: url })}
+                  placeholder="Upload or select background image"
+                />
               </div>
             </CardContent>
           </Card>

@@ -44,7 +44,7 @@ export default function MachineryPage() {
         <section className="relative bg-gradient-to-r from-green-900 to-green-700 text-white py-20">
           <div className="absolute inset-0 opacity-10">
             <Image 
-              src="/uploads/products/Etian.png" 
+              src="/uploads/covers/tractor cover4.jpg" 
               alt="SQ Machinery"
               fill
               className="object-cover"

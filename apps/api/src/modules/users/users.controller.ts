@@ -54,4 +54,15 @@ export class UsersController {
     await this.usersService.remove(id);
     return { message: 'User deactivated successfully' };
   }
+
+  @Patch(':id/role')
+  @Roles(Role.SUPER_ADMIN)
+  @ApiOperation({ summary: 'Update user role (Super Admin only)' })
+  @ApiResponse({ status: 200, description: 'User role updated', type: UserResponseDto })
+  async updateRole(
+    @Param('id') id: string,
+    @Body() dto: { role: string },
+  ): Promise<UserResponseDto> {
+    return this.usersService.updateRole(id, dto.role);
+  }
 }

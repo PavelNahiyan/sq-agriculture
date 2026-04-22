@@ -406,3 +406,50 @@ model SeedPartner {
 
   @@map("seed_partners")
 }
+
+// Service 24X7 Settings - Service & Spare Parts page content
+model ServiceSettings {
+  id           String   @id @default(cuid())
+  
+  // Contact Info
+  hotlinePhone String?
+  whatsapp     String?
+  email        String?
+  isActive     Boolean  @default(true)
+  
+  // Hero Section
+  heroTitle       String?
+  heroTitleBn     String?
+  heroSubtitle    String?
+  heroSubtitleBn  String?
+  
+  // SQ Lubricants Section
+  lubricantsTitle       String?
+  lubricantsTitleBn     String?
+  lubricantsDescription String?
+  lubricantsDescriptionBn String?
+  lubricantsEnabled     Boolean  @default(true)
+  
+  // Spare Parts Section
+  sparePartsTitle       String?
+  sparePartsTitleBn     String?
+  sparePartsDescription String?
+  sparePartsDescriptionBn String?
+  sparePartsEnabled     Boolean  @default(true)
+  
+  // Service 24X7 Section
+  serviceTitle       String?
+  serviceTitleBn     String?
+  serviceDescription String?
+  serviceDescriptionBn String?
+  serviceEnabled     Boolean  @default(true)
+  
+  // JSON Fields
+  serviceFeatures String @default("[]")  
+  serviceCenters  String @default("[]")  
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("service_settings")
+}

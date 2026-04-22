@@ -24,7 +24,7 @@ export default function PesticidePage() {
         <section className="relative bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#1a3d16] text-white py-20">
           <div className="absolute inset-0 opacity-10">
             <Image 
-              src="/uploads/products/Spec Zoom.png" 
+              src="/uploads/covers/cover.jpg" 
               alt="Pesticides"
               fill
               className="object-cover"
