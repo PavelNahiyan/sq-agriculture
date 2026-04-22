@@ -86,7 +86,7 @@ export default function FieldMachineryPage() {
   const sparePartsProducts = spareParts || [];
   
   const hotlinePhone = serviceSettings?.hotlinePhone || '+880 1321-219223';
-  const whatsappLink = serviceSettings?.whatsappPhone ? `https://wa.me/${serviceSettings.whatsappPhone.replace(/\D/g, '')}` : 'https://wa.me/8801321219223';
+  const whatsappLink = serviceSettings?.whatsapp ? `https://wa.me/${serviceSettings.whatsapp.replace(/\D/g, '')}` : 'https://wa.me/8801321219223';
 
   const tractors = fieldMachinery.filter(p => 
     p.category?.slug === 'tractors' ||
