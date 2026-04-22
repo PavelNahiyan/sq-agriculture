@@ -40,7 +40,7 @@ export default function FertilizersMicronutrientsPage() {
                 width={200}
                 height={80}
                 className="h-20 w-auto object-contain"
-                priority
+                unoptimized
               />
             </div>
             <div className="max-w-3xl">

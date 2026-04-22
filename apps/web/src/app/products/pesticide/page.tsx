@@ -31,7 +31,7 @@ export default function PesticidePage() {
               priority
             />
           </div>
-          <div className="container mx-auto px-4 relative z-10">
+<div className="container mx-auto px-4 relative z-10">
             <div className="flex items-center gap-4 mb-6">
               <Image 
                 src="/sq-logo.jpeg" 
@@ -39,7 +39,7 @@ export default function PesticidePage() {
                 width={200}
                 height={80}
                 className="h-20 w-auto object-contain"
-                priority
+                unoptimized
               />
             </div>
             <div className="max-w-3xl">
