@@ -32,6 +32,13 @@ export default function PesticidePage() {
             />
           </div>
           <div className="container mx-auto px-4 relative z-10">
+            <div className="flex items-center gap-4 mb-6">
+              <img 
+                src="/uploads/logo/SQ-NAfis-Crop-CAre.jpeg" 
+                alt="SQ NAfis Crop Care" 
+                className="h-20 w-auto object-contain"
+              />
+            </div>
             <div className="max-w-3xl">
               <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#85BF35]/20 border border-[#85BF35]/30 mb-4">
                 <Bug className="w-4 h-4 text-[#85BF35]" />
