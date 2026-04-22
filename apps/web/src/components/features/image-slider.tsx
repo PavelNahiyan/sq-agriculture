@@ -29,7 +29,7 @@ export function ImageSlider({
   slides,
   autoPlay = true,
   interval = 5000,
-  height = 'h-[55vh] sm:h-[60vh] md:h-[70vh] min-h-[300px] sm:min-h-[400px] md:min-h-[500px]',
+  height = 'h-[50vh] md:h-[65vh] min-h-[320px]',
   showArrows = true,
   showDots = true,
 }: ImageSliderProps) {
@@ -64,7 +64,7 @@ export function ImageSlider({
 
   return (
     <div
-      className={`relative w-full ${height} overflow-hidden`}
+      className={`relative w-full ${height} overflow-hidden bg-gray-900`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -72,7 +72,7 @@ export function ImageSlider({
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-700 ${
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
             index === currentIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'
           }`}
         >
@@ -84,8 +84,8 @@ export function ImageSlider({
             priority={index === 0}
             sizes="100vw"
           />
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
+          {/* Gradient Overlay - Darker on edges, lighter in center for content visibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-transparent md:bg-gradient-to-r md:from-black/70 md:via-black/35 md:to-transparent" />
         </div>
       ))}
 
@@ -167,7 +167,7 @@ export function ImageSlider({
 // Default hero slider data
 export const heroSlides: SliderSlide[] = [
   {
-    image: '/uploads/covers/tractor covers.jpg',
+    image: '/uploads/sliders/slider-1.jpg',
     title: "Empowering Bangladesh's Agricultural Future",
     subtitle: 'Your trusted partner for quality seeds, crop protection, and modern farming machinery',
     ctaText: 'Explore Products',
@@ -176,7 +176,7 @@ export const heroSlides: SliderSlide[] = [
     secondaryCtaLink: '/contact',
   },
   {
-    image: '/uploads/covers/tormujer bichi.jpg',
+    image: '/uploads/sliders/slider-2.jpg',
     title: 'Premium Quality Seeds',
     subtitle: 'High-yielding hybrid varieties developed for Bangladesh climate and soil conditions',
     ctaText: 'View Seeds',
@@ -185,7 +185,7 @@ export const heroSlides: SliderSlide[] = [
     secondaryCtaLink: '/services',
   },
   {
-    image: '/uploads/covers/tractor cover 3.jpg',
+    image: '/uploads/sliders/slider-3.jpg',
     title: 'Modern Farming Machinery',
     subtitle: 'SQ Etian tractors and equipment for efficient agricultural operations',
     ctaText: 'View Machinery',
@@ -194,14 +194,14 @@ export const heroSlides: SliderSlide[] = [
     secondaryCtaLink: '/contact',
   },
   {
-    image: '/uploads/covers/harvestor cvr.jpg',
+    image: '/uploads/sliders/slider-4.jpg',
     title: 'High-Efficiency Harvesting Solutions',
     subtitle: 'Advanced combine harvesters for fast and safe crop harvesting',
     ctaText: 'View Products',
     ctaLink: '/products/field-machinery',
   },
   {
-    image: '/uploads/covers/cover.jpg',
+    image: '/uploads/sliders/slider-5.jpg',
     title: 'Expert Agricultural Support',
     subtitle: 'Our team of agronomists is ready to help farmers across all 64 districts',
     ctaText: 'Get Support',
