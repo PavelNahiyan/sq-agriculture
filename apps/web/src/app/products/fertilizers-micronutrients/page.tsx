@@ -34,10 +34,13 @@ export default function FertilizersMicronutrientsPage() {
           </div>
           <div className="container mx-auto px-4 relative z-10">
             <div className="flex items-center gap-4 mb-6">
-              <img 
+              <Image 
                 src="/SQ-NAfis-Crop-CAre.jpeg" 
                 alt="SQ NAfis Crop Care" 
+                width={200}
+                height={80}
                 className="h-20 w-auto object-contain"
+                priority
               />
             </div>
             <div className="max-w-3xl">
