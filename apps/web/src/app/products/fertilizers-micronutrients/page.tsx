@@ -21,8 +21,8 @@ export default function FertilizersMicronutrientsPage() {
       <Header />
 
       <main className="flex-1 pt-16">
-        {/* Gradient Banner Bar */}
-        <div className="h-2 bg-gradient-to-r from-[#2D5A27] via-[#85BF35] to-[#2D5A27]" />
+        {/* Banner - Matching gradient border style */}
+        <div className="h-3 w-full bg-gradient-to-r from-green-900 via-[#2D5A27] to-green-900 shadow-lg" />
 
         {/* Hero Section */}
         <section className="relative bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#1a3d16] text-white py-20">

@@ -115,13 +115,11 @@ export default function HomePage() {
       <Header />
 
       <main className="flex-1">
-        {/* Gradient Banner Bar - Thick colored border */}
-        <div className="h-3 bg-gradient-to-r from-[#1a4d1a] via-primary-light to-[#1a4d1a] shadow-md" />
+        {/* Banner - New gradient style */}
+        <div className="h-3 w-full bg-gradient-to-r from-green-900 via-green-600 to-green-900 shadow-lg border-b-4 border-green-500" />
 
-        {/* Hero Image Slider with overlay */}
+        {/* Hero Section */}
         <div className="relative">
-          {/* Bottom gradient edge from slider */}
-          <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-primary-light to-transparent z-30" />
           <ImageSlider
             slides={getHeroSlides()}
             autoPlay={true}
@@ -130,7 +128,8 @@ export default function HomePage() {
             showArrows={true}
             showDots={true}
           />
-          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/40 to-transparent pointer-events-none" />
+          {/* Bottom gradient transition from slider */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent z-20 pointer-events-none" />
         </div>
 
         {/* Video Section */}
