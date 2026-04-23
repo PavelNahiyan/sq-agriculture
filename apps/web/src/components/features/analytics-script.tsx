@@ -2,10 +2,16 @@
 
 import { useEffect } from 'react';
 
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-XXXXXXXXXX';
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
 
 export function AnalyticsScript() {
   useEffect(() => {
+    const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID;
     if (!GA_MEASUREMENT_ID || GA_MEASUREMENT_ID === 'G-XXXXXXXXXX') return;
 
     const script1 = document.createElement('script');
@@ -14,19 +20,16 @@ export function AnalyticsScript() {
     document.head.appendChild(script1);
 
     window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      window.dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', GA_MEASUREMENT_ID);
+    
+    // Initialize gtag
+    const gtagFn = (...args: any[]) => {
+      window.dataLayer.push(args);
+    };
+    
+    (window as any).gtag = gtagFn;
+    gtagFn('js', new Date());
+    gtagFn('config', GA_MEASUREMENT_ID);
   }, []);
 
   return null;
-}
-
-declare global {
-  interface Window {
-    dataLayer: any[];
-    gtag: (...args: any[]) => void;
-  }
 }

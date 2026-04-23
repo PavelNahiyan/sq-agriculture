@@ -1,12 +1,12 @@
 // SQ Agriculture - Database Schema
-// Prisma ORM with SQLite (local) or PostgreSQL (production)
+// Prisma ORM with MySQL/PostgreSQL for production
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
