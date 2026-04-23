@@ -30,7 +30,10 @@ const DEFAULT_STATS = [
 ];
 
 export default function HomePage() {
-  const { data: homepageConfig, isLoading: configLoading } = useHomepageConfig();
+  const { data: homepageConfig, isLoading: configLoading, isError } = useHomepageConfig();
+
+  // Don't block rendering during initial load - show content with default data
+  const isServerOrLoading = typeof window === 'undefined' || configLoading;
   const { data: featuredProducts, isLoading } = useFeaturedProducts();
   const { data: allProducts } = useProducts();
   const { data: categories } = useCategories();
@@ -85,9 +88,13 @@ export default function HomePage() {
 
   const sliderCategories = getSliderCategories();
 
+  // Always return default slides to avoid empty slider during loading/SSR
   const getHeroSlides = () => {
-    const slides = homepageConfig?.heroSlides;
-    if (slides && Array.isArray(slides) && slides.length > 0) {
+    if (!homepageConfig?.heroSlides?.length) {
+      return heroSlides;
+    }
+    const slides = homepageConfig.heroSlides;
+    if (Array.isArray(slides) && slides.length > 0) {
       return slides.map(slide => ({
         image: slide.categoryId && !slide.image ? getCategoryImage(slide.categoryId) : slide.image || '',
         title: slide.title,
@@ -99,8 +106,9 @@ export default function HomePage() {
     return heroSlides;
   };
 
-  if (configLoading) {
-    return (
+  // Always render content - don't block on loading
+
+  return (
       <div className="min-h-screen flex flex-col">
         <Header />
         <main className="flex-1 flex items-center justify-center">
