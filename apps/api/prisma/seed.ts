@@ -38,6 +38,8 @@ async function main() {
   await prisma.product.deleteMany();
   await prisma.category.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.homepageConfig.deleteMany();
+  await prisma.pageConfig.deleteMany();
 
   console.log('Cleared existing data');
 
@@ -3403,6 +3405,80 @@ console.log('Created leads and inquiries');
       data: { assignedToId: superAdmin.id },
     });
   }
+
+  // Create HomepageConfig with default hero slides
+  const defaultHeroSlides = [
+    {
+      image: '/uploads/sliders/slider-1.jpg',
+      title: "Empowering Bangladesh's Agricultural Future",
+      subtitle: 'Your trusted partner for quality seeds, crop protection, and modern farming machinery',
+      ctaText: 'Explore Products',
+      ctaLink: '/products',
+    },
+    {
+      image: '/uploads/sliders/slider-2.jpg',
+      title: 'Premium Quality Seeds',
+      subtitle: 'High-yielding hybrid varieties developed for Bangladesh climate and soil conditions',
+      ctaText: 'View Seeds',
+      ctaLink: '/products/seeds',
+    },
+    {
+      image: '/uploads/sliders/slider-3.jpg',
+      title: 'Modern Farming Machinery',
+      subtitle: 'SQ Etian tractors and equipment for efficient agricultural operations',
+      ctaText: 'View Machinery',
+      ctaLink: '/products/field-machinery',
+    },
+    {
+      image: '/uploads/sliders/slider-4.jpg',
+      title: 'High-Efficiency Harvesting Solutions',
+      subtitle: 'Advanced combine harvesters for fast and safe crop harvesting',
+      ctaText: 'View Products',
+      ctaLink: '/products/field-machinery',
+    },
+    {
+      image: '/uploads/sliders/slider-5.jpg',
+      title: 'Expert Agricultural Support',
+      subtitle: 'Our team of agronomists is ready to help farmers across all 64 districts',
+      ctaText: 'Get Support',
+      ctaLink: '/contact',
+    },
+  ];
+
+  await prisma.homepageConfig.upsert({
+    where: { id: 'default-homepage-config' },
+    update: {
+      heroSlides: JSON.stringify(defaultHeroSlides),
+    },
+    create: {
+      id: 'default-homepage-config',
+      heroTitle: "Empowering Bangladesh's Agricultural Future",
+      heroSubtitle: 'Your trusted partner for quality seeds, crop protection, and modern farming machinery',
+      heroSlides: JSON.stringify(defaultHeroSlides),
+      heroUseCategories: false,
+      sliderCategories: '[]',
+      features: JSON.stringify([
+        { icon: 'Leaf', title: 'Premium Quality Seeds', description: 'High-yielding varieties developed for Bangladesh climate' },
+        { icon: 'Shield', title: 'Crop Protection', description: 'Effective solutions for pest and disease management' },
+        { icon: 'Truck', title: 'Nationwide Delivery', description: 'Products available across all 64 districts' },
+        { icon: 'Sprout', title: 'Expert Support', description: 'Agricultural specialists ready to assist farmers' },
+      ]),
+      videoEnabled: true,
+      videoUrls: '[]',
+      stats: JSON.stringify([
+        { value: 500, label: 'Products', suffix: '+' },
+        { value: 10000, label: 'Happy Farmers', suffix: '+' },
+        { value: 64, label: 'Districts', suffix: '' },
+        { value: 15, label: 'Years Experience', suffix: '+' },
+      ]),
+      ctaTitle: 'Ready to Transform Your Farm?',
+      ctaSubtitle: 'Get in touch with our agricultural experts today and discover the best solutions for your farming needs.',
+      ctaButtonText: 'Contact Us',
+      ctaButtonLink: '/contact',
+      isActive: true,
+    },
+  });
+  console.log('Created homepage config with hero slides');
 
   // Create PageConfigs for each section
   await prisma.pageConfig.upsert({
