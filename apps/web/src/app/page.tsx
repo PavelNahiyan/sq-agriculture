@@ -86,8 +86,9 @@ export default function HomePage() {
   const sliderCategories = getSliderCategories();
 
   const getHeroSlides = () => {
-    if (homepageConfig?.heroSlides?.length) {
-      return homepageConfig.heroSlides.map(slide => ({
+    const slides = homepageConfig?.heroSlides;
+    if (slides && Array.isArray(slides) && slides.length > 0) {
+      return slides.map(slide => ({
         image: slide.categoryId && !slide.image ? getCategoryImage(slide.categoryId) : slide.image || '',
         title: slide.title,
         subtitle: slide.subtitle,
