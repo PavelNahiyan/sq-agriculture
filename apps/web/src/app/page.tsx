@@ -115,12 +115,13 @@ export default function HomePage() {
       <Header />
 
       <main className="flex-1">
-        {/* Gradient Banner Bar */}
-        <div className="h-2 bg-gradient-to-r from-primary via-primary-light to-primary-dark" />
+        {/* Gradient Banner Bar - Thick colored border */}
+        <div className="h-3 bg-gradient-to-r from-[#1a4d1a] via-primary-light to-[#1a4d1a] shadow-md" />
 
         {/* Hero Image Slider with overlay */}
         <div className="relative">
-          <div className="border-b-4 border-x-0 border-transparent bg-gradient-to-r from-primary via-[#85BF35] to-primary-light" />
+          {/* Bottom gradient edge from slider */}
+          <div className="absolute bottom-0 left-0 right-0 h-2 bg-gradient-to-t from-primary-light to-transparent z-30" />
           <ImageSlider
             slides={getHeroSlides()}
             autoPlay={true}
