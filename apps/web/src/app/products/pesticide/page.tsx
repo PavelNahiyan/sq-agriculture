@@ -19,7 +19,10 @@ export default function PesticidePage() {
     <div className="min-h-screen flex flex-col">
       <Header />
 
-      <main className="flex-1 pt-16">
+<main className="flex-1 pt-16">
+        {/* Gradient Banner Bar */}
+        <div className="h-2 bg-gradient-to-r from-[#2D5A27] via-[#85BF35] to-[#2D5A27]" />
+
         {/* Hero Section */}
         <section className="relative bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#1a3d16] text-white py-20">
           <div className="absolute inset-0 opacity-10">
@@ -31,7 +34,7 @@ export default function PesticidePage() {
               priority
             />
           </div>
-<div className="container mx-auto px-4 relative z-10">
+ <div className="container mx-auto px-4 relative z-10">
             <div className="flex items-center gap-4 mb-6">
               <img 
                 src="https://placehold.co/200x80/2D5A27/white?text=SQ+NAFIS" 
@@ -59,7 +62,7 @@ export default function PesticidePage() {
         </section>
 
         {/* Features Bar */}
-        <section className="py-8 bg-white border-b">
+        <section className="py-8 bg-white border-b border-x-4 border-transparent bg-gradient-to-r from-[#2D5A27] via-[#85BF35] to-[#2D5A27]">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="flex items-center gap-3">

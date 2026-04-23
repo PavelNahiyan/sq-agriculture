@@ -63,7 +63,7 @@ export function ImageSlider({
   const currentSlide = slides[currentIndex];
 
   return (
-    <div
+<div
       className={`relative w-full ${height} overflow-hidden bg-gray-900`}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
@@ -84,36 +84,43 @@ export function ImageSlider({
             priority={index === 0}
             sizes="100vw"
           />
-          {/* Gradient Overlay - Darker on edges, lighter in center for content visibility */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/50 to-transparent md:bg-gradient-to-r md:from-black/70 md:via-black/35 md:to-transparent" />
+          {/* Enhanced Gradient Overlay for better content visibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
         </div>
       ))}
 
-      {/* Content */}
-<div className="absolute inset-0 z-20 flex items-center">
-          <div className="container mx-auto px-3 sm:px-4">
-            <div className="max-w-xl lg:max-w-2xl">
-              {currentSlide.title && (
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-2 sm:mb-4 animate-fade-in">
+      {/* Content - Left aligned with dark background for contrast */}
+      <div className="absolute inset-0 z-20 flex items-center">
+        <div className="container mx-auto px-3 sm:px-4">
+          <div className="max-w-2xl">
+            {/* Title with dark background card */}
+            {currentSlide.title && (
+              <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 sm:p-6 border-l-4 border-primary mb-2 sm:mb-4">
+                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
                   {currentSlide.title}
                 </h1>
-              )}
-              {currentSlide.subtitle && (
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/90 mb-4 sm:mb-8 animate-fade-in">
+              </div>
+            )}
+            {/* Subtitle */}
+            {currentSlide.subtitle && (
+              <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 max-w-xl">
+                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/95 leading-relaxed">
                   {currentSlide.subtitle}
                 </p>
-              )}
-            <div className="flex flex-wrap gap-4 animate-fade-in">
+              </div>
+            )}
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-3 sm:gap-4">
               {currentSlide.ctaText && currentSlide.ctaLink && (
                 <Link href={currentSlide.ctaLink}>
-                  <Button size="lg" className="bg-primary hover:bg-primary-dark text-white">
+                  <Button size="lg" className="bg-primary hover:bg-primary-dark text-white font-semibold shadow-lg hover:shadow-xl transition-all">
                     {currentSlide.ctaText}
                   </Button>
                 </Link>
               )}
               {currentSlide.secondaryCtaText && currentSlide.secondaryCtaLink && (
                 <Link href={currentSlide.secondaryCtaLink}>
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/20">
+                  <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-green-800 font-semibold">
                     {currentSlide.secondaryCtaText}
                   </Button>
                 </Link>
