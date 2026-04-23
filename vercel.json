@@ -3,10 +3,5 @@
   "buildCommand": "npx turbo build --filter=web",
   "outputDirectory": "apps/web/.next",
   "framework": "nextjs",
-  "installCommand": "npm install",
-  "env": {
-    "NEXT_PUBLIC_APP_URL": "@sq-agriculture-app-url",
-    "NEXT_PUBLIC_API_URL": "@sq-agriculture-api-url",
-    "NEXT_PUBLIC_GA_ID": "@sq-agriculture-ga-id"
-  }
+  "installCommand": "npm install"
 }
