@@ -60,6 +60,7 @@ export function Header({ locale = 'en', onLocaleChange }: HeaderProps) {
           : 'bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#2D5A27]'
       )}
     >
+      <div className="h-1 w-full bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600" />
       <nav className="container mx-auto px-3 sm:px-4">
         <div className="flex items-center justify-between h-14 sm:h-16 md:h-20">
           <Link href="/" className="flex items-center gap-2">

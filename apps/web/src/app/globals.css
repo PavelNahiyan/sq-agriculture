@@ -8,11 +8,12 @@
 @layer base {
   :root {
     /* Modern AgTech Palette */
-    --background: 0 0% 100%;
+    /* Cream/Off-White Background */
+    --background: 45 30% 94%;
     --foreground: 0 0% 20%;
-    --card: 0 0% 100%;
+    --card: 45 30% 97%;
     --card-foreground: 0 0% 20%;
-    --popover: 0 0% 100%;
+    --popover: 45 30% 97%;
     --popover-foreground: 0 0% 20%;
     /* Primary: Forest Green #2D5A27 */
     --primary: 105 45% 25%;
@@ -23,12 +24,12 @@
     /* Accent: Golden Yellow #FFD700 */
     --accent: 51 100% 50%;
     --accent-foreground: 0 0% 20%;
-    --muted: 0 0% 96%;
+    --muted: 45 20% 90%;
     --muted-foreground: 0 0% 45%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
+    --border: 45 20% 85%;
+    --input: 45 20% 90%;
     --ring: 105 45% 25%;
     --radius: 0.5rem;
   }
