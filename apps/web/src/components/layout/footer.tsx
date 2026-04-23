@@ -11,7 +11,7 @@ export function Footer({ locale = 'en' }: FooterProps) {
 
   return (
     <footer className="bg-primary-dark text-white">
-      <div className="h-1 w-full bg-gradient-to-r from-yellow-600 via-yellow-500 to-yellow-600" />
+      <div className="h-1 w-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.8)]" />
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {/* Company Info */}

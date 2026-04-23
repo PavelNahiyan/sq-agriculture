@@ -130,9 +130,12 @@ export default function HomePage() {
           />
         </div>
 
+        {/* Golden Border */}
+        <div className="h-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+
         {/* Video Section - Clean solid background */}
         {videoEnabled && (
-          <section className="py-16 bg-green-50 relative overflow-hidden border-b border-green-200">
+          <section className="py-16 bg-green-50 relative overflow-hidden">
             <div className="container mx-auto px-4 relative">
               <VideoPlayer
                 videos={videoUrls}
@@ -144,8 +147,11 @@ export default function HomePage() {
           </section>
         )}
 
+        {/* Golden Border */}
+        <div className="h-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+
 {/* Product Slider Section - Modern cards */}
-        <section className="py-16 bg-gradient-to-b from-green-50 to-white relative border-b border-gray-200">
+        <section className="py-16 bg-gradient-to-b from-green-50 to-white relative">
           <div className="container mx-auto px-4">
             <div className="flex items-center justify-between mb-8">
               <div>
@@ -189,8 +195,11 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Golden Border */}
+        <div className="h-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+
         {/* Features Section - Better contrast */}
-        <section className="py-16 bg-white border-b border-gray-200">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {features.map((feature, index) => {
@@ -215,6 +224,9 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* Golden Border */}
+        <div className="h-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
 
         {/* Featured Products - Better styling */}
         <section className="py-16 bg-green-50">
@@ -251,6 +263,9 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Golden Border */}
+        <div className="h-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+
         {/* Product Categories */}
         <section className="py-16 bg-green-900 text-white">
           <div className="container mx-auto px-4">
@@ -278,9 +293,12 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Golden Border */}
+        <div className="h-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+
         {/* Featured Machinery */}
         {machineryProducts.length > 0 && (
-          <section className="py-16 bg-white border-b border-gray-200">
+          <section className="py-16 bg-white">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">
@@ -305,12 +323,18 @@ export default function HomePage() {
           </section>
         )}
 
+        {/* Golden Border */}
+        <div className="h-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+
         {/* Stats Section - Clean minimal */}
-        <section className="py-16 bg-white border-t border-b border-gray-200">
+        <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
             <StatsCounter stats={stats} />
           </div>
         </section>
+
+        {/* Golden Border */}
+        <div className="h-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
 
         {/* CTA Section - Clean corporate */}
         <section className="py-16 bg-green-700">
