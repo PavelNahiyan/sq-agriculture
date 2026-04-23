@@ -200,40 +200,52 @@ export default function FieldMachineryPage() {
       </nav>
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-green-900 via-green-800 to-green-700 text-white py-16 md:py-20">
-          <div className="absolute inset-0 opacity-10">
-            <Image 
-              src="/uploads/covers/tractor cover4.jpg" 
-              alt="Field Machinery"
-              fill
-              className="object-cover"
-              priority
-            />
+        {/* Banner - Green gradient border */}
+        <div className="h-3 w-full bg-gradient-to-r from-green-900 via-green-600 to-green-900 shadow-lg" />
+
+        {/* Hero Section with Cover Images as Slider */}
+        <section className="relative h-[50vh] min-h-[300px] md:h-[60vh]">
+          {/* Cover Images Background */}
+          <div className="absolute inset-0">
+            {['/uploads/covers/tractor cover4.jpg', '/uploads/covers/tractor covers.jpg', '/uploads/covers/harvestor cvr.jpg', '/uploads/covers/cover.jpg'].map((img, i) => (
+              <Image 
+                key={i}
+                src={img}
+                alt={`Field Machinery ${i + 1}`}
+                fill
+                className={`object-cover ${i === 0 ? 'opacity-30' : 'opacity-0'}`}
+                priority={i === 0}
+              />
+            ))}
           </div>
-          <div className="absolute inset-0 bg-gradient-to-r from-green-900/90 to-green-700/80" />
-          <div className="container mx-auto px-4 relative z-10">
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-green-900/80 via-green-800/70 to-green-700/80" />
+          
+          {/* Content */}
+          <div className="relative z-10 container mx-auto px-4 flex items-center h-full">
             <div className="max-w-3xl">
-              <h1 className="text-3xl md:text-5xl font-bold mb-4">
-                Field Machineries
-              </h1>
-              <p className="text-lg md:text-xl text-green-100 mb-6">
-                High-performance tractors, harvesters, and rotavators for efficient farming operations. 
-                Your trusted partner in agricultural excellence.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                <Button asChild size="lg" className="bg-white text-green-800 hover:bg-green-100 font-semibold">
-                  <Link href="#tractors">Tractors</Link>
-                </Button>
-                <Button asChild size="lg" className="bg-white/20 text-white hover:bg-white/30 font-semibold">
-                  <Link href="#on-call-service">24/7 Service</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-semibold">
-                  <Link href="/products/service-spare-parts">View All Products</Link>
-                </Button>
+              <div className="bg-black/50 backdrop-blur-sm rounded-lg p-6 border-l-4 border-green-500">
+                <h1 className="text-3xl md:text-5xl font-bold mb-4">
+                  Field Machineries
+                </h1>
+                <p className="text-lg md:text-xl text-green-100 mb-6">
+                  High-performance tractors, harvesters, and rotavators for efficient farming operations. 
+                  Your trusted partner in agricultural excellence.
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <Button asChild size="lg" className="bg-green-600 hover:bg-green-700 text-white font-semibold">
+                    <Link href="#tractors">Tractors</Link>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10 font-semibold">
+                    <Link href="/products/service-spare-parts">View Services</Link>
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
+          
+          {/* Bottom gradient */}
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent" />
         </section>
 
         {/* Tractors Section */}
