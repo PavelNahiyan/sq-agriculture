@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Leaf, Shield, Truck, Sprout, Tractor, Cog, Play, Loader2 } from 'lucide-react';
+import { ArrowRight, Leaf, Shield, Truck, Sprout, Tractor, Cog, Play } from 'lucide-react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { ImageSlider, heroSlides } from '@/components/features/image-slider';
@@ -107,18 +107,6 @@ export default function HomePage() {
   };
 
   // Always render content - don't block on loading
-
-  return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 flex items-center justify-center">
-          <Loader2 className="w-8 h-8 animate-spin text-primary" />
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
