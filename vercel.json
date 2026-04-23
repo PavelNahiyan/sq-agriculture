@@ -1,6 +1,6 @@
 {
   "$schema": "https://vercel.com/schema.json",
-  "buildCommand": "npx turbo build --filter=web",
+  "buildCommand": "cd apps/web && npm run build",
   "outputDirectory": "apps/web/.next",
   "framework": "nextjs",
   "installCommand": "npm install"
