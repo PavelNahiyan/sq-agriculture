@@ -8,7 +8,10 @@
   ],
   "scripts": {
     "dev": "turbo dev",
+    "dev:web": "cd apps/web && npm run dev",
     "build": "turbo build",
+    "build:web": "cd apps/web && npm run build",
+    "start": "cd apps/web && npm run start",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "db:generate": "cd apps/api && npx prisma generate",

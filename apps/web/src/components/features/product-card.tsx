@@ -58,7 +58,7 @@ export function ProductCard({ product, variant = 'grid', className, locale = 'en
   return (
     <article
       className={cn(
-        'group bg-white rounded-xl border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/20',
+        'group bg-white rounded-xl border border-green-200 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-green-500',
         isList && 'flex flex-col md:flex-row',
         className
       )}

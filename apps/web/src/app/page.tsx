@@ -115,8 +115,8 @@ export default function HomePage() {
       <Header />
 
       <main className="flex-1">
-        {/* Banner - New gradient style */}
-        <div className="h-3 w-full bg-gradient-to-r from-green-900 via-green-600 to-green-900 shadow-lg border-b-4 border-green-500" />
+        {/* Banner - Clean corporate style */}
+        <div className="h-2 w-full bg-green-800 border-b-2 border-green-600" />
 
         {/* Hero Section */}
         <div className="relative">
@@ -128,17 +128,11 @@ export default function HomePage() {
             showArrows={true}
             showDots={true}
           />
-          {/* Bottom gradient transition from slider */}
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent z-20 pointer-events-none" />
         </div>
 
-        {/* Video Section */}
+        {/* Video Section - Clean solid background */}
         {videoEnabled && (
-          <section className="py-16 bg-gradient-to-br from-green-50 via-white to-green-100 relative overflow-hidden border-b border-green-200">
-            <div className="absolute inset-0 opacity-30">
-              <div className="absolute top-10 left-10 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-float" />
-              <div className="absolute bottom-10 right-10 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1.5s' }} />
-            </div>
+          <section className="py-16 bg-green-50 relative overflow-hidden border-b border-green-200">
             <div className="container mx-auto px-4 relative">
               <VideoPlayer
                 videos={videoUrls}
@@ -150,42 +144,41 @@ export default function HomePage() {
           </section>
         )}
 
-        {/* Product Slider Section with animations */}
-        <section className="py-20 bg-white relative border-b border-gray-200">
+{/* Product Slider Section - Modern cards */}
+        <section className="py-16 bg-gradient-to-b from-green-50 to-white relative border-b border-gray-200">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-12">
+            <div className="flex items-center justify-between mb-8">
               <div>
-<h2 className="text-3xl md:text-4xl font-bold mb-2 animate-fade-in-up">Explore Our Products</h2>
-                  <p className="text-gray-600 animate-fade-in-up delay-100">Quality agricultural solutions for every need</p>
+                <h2 className="text-2xl md:text-3xl font-semibold mb-2">Explore Our Products</h2>
+                <p className="text-gray-600">Quality agricultural solutions for every need</p>
               </div>
-              <Button asChild variant="outline" className="hover-glow animate-fade-in-up">
+              <Button asChild variant="outline">
                 <Link href="/products">
                   View All Products <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
             </div>
             
-            {/* Horizontal scroll product slider with animated cards */}
+            {/* Horizontal scroll product slider - Wider cards */}
             <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide">
               {sliderCategories.slice(0, 6).map((category, index) => (
                 <div 
                   key={category.id} 
-                  className="flex-shrink-0 w-72 snap-start animate-fade-in-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className="flex-shrink-0 w-80 md:w-96 snap-start"
                 >
                   <Link href={`/products/${category.slug}`}>
-                    <div className="relative h-80 rounded-xl overflow-hidden group category-card border-2 border-gray-200 hover:border-primary/50 shadow-lg hover:shadow-xl transition-all">
+                    <div className="relative h-64 rounded-xl overflow-hidden group border border-green-200 bg-gradient-to-br from-white to-green-50 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:border-green-500">
                       <img 
                         src={category.image || '/placeholder.svg'} 
                         alt={category.name} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        className="w-full h-full object-contain p-6 transition-transform duration-500 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-                      <div className="absolute bottom-0 left-0 right-0 p-6">
-                        <h3 className="text-2xl font-bold text-white mb-1 group-hover:translate-x-2 transition-transform">{category.name}</h3>
-                        <p className="text-white/80 text-sm">Click to explore</p>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                      <div className="absolute bottom-4 left-4 right-4 bg-white/10 backdrop-blur-md rounded-lg p-4 border border-white/20">
+                        <h3 className="text-lg md:text-xl font-semibold text-white tracking-tight">{category.name}</h3>
+                        <p className="text-xs text-white/80">Click to explore</p>
                       </div>
-                      <div className="absolute top-4 right-4 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
                         <ArrowRight className="w-5 h-5 text-white" />
                       </div>
                     </div>
@@ -196,11 +189,10 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Features Section with animated borders */}
-        <section className="py-20 bg-gradient-to-br from-green-50 via-white to-green-100 relative border-b border-green-200">
-          <div className="absolute inset-0 bg-[url('/pattern.svg')] opacity-5" />
-          <div className="container mx-auto px-4 relative">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {/* Features Section - Better contrast */}
+        <section className="py-16 bg-white border-b border-gray-200">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {features.map((feature, index) => {
                 const IconComponent = feature.icon === 'Shield' ? Shield : 
                                    feature.icon === 'Truck' ? Truck : 
@@ -208,18 +200,14 @@ export default function HomePage() {
                 return (
                   <Card 
                     key={index} 
-                    className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group gradient-border"
-                    style={{ animationDelay: `${index * 100}ms` }}
+                    className="border border-green-200 shadow-sm hover:shadow-md transition-all duration-300 hover:border-green-500"
                   >
-                    <CardContent className="pt-6 text-center relative">
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      <div className="relative">
-                        <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-300">
-                          <IconComponent className="w-7 h-7 text-primary" />
-                        </div>
-                        <h3 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">{feature.title}</h3>
-                        <p className="text-gray-600 text-sm">{feature.description}</p>
+                    <CardContent className="pt-6 text-center">
+                      <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-green-100 flex items-center justify-center">
+                        <IconComponent className="w-6 h-6 text-green-700" />
                       </div>
+                      <h3 className="font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                      <p className="text-gray-600 text-sm">{feature.description}</p>
                     </CardContent>
                   </Card>
                 );
@@ -228,15 +216,15 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Featured Products */}
-        <section className="py-20">
+        {/* Featured Products - Better styling */}
+        <section className="py-16 bg-green-50">
           <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between mb-12">
+            <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold mb-2 animate-fade-in-up">Featured Products</h2>
-                <p className="text-gray-600 animate-fade-in-up delay-100">Discover our most popular products</p>
+                <h2 className="text-2xl md:text-3xl font-semibold mb-2">Featured Products</h2>
+                <p className="text-gray-600">Discover our most popular products</p>
               </div>
-              <Button asChild variant="outline" className="hover-glow animate-fade-in-up">
+              <Button asChild variant="outline">
                 <Link href="/products">
                   View All <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
@@ -252,13 +240,7 @@ export default function HomePage() {
             ) : featuredProducts && featuredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {featuredProducts.slice(0, 4).map((product, index) => (
-                  <div 
-                    key={product.id} 
-                    className="animate-fade-in-up"
-                    style={{ animationDelay: `${index * 100}ms` }}
-                  >
-                    <ProductCard product={product} />
-                  </div>
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (
@@ -270,11 +252,11 @@ export default function HomePage() {
         </section>
 
         {/* Product Categories */}
-        <section className="py-20 bg-gradient-to-r from-green-900 via-green-800 to-green-900 text-white">
+        <section className="py-16 bg-green-900 text-white">
           <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in-up">Our Product Categories</h2>
-              <p className="text-white/80 max-w-2xl mx-auto animate-fade-in-up delay-100">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-semibold mb-3">Our Product Categories</h2>
+              <p className="text-white/80 max-w-2xl mx-auto">
                 Comprehensive solutions for every farming need
               </p>
             </div>
@@ -282,13 +264,12 @@ export default function HomePage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
               {categories?.slice(0, 6).map((category, index) => (
                 <Link key={category.id} href={`/products/${category.slug}`}>
-                  <Card className="bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20 hover:scale-105 transition-all cursor-pointer h-full group animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
+                  <Card className="bg-green-800 border-green-700 text-white hover:bg-green-700 hover:scale-105 transition-all cursor-pointer h-full">
                     <CardContent className="p-4 text-center">
-                      <div className="w-12 h-12 mx-auto mb-2 rounded-full bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <Sprout className="w-8 h-8" />
+                      <div className="w-10 h-10 mx-auto mb-2 rounded-full bg-green-700 flex items-center justify-center">
+                        <Sprout className="w-6 h-6" />
                       </div>
-                      <h3 className="text-base font-bold mb-1">{category.name}</h3>
-                      <p className="text-white/70 text-xs">Click to view</p>
+                      <h3 className="text-sm font-semibold mb-1">{category.name}</h3>
                     </CardContent>
                   </Card>
                 </Link>
@@ -299,17 +280,17 @@ export default function HomePage() {
 
         {/* Featured Machinery */}
         {machineryProducts.length > 0 && (
-          <section className="py-20 bg-white border-b border-gray-200">
+          <section className="py-16 bg-white border-b border-gray-200">
             <div className="container mx-auto px-4">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-3 animate-slide-in-left">
-                  <Tractor className="w-8 h-8 text-green-600" />
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  <Tractor className="w-7 h-7 text-green-600" />
                   <div>
-                    <h2 className="text-3xl font-bold">Featured Machinery</h2>
-                    <p className="text-gray-600">Premium tractors and farm equipment</p>
+                    <h2 className="text-2xl font-semibold">Featured Machinery</h2>
+                    <p className="text-gray-600 text-sm">Premium tractors and farm equipment</p>
                   </div>
                 </div>
-                <Button asChild variant="outline" className="animate-slide-in-right">
+                <Button asChild variant="outline">
                   <Link href="/products/field-machinery">
                     View All <ArrowRight className="w-4 h-4 ml-2" />
                   </Link>
@@ -317,41 +298,33 @@ export default function HomePage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {machineryProducts.map((product, index) => (
-                  <div key={product.id} className="animate-fade-in-up" style={{ animationDelay: `${index * 100}ms` }}>
-                    <ProductCard product={product} />
-                  </div>
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             </div>
           </section>
         )}
 
-        {/* Stats Section with animated counters */}
-        <section className="py-20 bg-white relative overflow-hidden border-t border-b border-gray-200">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
-          <div className="container mx-auto px-4 relative">
+        {/* Stats Section - Clean minimal */}
+        <section className="py-16 bg-white border-t border-b border-gray-200">
+          <div className="container mx-auto px-4">
             <StatsCounter stats={stats} />
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-r from-primary to-primary-light relative overflow-hidden">
-          <div className="absolute inset-0">
-            <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-float" />
-            <div className="absolute bottom-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-float" style={{ animationDelay: '1.5s' }} />
-          </div>
-          <div className="container mx-auto px-4 text-center relative">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white animate-fade-in-up">
+        {/* CTA Section - Clean corporate */}
+        <section className="py-16 bg-green-700">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-2xl md:text-3xl font-semibold mb-3 text-white">
               {homepageConfig?.ctaTitle || 'Ready to Transform Your Farm?'}
             </h2>
-            <p className="text-white/80 max-w-2xl mx-auto mb-8 animate-fade-in-up delay-100">
+            <p className="text-white/80 max-w-2xl mx-auto mb-6">
               {homepageConfig?.ctaSubtitle || 'Get in touch with our agricultural experts today and discover the best solutions for your farming needs.'}
             </p>
             <Button 
               asChild 
               size="lg" 
               variant="secondary"
-              className="cta-button animate-scale-in delay-200"
             >
               <Link href={homepageConfig?.ctaButtonLink || '/contact'}>
                 {homepageConfig?.ctaButtonText || 'Contact Us'} <ArrowRight className="w-4 h-4 ml-2" />

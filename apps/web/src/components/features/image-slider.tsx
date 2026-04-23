@@ -62,9 +62,9 @@ export function ImageSlider({
 
   const currentSlide = slides[currentIndex];
 
-  return (
-<div
-      className={`relative w-full ${height} overflow-hidden bg-gray-900`}
+return (
+    <div
+      className="relative mx-4 md:mx-8 mt-6 rounded-2xl overflow-hidden border border-green-300 shadow-md ring-1 ring-green-200/50"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -84,43 +84,39 @@ export function ImageSlider({
             priority={index === 0}
             sizes="100vw"
           />
-          {/* Enhanced Gradient Overlay for better content visibility */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+          {/* Clean overlay for readability */}
+          <div className="absolute inset-0 bg-black/40" />
         </div>
       ))}
 
-      {/* Content - Left aligned with dark background for contrast */}
+      {/* Content - Glass effect container */}
       <div className="absolute inset-0 z-20 flex items-center">
         <div className="container mx-auto px-3 sm:px-4">
           <div className="max-w-2xl">
-            {/* Title with dark background card */}
+            {/* Title */}
             {currentSlide.title && (
-              <div className="bg-black/60 backdrop-blur-sm rounded-lg p-4 sm:p-6 border-l-4 border-primary mb-2 sm:mb-4">
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight">
-                  {currentSlide.title}
-                </h1>
-              </div>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-white tracking-tight">
+                {currentSlide.title}
+              </h1>
             )}
             {/* Subtitle */}
             {currentSlide.subtitle && (
-              <div className="bg-black/50 backdrop-blur-sm rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 max-w-xl">
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/95 leading-relaxed">
-                  {currentSlide.subtitle}
-                </p>
-              </div>
+              <p className="text-base md:text-lg text-white/90 leading-relaxed mt-4">
+                {currentSlide.subtitle}
+              </p>
             )}
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-3 sm:gap-4">
               {currentSlide.ctaText && currentSlide.ctaLink && (
                 <Link href={currentSlide.ctaLink}>
-                  <Button size="lg" className="bg-primary hover:bg-primary-dark text-white font-semibold shadow-lg hover:shadow-xl transition-all">
+                  <Button size="lg" className="bg-green-700 hover:bg-green-800 text-white shadow-md hover:shadow-lg transition-all">
                     {currentSlide.ctaText}
                   </Button>
                 </Link>
               )}
               {currentSlide.secondaryCtaText && currentSlide.secondaryCtaLink && (
                 <Link href={currentSlide.secondaryCtaLink}>
-                  <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-green-800 font-semibold">
+                  <Button size="lg" variant="outline" className="border border-white text-white hover:bg-white hover:text-green-800 backdrop-blur-sm">
                     {currentSlide.secondaryCtaText}
                   </Button>
                 </Link>
@@ -135,17 +131,17 @@ export function ImageSlider({
         <>
           <button
             onClick={goToPrev}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors flex items-center justify-center text-white"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors flex items-center justify-center text-white"
             aria-label="Previous slide"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={goToNext}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors flex items-center justify-center text-white"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors flex items-center justify-center text-white"
             aria-label="Next slide"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </>
       )}
@@ -157,9 +153,9 @@ export function ImageSlider({
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
+              className={`w-2.5 h-2.5 rounded-full transition-all ${
                 index === currentIndex
-                  ? 'bg-white w-8'
+                  ? 'bg-white w-6'
                   : 'bg-white/50 hover:bg-white/70'
               }`}
               aria-label={`Go to slide ${index + 1}`}
