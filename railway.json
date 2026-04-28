@@ -2,8 +2,8 @@
   "$schema": "https://railway.app/schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "cd apps/api && npm install && npx prisma generate && npm run build",
-    "startCommand": "cd apps/api && node dist/main.js"
+    "buildCommand": "npm install && cd apps/api && npx prisma generate && npm run build",
+    "startCommand": "node apps/api/dist/main.js"
   },
   "deploy": {
     "numReplicas": 1,
@@ -15,7 +15,7 @@
     "production": {
       "build": {
         "builder": "NIXPACKS",
-        "buildCommand": "cd apps/api && npm install && npx prisma generate && npm run build"
+        "buildCommand": "npm install && cd apps/api && npx prisma generate && npm run build"
       }
     }
   }
