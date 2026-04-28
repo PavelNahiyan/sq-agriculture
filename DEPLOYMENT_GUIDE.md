@@ -1,10 +1,14 @@
-# AWS Deployment Guide - SQ Agriculture
+# Deployment Guide - SQ Agriculture
+
+## Quick Deploy (Recommended)
+- **Frontend**: Vercel (Next.js)
+- **Backend**: Railway (NestJS + PostgreSQL)
 
 ## Prerequisites
-- AWS Account
-- Cloudinary Account (cloud_name, api_key, api_secret)
-- Domain: sqagriculture.com
-- SSH key pair for EC2
+- GitHub Account (repo: PavelNahiyan/sq-agriculture)
+- Vercel Account
+- Railway Account
+- Domain: sqagriculture.com (optional)
 
 ---
 

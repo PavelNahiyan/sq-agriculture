@@ -325,6 +325,29 @@ model ActivityLog {
   @@map("activity_logs")
 }
 
+model HeroSlide {
+  id          String   @id @default(uuid())
+  title       String
+  titleBn     String?
+  subtitle    String?
+  subtitleBn  String?
+  image       String
+  mobileImage  String?
+  ctaText     String?
+  ctaLink     String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  backgroundColor String? @default("#2D5016")
+  textColor   String? @default("#FFFFFF")
+  overlayOpacity Float? @default(0.4)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([order])
+  @@map("hero_slides")
+}
+
 model HomepageConfig {
   id                  String   @id @default(uuid())
   
