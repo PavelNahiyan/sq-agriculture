@@ -30,18 +30,6 @@ export function useProducts(params?: { category?: string; categoryType?: string;
       return extractArrayData<Product>(response);
     },
     staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
-  });
-}
-
-export function useProduct(slug: string) {
-  return useQuery({
-    queryKey: ['product', slug],
-    queryFn: async () => {
-      return api.get<Product>(apiEndpoints.products.bySlug(slug));
-    },
-    enabled: !!slug,
-    staleTime: 5 * 60 * 1000,
   });
 }
 
@@ -53,7 +41,17 @@ export function useFeaturedProducts() {
       return extractArrayData<Product>(response);
     },
     staleTime: 5 * 60 * 1000,
-    gcTime: 10 * 60 * 1000,
+  });
+}
+
+export function useProduct(slug: string) {
+  return useQuery({
+    queryKey: ['product', slug],
+    queryFn: async () => {
+      return api.get<Product>(apiEndpoints.products.bySlug(slug));
+    },
+    enabled: !!slug,
+    staleTime: 5 * 60 * 1000,
   });
 }
 
@@ -132,11 +130,21 @@ export function useDeleteProduct() {
   
   return useMutation({
     mutationFn: async (id: string) => {
-      return api.delete<Product>(apiEndpoints.products.byId(id));
+      return api.delete(apiEndpoints.products.byId(id));
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['products'] });
       queryClient.invalidateQueries({ queryKey: ['admin', 'products'] });
+    },
+  });
+}
+
+export function useCategories() {
+  return useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const response = await api.get<any>(apiEndpoints.categories.list);
+      return extractArrayData<Category>(response);
     },
   });
 }

@@ -2,16 +2,16 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { ArrowRight, Leaf, Shield, Truck, Sprout, Play } from 'lucide-react';
+import { ArrowRight, Leaf, Shield, Truck, Sprout } from 'lucide-react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
-import Image from 'next/image';
-import { ProductCard, ProductCardSkeleton } from '@/components/features/product-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useFeaturedProducts, useProducts } from '@/hooks/use-products';
-import { useCategories } from '@/hooks/use-categories';
-import { useHeroSlides } from '@/hooks/use-hero-slides';
+import { useHeroSlides, HeroSlide } from '@/hooks/use-hero-slides';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '@/lib/api';
+import Image from 'next/image';
 import { StatsCounter } from '@/components/features/stats-counter';
 
 const DEFAULT_FEATURES = [
@@ -25,12 +25,13 @@ export default function HomePage() {
   const { data: heroSlides, isLoading: slidesLoading } = useHeroSlides(true);
   const { data: featuredProducts, isLoading } = useFeaturedProducts();
   const { data: allProducts } = useProducts();
-  const { data: categories } = useCategories();
-
-  const machineryProducts = allProducts?.filter(p => 
-    p.category?.type === 'MACHINERY' || 
-    p.name.toLowerCase().includes('tractor')
-  ).slice(0, 4) || [];
+  const { data: categories } = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => {
+      const response: any = await api.get('/categories');
+      return response.data;
+    },
+  });
 
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [isPaused, setIsPaused] = React.useState(false);
@@ -143,6 +144,9 @@ export default function HomePage() {
           )}
         </div>
 
+        {/* Golden Border */}
+        <div className="h-1 bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.6)]" />
+
         {/* Features Section */}
         <section className="py-16 bg-white">
           <div className="container mx-auto px-4">
@@ -183,13 +187,13 @@ export default function HomePage() {
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {Array.from({ length: 4 }).map((_, i) => (
-                  <ProductCardSkeleton key={i} />
+                  <div key={i} className="bg-gray-200 animate-pulse h-64 rounded-lg" />
                 ))}
               </div>
             ) : featuredProducts && featuredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {featuredProducts.slice(0, 4).map((product) => (
-                  <ProductCard key={product.id} product={product} />
+                {featuredProducts.slice(0, 4).map((product: any) => (
+                  <div key={product.id} className="bg-gray-200 animate-pulse h-64 rounded-lg" />
                 ))}
               </div>
             ) : (
