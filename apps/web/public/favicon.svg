@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="16" fill="#2D5016"/>
+  <text x="50" y="58" font-family="Arial,sans-serif" font-size="36" font-weight="bold" fill="#D4A574" text-anchor="middle" dominant-baseline="middle">SQ</text>
+  <path d="M20 75 Q30 60 40 70 Q50 55 60 65 Q70 50 80 60" stroke="#D4A574" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>

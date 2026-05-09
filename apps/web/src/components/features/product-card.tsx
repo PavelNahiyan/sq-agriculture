@@ -72,7 +72,7 @@ export function ProductCard({ product, variant = 'grid', className, locale = 'en
         )}
       >
         <Image
-          src={product.images?.[0] || '/placeholder-product.jpg'}
+          src={product.images?.[0] || '/placeholder-product.svg'}
           alt={locale === 'bn' && product.nameBn ? product.nameBn : product.name}
           fill
           className={cn(

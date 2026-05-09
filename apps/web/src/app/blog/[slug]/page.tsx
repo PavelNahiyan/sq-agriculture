@@ -59,7 +59,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       <main className="flex-1 pt-20">
         <section className="relative h-[40vh] min-h-[300px]">
           <img
-            src={post.image || '/placeholder.jpg'}
+            src={post.image || '/placeholder.svg'}
             alt={post.title}
             className="w-full h-full object-cover"
           />

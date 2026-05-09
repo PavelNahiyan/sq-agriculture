@@ -52,7 +52,7 @@ export default function BlogPage() {
                 <Card className="overflow-hidden hover:shadow-xl transition-shadow md:flex">
                   <div className="relative md:w-1/2 h-64 md:h-auto">
                     <img
-                      src={featuredPost.image || '/placeholder.jpg'}
+                      src={featuredPost.image || '/placeholder.svg'}
                       alt={featuredPost.title}
                       className="w-full h-full object-cover"
                     />
