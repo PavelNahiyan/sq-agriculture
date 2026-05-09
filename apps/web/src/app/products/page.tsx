@@ -27,7 +27,6 @@ const categoryOptions = [
   { value: 'MACHINERY', label: 'Machinery' },
   { value: 'LUBRICANTS', label: 'Lubricants' },
   { value: 'SPARE_PARTS', label: 'Spare Parts' },
-  { value: 'SERVICE_SPARES', label: 'Service & Spare Parts' },
 ];
 
 export default function ProductsPage() {

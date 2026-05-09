@@ -2,6 +2,7 @@
             SQ AGRICULTURE WEBSITE - DEPLOYMENT GUIDE
 ================================================================================
 
+NOTE: See DEPLOYMENT_GUIDE.md for the most up-to-date deployment instructions.
 This guide provides step-by-step instructions to deploy the SQ Agriculture 
 website to production using Vercel (frontend) and Railway (backend).
 

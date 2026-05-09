@@ -118,13 +118,13 @@ export function Footer({ locale = 'en' }: FooterProps) {
 
             {/* Social Links */}
             <div className="flex gap-4 mt-4">
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+              <a href="https://facebook.com/sqagriculture" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+              <a href="https://twitter.com/sqagriculture" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors" aria-label="Twitter">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+              <a href="https://youtube.com/@sqagriculture" target="_blank" rel="noopener noreferrer" className="text-gray-300 hover:text-white transition-colors" aria-label="YouTube">
                 <Youtube className="w-5 h-5" />
               </a>
             </div>

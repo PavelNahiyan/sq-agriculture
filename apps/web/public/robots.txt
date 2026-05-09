@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sq-agriculture.com/sitemap.xml

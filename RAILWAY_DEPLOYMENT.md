@@ -1,4 +1,5 @@
 # Railway Deployment - Environment Variables Reference
+> **Note:** See [DEPLOYMENT_GUIDE.md](./DEPLOYMENT_GUIDE.md) for the full deployment walkthrough.
 
 # ===========================================
 # NESTJS BACKEND (Railway)
