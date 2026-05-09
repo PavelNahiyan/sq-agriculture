@@ -5,7 +5,7 @@ import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard';
 import { RolesGuard } from '@/common/guards/roles.guard';
 import { CurrentUser } from '@/common/decorators/current-user.decorator';
 
-@Controller('api/pages')
+@Controller('pages')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class PageConfigController {
   constructor(private readonly pageConfigService: PageConfigService) {}

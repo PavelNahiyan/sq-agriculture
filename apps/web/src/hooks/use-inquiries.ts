@@ -68,3 +68,16 @@ export function useCreateInquiry() {
     },
   });
 }
+
+export function useDeleteInquiry() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return api.delete<Inquiry>(`/api/v1/inquiries/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['inquiries'] });
+    },
+  });
+}

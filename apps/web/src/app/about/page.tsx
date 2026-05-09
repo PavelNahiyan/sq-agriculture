@@ -9,6 +9,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { PageHeroSlider, pageHeroSlides } from '@/components/features/page-hero-slider';
 
 export default function AboutPage() {
   const values = [
@@ -42,24 +43,8 @@ export default function AboutPage() {
       <Header />
 
       <main className="flex-1 pt-20">
-        {/* Hero Section */}
-        <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920"
-              alt="Agricultural field"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-dark/90 to-primary/70" />
-          </div>
-          <div className="relative z-10 container mx-auto px-4 text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">About SQ Agriculture</h1>
-            <p className="text-lg text-white/90 max-w-2xl mx-auto">
-              Empowering Bangladeshi farmers with quality agricultural solutions since 2009
-            </p>
-          </div>
-        </section>
+        {/* Page Hero Slider */}
+        <PageHeroSlider slides={pageHeroSlides.about} />
 
         {/* Mission & Vision */}
         <section className="py-20 bg-white">

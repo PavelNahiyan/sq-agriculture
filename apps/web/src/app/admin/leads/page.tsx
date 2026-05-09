@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, Search } from 'lucide-react';
+import { Loader2, Search, Trash2 } from 'lucide-react';
 import { AdminLayout } from '@/components/layout/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
-import { useLeads, useUpdateLead } from '@/hooks/use-leads';
+import { useLeads, useUpdateLead, useDeleteLead } from '@/hooks/use-leads';
 import type { Lead, LeadStatus } from '@/lib/shared-types';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,10 +26,12 @@ type LeadFormData = z.infer<typeof leadSchema>;
 export default function AdminLeadsPage() {
   const { data: leads, isLoading } = useLeads();
   const updateLead = useUpdateLead();
+  const deleteLead = useDeleteLead();
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const [statusFilter, setStatusFilter] = React.useState<string>('all');
   const [editingLead, setEditingLead] = React.useState<Lead | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = React.useState<string | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<LeadFormData>({
     resolver: zodResolver(leadSchema),
@@ -55,6 +57,15 @@ export default function AdminLeadsPage() {
       reset();
     } catch (error) {
       console.error('Failed to update lead:', error);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteLead.mutateAsync(id);
+      setDeleteConfirmId(null);
+    } catch (error) {
+      console.error('Failed to delete lead:', error);
     }
   };
 
@@ -154,16 +165,26 @@ export default function AdminLeadsPage() {
                           {new Date(lead.createdAt).toLocaleDateString()}
                         </td>
                         <td className="py-3 px-4 text-right">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => {
-                              setEditingLead(lead);
-                              reset({ status: lead.status, notes: lead.notes });
-                            }}
-                          >
-                            Update Status
-                          </Button>
+                          <div className="flex items-center justify-end gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => {
+                                setEditingLead(lead);
+                                reset({ status: lead.status, notes: lead.notes });
+                              }}
+                            >
+                              Update Status
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-red-600 hover:text-red-700"
+                              onClick={() => setDeleteConfirmId(lead.id)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -226,6 +247,48 @@ export default function AdminLeadsPage() {
                 </Button>
               </DialogFooter>
             </form>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Lead</DialogTitle>
+            </DialogHeader>
+            <p>Are you sure you want to delete this lead? This action cannot be undone.</p>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDeleteConfirmId(null)}>
+                Cancel
+              </Button>
+              <Button 
+                variant="destructive" 
+                onClick={() => deleteConfirmId && handleDelete(deleteConfirmId)}
+                disabled={deleteLead.isPending}
+              >
+                {deleteLead.isPending ? 'Deleting...' : 'Delete'}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Lead</DialogTitle>
+            </DialogHeader>
+            <p>Are you sure you want to delete this lead? This action cannot be undone.</p>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDeleteConfirmId(null)}>
+                Cancel
+              </Button>
+              <Button 
+                variant="destructive" 
+                onClick={() => deleteConfirmId && handleDelete(deleteConfirmId)}
+                disabled={deleteLead.isPending}
+              >
+                {deleteLead.isPending ? 'Deleting...' : 'Delete'}
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>

@@ -8,11 +8,11 @@ import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { useFeaturedProducts, useProducts } from '@/hooks/use-products';
-import { useHeroSlides, HeroSlide } from '@/hooks/use-hero-slides';
-import { useQuery } from '@tanstack/react-query';
-import { api } from '@/lib/api';
+import { useHeroSlides } from '@/hooks/use-hero-slides';
+import type { HeroSlide } from '@/lib/shared-types';
 import Image from 'next/image';
 import { StatsCounter } from '@/components/features/stats-counter';
+import { ProductCard } from '@/components/features/product-card';
 
 const DEFAULT_FEATURES = [
   { icon: Leaf, title: 'Premium Quality Seeds', description: 'High-yielding varieties developed for Bangladesh climate' },
@@ -24,14 +24,6 @@ const DEFAULT_FEATURES = [
 export default function HomePage() {
   const { data: heroSlides, isLoading: slidesLoading } = useHeroSlides(true);
   const { data: featuredProducts, isLoading } = useFeaturedProducts();
-  const { data: allProducts } = useProducts();
-  const { data: categories } = useQuery({
-    queryKey: ['categories'],
-    queryFn: async () => {
-      const response: any = await api.get('/categories');
-      return response.data;
-    },
-  });
 
   const [currentSlide, setCurrentSlide] = React.useState(0);
   const [isPaused, setIsPaused] = React.useState(false);
@@ -193,7 +185,7 @@ export default function HomePage() {
             ) : featuredProducts && featuredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 {featuredProducts.slice(0, 4).map((product: any) => (
-                  <div key={product.id} className="bg-gray-200 animate-pulse h-64 rounded-lg" />
+                  <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             ) : (

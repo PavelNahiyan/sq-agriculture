@@ -91,3 +91,17 @@ export function useCreateLead() {
     },
   });
 }
+
+export function useDeleteLead() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return api.delete<Lead>(`/api/v1/leads/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['leads'] });
+      queryClient.invalidateQueries({ queryKey: ['leads', 'stats'] });
+    },
+  });
+}

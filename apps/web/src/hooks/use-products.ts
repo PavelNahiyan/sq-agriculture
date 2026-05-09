@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api, apiEndpoints } from '@/lib/api';
-import type { Product, Category } from '@/lib/shared-types';
+import type { Product } from '@/lib/shared-types';
 
 interface PaginatedResponse<T> {
   data: T[];
@@ -11,15 +11,15 @@ function extractArrayData<T>(response: any): T[] {
   if (Array.isArray(response)) return response;
   if (response && Array.isArray(response.data)) return response.data;
   if (response && Array.isArray(response.items)) return response.items;
+  if (response?.data?.data && Array.isArray(response.data.data)) return response.data.data;
   return [];
 }
 
-export function useProducts(params?: { category?: string; categoryType?: string; featured?: boolean; search?: string; limit?: number; isPreOwned?: boolean }) {
+export function useProducts(params?: { categoryType?: string; featured?: boolean; search?: string; limit?: number; isPreOwned?: boolean }) {
   return useQuery({
     queryKey: ['products', params],
     queryFn: async () => {
       const queryParams: Record<string, string> = {};
-      if (params?.category) queryParams.category = params.category;
       if (params?.categoryType) queryParams.categoryType = params.categoryType;
       if (params?.featured) queryParams.featured = 'true';
       if (params?.search) queryParams.search = params.search;
@@ -59,7 +59,7 @@ export function usePreOwnedProducts() {
   return useQuery({
     queryKey: ['products', 'pre-owned'],
     queryFn: async () => {
-      const response = await api.get<any>('/api/v1/products/public', { isPreOwned: 'true', limit: '100' });
+      const response = await api.get<any>(apiEndpoints.products.preOwned, { limit: '100' });
       return extractArrayData<Product>(response);
     },
   });
@@ -139,12 +139,4 @@ export function useDeleteProduct() {
   });
 }
 
-export function useCategories() {
-  return useQuery({
-    queryKey: ['categories'],
-    queryFn: async () => {
-      const response = await api.get<any>(apiEndpoints.categories.list);
-      return extractArrayData<Category>(response);
-    },
-  });
-}
+

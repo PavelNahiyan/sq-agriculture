@@ -1,4 +1,5 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, Query, UseGuards } from '@nestjs/common';
+import { Public } from '@/common/decorators/public.decorator';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { HeroSlidesService } from './hero-slides.service';
 import { CreateHeroSlideDto, UpdateHeroSlideDto } from './dto/hero-slide.dto';
@@ -11,12 +12,14 @@ import { Roles } from '@/common/decorators/roles.decorator';
 export class HeroSlidesController {
   constructor(private readonly heroSlidesService: HeroSlidesService) {}
 
+  @Public()
   @Get()
   @ApiOperation({ summary: 'Get all hero slides' })
   async findAll(@Query('activeOnly') activeOnly?: string) {
     return this.heroSlidesService.findAll(activeOnly === 'true');
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get hero slide by ID' })
   async findOne(@Param('id') id: string) {

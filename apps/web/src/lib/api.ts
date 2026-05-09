@@ -49,7 +49,7 @@ class ApiClient {
       throw error;
     }
 
-    return data.data || data;
+    return data.data !== undefined ? data.data : data;
   }
 
   async get<T>(endpoint: string, params?: Record<string, string>): Promise<T> {
@@ -142,18 +142,19 @@ export const apiEndpoints = {
     resetPassword: '/api/v1/auth/reset-password',
   },
   // Products
- products: {
+  products: {
     list: '/api/v1/products',
-    public: '/api/v1/products',
-    featured: '/api/v1/products?featured=true',
-    bySlug: (slug: string) => `/api/v1/products/${slug}`,
+    public: '/api/v1/products/public',
+    featured: '/api/v1/products/featured',
+    bySlug: (slug: string) => `/api/v1/products/slug/${slug}`,
     byId: (id: string) => `/api/v1/products/${id}`,
     related: (id: string) => `/api/v1/products/${id}/related`,
+    preOwned: '/api/v1/products/pre-owned',
   },
   categories: {
     list: '/api/v1/categories',
-    public: '/api/v1/categories',
-    bySlug: (slug: string) => `/api/v1/categories/${slug}`,
+    public: '/api/v1/categories/public',
+    bySlug: (slug: string) => `/api/v1/categories/slug/${slug}`,
     byId: (id: string) => `/api/v1/categories/${id}`,
   },
   leads: {

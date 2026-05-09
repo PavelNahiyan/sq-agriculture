@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, Leaf, Sprout, Phone, Mail, MapPin } from 'lucide-react';
+import { PageHeroSlider, pageHeroSlides } from '@/components/features/page-hero-slider';
 
 function formatPrice(product: any) {
   if (product.price && product.price > 0) {
@@ -85,31 +86,8 @@ export default function SeedsPage() {
       <Header />
 
       <main className="flex-1 pt-16">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-amber-700 to-amber-600 text-white py-20">
-          <div className="absolute inset-0 opacity-20">
-            <Image 
-              src="/uploads/covers/tormujer bichi.jpg" 
-              alt="Seeds"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Quality Seeds
-              </h1>
-              <p className="text-xl text-amber-100 mb-6">
-                High-yielding seeds for optimal harvest. BARI, BRRI approved varieties and hybrid seeds.
-              </p>
-              <Button asChild size="lg" className="bg-white text-amber-800 hover:bg-amber-100">
-                <Link href="#rice-seeds">View Rice Seeds</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
+        {/* Page Hero Slider */}
+        <PageHeroSlider slides={pageHeroSlides.seeds} />
 
         {/* Brand Partners */}
         <section className="py-8 bg-gray-50">

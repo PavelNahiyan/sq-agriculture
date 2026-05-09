@@ -21,6 +21,7 @@ import { useCreateInquiry } from '@/hooks/use-inquiries';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { PageHeroSlider, pageHeroSlides } from '@/components/features/page-hero-slider';
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters'),
@@ -123,14 +124,7 @@ export default function ContactPage() {
       <Header />
 
       <main className="flex-1 pt-20">
-        <section className="bg-primary text-white py-12">
-          <div className="container mx-auto px-4">
-            <h1 className="text-3xl md:text-4xl font-bold mb-2">Contact Us</h1>
-            <p className="text-white/80">
-              Get in touch with our team for inquiries and support
-            </p>
-          </div>
-        </section>
+        <PageHeroSlider slides={pageHeroSlides.contact} />
 
         <section className="py-12">
           <div className="container mx-auto px-4">

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2, Search } from 'lucide-react';
+import { Loader2, Search, Trash2 } from 'lucide-react';
 import { AdminLayout } from '@/components/layout/admin-layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
-import { useInquiries, useUpdateInquiry } from '@/hooks/use-inquiries';
+import { useInquiries, useUpdateInquiry, useDeleteInquiry } from '@/hooks/use-inquiries';
 import type { Inquiry, InquiryStatus } from '@/lib/shared-types';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -26,10 +26,12 @@ type InquiryFormData = z.infer<typeof inquirySchema>;
 export default function AdminInquiriesPage() {
   const { data: inquiries, isLoading } = useInquiries();
   const updateInquiry = useUpdateInquiry();
+  const deleteInquiry = useDeleteInquiry();
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const [statusFilter, setStatusFilter] = React.useState<string>('all');
   const [editingInquiry, setEditingInquiry] = React.useState<Inquiry | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = React.useState<string | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<InquiryFormData>({
     resolver: zodResolver(inquirySchema),
@@ -55,6 +57,15 @@ export default function AdminInquiriesPage() {
       reset();
     } catch (error) {
       console.error('Failed to update inquiry:', error);
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteInquiry.mutateAsync(id);
+      setDeleteConfirmId(null);
+    } catch (error) {
+      console.error('Failed to delete inquiry:', error);
     }
   };
 
@@ -154,16 +165,26 @@ export default function AdminInquiriesPage() {
                           {new Date(inquiry.createdAt).toLocaleDateString()}
                         </td>
                         <td className="py-3 px-4 text-right">
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => {
-                              setEditingInquiry(inquiry);
-                              reset({ status: inquiry.status, notes: inquiry.notes });
-                            }}
-                          >
-                            View/Update
-                          </Button>
+                          <div className="flex items-center justify-end gap-2">
+                            <Button 
+                              variant="ghost" 
+                              size="sm"
+                              onClick={() => {
+                                setEditingInquiry(inquiry);
+                                reset({ status: inquiry.status, notes: inquiry.notes });
+                              }}
+                            >
+                              View/Update
+                            </Button>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-red-600 hover:text-red-700"
+                              onClick={() => setDeleteConfirmId(inquiry.id)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
                         </td>
                       </tr>
                     ))}
@@ -250,6 +271,27 @@ export default function AdminInquiriesPage() {
                 </Button>
               </DialogFooter>
             </form>
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={!!deleteConfirmId} onOpenChange={() => setDeleteConfirmId(null)}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Inquiry</DialogTitle>
+            </DialogHeader>
+            <p>Are you sure you want to delete this inquiry? This action cannot be undone.</p>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setDeleteConfirmId(null)}>
+                Cancel
+              </Button>
+              <Button 
+                variant="destructive" 
+                onClick={() => deleteConfirmId && handleDelete(deleteConfirmId)}
+                disabled={deleteInquiry.isPending}
+              >
+                {deleteInquiry.isPending ? 'Deleting...' : 'Delete'}
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
       </div>

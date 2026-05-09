@@ -224,6 +224,25 @@ export interface WishlistItem {
   addedAt: string;
 }
 
+export interface HeroSlide {
+  id: string;
+  title: string;
+  titleBn?: string;
+  subtitle?: string;
+  subtitleBn?: string;
+  image: string;
+  mobileImage?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  order: number;
+  isActive: boolean;
+  backgroundColor?: string;
+  textColor?: string;
+  overlayOpacity?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Upload {
   id: string;
   filename: string;

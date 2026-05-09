@@ -1,81 +1,38 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useMemo } from 'react';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { usePreOwnedProducts } from '@/hooks/use-products';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tractor, Cog, ArrowLeft, ArrowRight, Settings, Phone } from 'lucide-react';
-
-interface PreOwnedDetails {
-  year: number;
-  hours: number;
-  condition: string;
-  previousOwner?: string;
-}
-
-interface Product {
-  id: string;
-  name: string;
-  nameBn?: string;
-  slug: string;
-  description: string;
-  price: number;
-  priceUnit: string;
-  images: string[];
-  isPreOwned: boolean;
-  preOwnedDetails: PreOwnedDetails | null;
-  category: {
-    id: string;
-    name: string;
-    slug: string;
-    type: string;
-  };
-}
+import { Tractor, Cog, ArrowLeft, Settings, Phone } from 'lucide-react';
+import { PageHeroSlider, pageHeroSlides } from '@/components/features/page-hero-slider';
 
 export default function PreOwnedMachinesPage() {
-  const [tractors, setTractors] = useState<Product[]>([]);
-  const [harvesters, setHarvesters] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: products, isLoading, error } = usePreOwnedProducts();
 
-  useEffect(() => {
-    async function fetchPreOwnedProducts() {
-      try {
-        const response = await fetch('/api/v1/products/public?isPreOwned=true&limit=100');
-        if (!response.ok) {
-          throw new Error('Failed to fetch products');
-        }
-        const data = await response.json();
-        
-        const tractorsData = data.data.filter(
-          (p: Product) => p.category?.type === 'MACHINERY' && 
-          (p.category?.slug === 'tractors' || p.name.toLowerCase().includes('tractor'))
-        );
-        const harvestersData = data.data.filter(
-          (p: Product) => p.category?.type === 'MACHINERY' && 
-          (p.category?.slug === 'harvesting-machinery' || 
-           p.name.toLowerCase().includes('harvester') ||
-           p.name.toLowerCase().includes('transplanter') ||
-           p.name.toLowerCase().includes('power tiller'))
-        );
-        
-        setTractors(tractorsData);
-        setHarvesters(harvestersData);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load products');
-      } finally {
-        setLoading(false);
-      }
-    }
+  const tractors = useMemo(() => 
+    (products || []).filter(
+      (p: any) => p.category?.type === 'MACHINERY' && 
+      (p.category?.slug === 'tractors' || p.name.toLowerCase().includes('tractor'))
+    ), [products]
+  );
 
-    fetchPreOwnedProducts();
-  }, []);
+  const harvesters = useMemo(() => 
+    (products || []).filter(
+      (p: any) => p.category?.type === 'MACHINERY' && 
+      (p.category?.slug === 'harvesting-machinery' || 
+       p.name.toLowerCase().includes('harvester') ||
+       p.name.toLowerCase().includes('transplanter') ||
+       p.name.toLowerCase().includes('power tiller'))
+    ), [products]
+  );
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-BD').format(price);
+  const formatPrice = (price: number | undefined) => {
+    return price ? new Intl.NumberFormat('en-BD').format(price) : '0';
   };
 
   const getConditionColor = (condition: string) => {
@@ -90,7 +47,7 @@ export default function PreOwnedMachinesPage() {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
@@ -111,7 +68,7 @@ export default function PreOwnedMachinesPage() {
         <Header />
         <main className="flex-1 pt-16 flex items-center justify-center">
           <div className="text-center">
-            <p className="text-red-600">Error: {error}</p>
+            <p className="text-red-600">Error: {error instanceof Error ? error.message : 'Failed to load products'}</p>
             <Button onClick={() => window.location.reload()} className="mt-4">
               Try Again
             </Button>
@@ -127,43 +84,8 @@ export default function PreOwnedMachinesPage() {
       <Header />
 
       <main className="flex-1 pt-16">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-green-900 via-green-800 to-green-700 text-white py-20">
-          <div className="absolute inset-0 opacity-10">
-            <Image 
-              src="/uploads/products/Tractor Specs.png" 
-              alt="Pre Owned Machines"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Pre-Owned Machines
-              </h1>
-              <p className="text-xl text-green-100 mb-6">
-                Quality certified pre-owned tractors and harvesters at the best prices. 
-                All machines inspected and backed by SQ Agriculture warranty.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg" className="bg-white text-green-800 hover:bg-green-100">
-                  <Link href="#tractors">
-                    <Tractor className="w-5 h-5 mr-2" />
-                    View Tractors
-                  </Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                  <Link href="#harvesters">
-                    <Settings className="w-5 h-5 mr-2" />
-                    View Harvesters
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Page Hero Slider */}
+        <PageHeroSlider slides={pageHeroSlides.preOwned} />
 
         {/* Trust Badges */}
         <section className="py-8 bg-green-50 border-b border-green-100">

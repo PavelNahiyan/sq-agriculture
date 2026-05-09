@@ -59,7 +59,7 @@ export function useHomepageConfig() {
   return useQuery({
     queryKey: ['homepage'],
     queryFn: async () => {
-      const response = await api.get<HomepageConfig>('/homepage');
+      const response = await api.get<HomepageConfig>('/api/v1/homepage');
       return response;
     },
     staleTime: 10 * 60 * 1000,
@@ -72,7 +72,7 @@ export function useUpdateHomepageConfig() {
 
   return useMutation({
     mutationFn: async (data: Partial<HomepageConfig>) => {
-      const response = await api.patch<HomepageConfig>('/homepage', data);
+      const response = await api.patch<HomepageConfig>('/api/v1/homepage', data);
       return response;
     },
     onSuccess: () => {

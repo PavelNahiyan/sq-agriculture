@@ -4,7 +4,7 @@ import { UpdateFloatingButtonDto } from './dto';
 import { JwtAuthGuard } from '@/common/guards/jwt-auth.guard';
 import { RolesGuard } from '@/common/guards/roles.guard';
 
-@Controller('api/settings/floating-button')
+@Controller('settings/floating-button')
 export class FloatingButtonController {
   constructor(private readonly floatingButtonService: FloatingButtonService) {}
 

@@ -7,6 +7,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { PageHeroSlider, pageHeroSlides } from '@/components/features/page-hero-slider';
 
 export default function ServicesPage() {
 
@@ -62,24 +63,8 @@ export default function ServicesPage() {
       <Header />
 
       <main className="flex-1 pt-20">
-        {/* Hero Section */}
-        <section className="relative h-[50vh] min-h-[400px] flex items-center justify-center overflow-hidden">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920"
-              alt="Agricultural field"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-green-900/90 to-green-700/70" />
-          </div>
-          <div className="relative z-10 container mx-auto px-4 text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Empowering Your Farm from Seed to Harvest</h1>
-            <p className="text-lg text-white/90 max-w-3xl mx-auto">
-              At SQ Agriculture Ltd, we don't just sell products; we partner with you to ensure every season is more productive than the last. Whether you are prepping the soil, protecting your crop, or bringing in the harvest, our comprehensive suite of agricultural solutions is designed to maximize your yield and minimize your downtime.
-            </p>
-          </div>
-        </section>
+        {/* Page Hero Slider */}
+        <PageHeroSlider slides={pageHeroSlides.services} />
 
         {/* Services */}
         <section className="py-20">

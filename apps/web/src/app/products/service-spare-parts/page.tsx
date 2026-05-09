@@ -75,7 +75,7 @@ export default function ServiceSparePartsPage() {
         <section className="relative bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-white py-16 md:py-20">
           <div className="absolute inset-0 opacity-10">
             <Image 
-              src="/uploads/covers/tractor covers.jpg" 
+              src="/uploads/covers/tractor%20covers.jpg" 
               alt="SQ Service & Spare Parts"
               fill
               className="object-cover"

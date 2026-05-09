@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { LayoutDashboard, Package, FolderTree, MessageSquare, Users, Settings, LogOut, Leaf, Menu, X, Bell, User as UserIcon, Loader2, Shield, Bug, Droplet, Tractor, Wrench, Cog } from 'lucide-react';
+import { LayoutDashboard, Package, FolderTree, MessageSquare, Users, Settings, LogOut, Leaf, Menu, X, Bell, User as UserIcon, Loader2, Shield, Bug, Droplet, Tractor, Wrench, Cog, Image as ImageIcon, Newspaper, MapPin, Home, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { ROLE_DISPLAY_NAMES, ROLE_DEFAULT_PAGES, PAGE_ROLE_MAP } from '@/lib/shared-types';
@@ -18,11 +18,17 @@ interface StoredUser {
 
 const SUPER_ADMIN_NAV = [
   { href: '/admin', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/admin/homepage', icon: Home, label: 'Homepage' },
+  { href: '/admin/hero-slides', icon: ImageIcon, label: 'Hero Slides' },
   { href: '/admin/products', icon: Package, label: 'All Products' },
   { href: '/admin/categories', icon: FolderTree, label: 'Categories' },
+  { href: '/admin/blog', icon: Newspaper, label: 'Blog' },
+  { href: '/admin/dealers', icon: MapPin, label: 'Dealers' },
   { href: '/admin/leads', icon: MessageSquare, label: 'Leads' },
+  { href: '/admin/inquiries', icon: Mail, label: 'Inquiries' },
   { href: '/admin/users', icon: Users, label: 'Users' },
   { href: '/admin/access', icon: Shield, label: 'Access Control' },
+  { href: '/admin/pages/gallery', icon: ImageIcon, label: 'Gallery' },
   { href: '/admin/settings', icon: Settings, label: 'Settings' },
 ];
 

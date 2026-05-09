@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, MapPin, Phone, Mail, Tractor, Cog, Settings } from 'lucide-react';
+import { PageHeroSlider, pageHeroSlides } from '@/components/features/page-hero-slider';
 
 export default function MachineryPage() {
   const { data: products, isLoading } = useProducts({ categoryType: 'MACHINERY', limit: 200 });
@@ -40,37 +41,8 @@ export default function MachineryPage() {
       <Header />
 
       <main className="flex-1 pt-16">
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-green-900 to-green-700 text-white py-20">
-          <div className="absolute inset-0 opacity-10">
-            <Image 
-              src="/uploads/covers/tractor cover4.jpg" 
-              alt="SQ Machinery"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                SQ Agriculture Machinery
-              </h1>
-              <p className="text-xl text-green-100 mb-6">
-                Premium agricultural machinery from trusted brands. 
-                Designed for Bangladesh farming conditions.
-              </p>
-              <div className="flex gap-4">
-                <Button asChild size="lg" className="bg-white text-green-800 hover:bg-green-100">
-                  <Link href="#tractors">View Tractors</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                  <Link href="#rotavators">View Implements</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Page Hero Slider */}
+        <PageHeroSlider slides={pageHeroSlides.machinery} />
 
         {/* Brand Partners */}
         <section className="py-12 bg-gray-50">
@@ -232,7 +204,7 @@ export default function MachineryPage() {
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                     <p className="text-green-600 font-bold text-xl mb-3">
-                      ৳{product.price?.toLocaleString()}
+                      {product.price ? '৳' + product.price.toLocaleString() : 'Price On Request'}
                     </p>
                     <Button asChild className="w-full">
                       <Link href={`/products/${product.slug}`}>View Details</Link>
@@ -259,7 +231,7 @@ export default function MachineryPage() {
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
                     <p className="text-green-600 font-bold text-xl mb-3">
-                      ৳{product.price?.toLocaleString()}
+                      {product.price ? '৳' + product.price.toLocaleString() : 'Price On Request'}
                     </p>
                     <Button asChild className="w-full">
                       <Link href={`/products/${product.slug}`}>View Details</Link>

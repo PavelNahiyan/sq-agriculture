@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/api';
 import type { Dealer } from '@/lib/shared-types';
 
@@ -65,6 +65,46 @@ export function useDivisions() {
     queryFn: async () => {
       const response = await api.get<any>('/api/v1/dealers/divisions');
       return extractArrayData<string>(response);
+    },
+  });
+}
+
+export function useCreateDealer() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (data: Partial<Dealer>) => {
+      return api.post<Dealer>('/api/v1/dealers', data);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dealers'] });
+    },
+  });
+}
+
+export function useUpdateDealer() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<Dealer> }) => {
+      return api.patch<Dealer>(`/api/v1/dealers/${id}`, data);
+    },
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['dealers'] });
+      queryClient.invalidateQueries({ queryKey: ['dealer', variables.id] });
+    },
+  });
+}
+
+export function useDeleteDealer() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async (id: string) => {
+      return api.delete<Dealer>(`/api/v1/dealers/${id}`);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['dealers'] });
     },
   });
 }

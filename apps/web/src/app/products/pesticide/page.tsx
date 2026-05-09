@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, Shield, Phone, Mail, MapPin, Bug } from 'lucide-react';
 import { LicenseInfo } from '@/components/features/license-info';
+import { PageHeroSlider, pageHeroSlides } from '@/components/features/page-hero-slider';
 
 export default function PesticidePage() {
   const { data: products, isLoading } = useProducts({ categoryType: 'PESTICIDES', limit: 200 });
@@ -20,46 +21,8 @@ export default function PesticidePage() {
       <Header />
 
 <main className="flex-1 pt-16">
-        {/* Banner - Matching gradient border style */}
-        <div className="h-3 w-full bg-gradient-to-r from-green-900 via-[#2D5A27] to-green-900 shadow-lg" />
-
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#1a3d16] text-white py-20">
-          <div className="absolute inset-0 opacity-10">
-            <Image 
-              src="/uploads/covers/cover.jpg" 
-              alt="Pesticides"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
- <div className="container mx-auto px-4 relative z-10">
-            <div className="flex items-center gap-4 mb-6">
-              <img 
-                src="https://placehold.co/200x80/2D5A27/white?text=SQ+NAFIS" 
-                alt="SQ NAfis Crop Care" 
-                className="h-20 w-auto object-contain"
-              />
-            </div>
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#85BF35]/20 border border-[#85BF35]/30 mb-4">
-                <Bug className="w-4 h-4 text-[#85BF35]" />
-                <span className="text-[#85BF35] text-sm font-medium">Crop Protection</span>
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Pesticides
-              </h1>
-              <p className="text-xl text-white/80 mb-6">
-                Effective pest control solutions for protecting your crops. 
-                Advanced insecticides, fungicides, and herbicides for maximum yield protection.
-              </p>
-              <Button asChild size="lg" className="bg-[#85BF35] text-[#2D5A27] hover:bg-[#9AD44D] font-semibold">
-                <Link href="#insecticides">View Products</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
+        {/* Page Hero Slider */}
+        <PageHeroSlider slides={pageHeroSlides.pesticide} />
 
         {/* Features Bar */}
         <section className="py-8 bg-white border-b border-x-4 border-transparent bg-gradient-to-r from-[#2D5A27] via-[#85BF35] to-[#2D5A27]">

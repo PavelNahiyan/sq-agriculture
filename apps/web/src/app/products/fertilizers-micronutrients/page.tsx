@@ -9,63 +9,23 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, ArrowRight, Check, Droplets, Phone, Mail, MapPin, Beaker, Leaf } from 'lucide-react';
 import { LicenseInfo } from '@/components/features/license-info';
+import { PageHeroSlider, pageHeroSlides } from '@/components/features/page-hero-slider';
 
 export default function FertilizersMicronutrientsPage() {
-  const { data: products, isLoading } = useProducts({ limit: 500 });
+  const { data: fertilizers, isLoading: fertLoading } = useProducts({ categoryType: 'FERTILIZERS', limit: 100 });
+  const { data: micronutrients, isLoading: microLoading } = useProducts({ categoryType: 'MICRONUTRIENTS', limit: 100 });
 
-  const fertilizers = products?.filter(p => p.category?.type === 'FERTILIZERS') || [];
-  const micronutrients = products?.filter(p => p.category?.type === 'MICRONUTRIENTS') || [];
+  const isLoading = fertLoading || microLoading;
+  const fertilizerList = fertilizers || [];
+  const micronutrientList = micronutrients || [];
 
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
 
       <main className="flex-1 pt-16">
-        {/* Banner - Matching gradient border style */}
-        <div className="h-3 w-full bg-gradient-to-r from-green-900 via-[#2D5A27] to-green-900 shadow-lg" />
-
-        {/* Hero Section */}
-        <section className="relative bg-gradient-to-r from-[#2D5A27] via-[#2D5A27] to-[#1a3d16] text-white py-20">
-          <div className="absolute inset-0 opacity-10">
-            <Image 
-              src="/uploads/covers/cover.jpg" 
-              alt="Fertilizers and Micronutrients"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="container mx-auto px-4 relative z-10">
-            <div className="flex items-center gap-4 mb-6">
-              <img 
-                src="https://placehold.co/200x80/2D5A27/white?text=SQ+NAFIS" 
-                alt="SQ NAfis Crop Care" 
-                className="h-20 w-auto object-contain"
-              />
-            </div>
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#85BF35]/20 border border-[#85BF35]/30 mb-4">
-                <Leaf className="w-4 h-4 text-[#85BF35]" />
-                <span className="text-[#85BF35] text-sm font-medium">Plant Nutrition</span>
-              </div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Fertilizers & Micronutrients
-              </h1>
-              <p className="text-xl text-white/80 mb-6">
-                Complete plant nutrition solutions. Quality fertilizers and essential micronutrients 
-                for optimal crop growth and maximum yield.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <Button asChild size="lg" className="bg-[#85BF35] text-[#2D5A27] hover:bg-[#9AD44D] font-semibold">
-                  <Link href="#fertilizers">Fertilizers</Link>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="bg-transparent text-white border-white hover:bg-white/10">
-                  <Link href="#micronutrients">Micronutrients</Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Page Hero Slider */}
+        <PageHeroSlider slides={pageHeroSlides.fertilizers} />
 
         {/* Features Bar */}
         <section className="py-8 bg-white border-b border-x-4 border-transparent bg-gradient-to-r from-[#2D5A27] via-[#85BF35] to-[#2D5A27]">
@@ -171,9 +131,9 @@ export default function FertilizersMicronutrientsPage() {
               </div>
             ) : (
               <>
-                {fertilizers.length > 0 ? (
+                {fertilizerList.length > 0 ? (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {fertilizers.map(product => (
+                    {fertilizerList.map(product => (
                       <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
                         <div className="relative h-48 bg-gray-100">
                           {product.images?.[0] ? (
@@ -285,7 +245,7 @@ export default function FertilizersMicronutrientsPage() {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {micronutrients.length > 0 ? micronutrients.map(product => (
+                {micronutrientList.length > 0 ? micronutrientList.map(product => (
                   <Card key={product.id} className="overflow-hidden hover:shadow-xl transition-shadow">
                     <div className="relative h-48 bg-gray-100">
                       {product.images?.[0] ? (

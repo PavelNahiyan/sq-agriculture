@@ -39,7 +39,7 @@ export default function ProductsPage() {
   const [sortBy, setSortBy] = React.useState('featured');
 
   const { data: products, isLoading, error } = useProducts({
-    category: category !== 'all' ? category : undefined,
+    categoryType: category !== 'all' ? category : undefined,
   });
 
   const filteredProducts = React.useMemo(() => {

@@ -17,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { api } from '@/lib/api';
 import { ROLE_DISPLAY_NAMES, Role } from '@/lib/shared-types';
 
 interface AdminUser {
@@ -55,20 +56,8 @@ export default function AccessManagementPage() {
 
   const fetchUsers = async () => {
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-      const token = localStorage.getItem('accessToken');
-      
-      const response = await fetch(`${apiUrl}/api/v1/users?role=${encodeURIComponent('SUPER_ADMIN,PAGE_EDITOR,SEED_ADMIN,PESTICIDE_ADMIN,FERTILIZER_ADMIN,MACHINERY_ADMIN,SERVICE_ADMIN,ADMIN,MANAGER')}`, {
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUsers(data.data || data || []);
-      }
+      const response = await api.get<any>(`/api/v1/users?role=${encodeURIComponent('SUPER_ADMIN,PAGE_EDITOR,SEED_ADMIN,PESTICIDE_ADMIN,FERTILIZER_ADMIN,MACHINERY_ADMIN,SERVICE_ADMIN,ADMIN,MANAGER')}`);
+      setUsers(response.data || response || []);
     } catch (error) {
       console.error('Failed to fetch users:', error);
     } finally {
@@ -81,27 +70,14 @@ export default function AccessManagementPage() {
     
     setSaving(true);
     try {
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-      const token = localStorage.getItem('accessToken');
-      
-      const response = await fetch(`${apiUrl}/api/v1/users/${editingUser.id}/role`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ role: newRole }),
-      });
-
-      if (response.ok) {
-        setUsers(users.map(u => 
-          u.id === editingUser.id 
-            ? { ...u, role: newRole }
-            : u
-        ));
-        setEditingUser(null);
-        setNewRole('');
-      }
+      await api.patch(`/api/v1/users/${editingUser.id}/role`, { role: newRole });
+      setUsers(users.map(u => 
+        u.id === editingUser.id 
+          ? { ...u, role: newRole }
+          : u
+      ));
+      setEditingUser(null);
+      setNewRole('');
     } catch (error) {
       console.error('Failed to update role:', error);
     } finally {
