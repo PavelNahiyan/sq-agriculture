@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Query, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Delete, Param, Query, Req } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Request } from 'express';
 import { InquiriesService } from './inquiries.service';
@@ -52,6 +52,15 @@ export class InquiriesController {
   @ApiResponse({ status: 200, description: 'Inquiry updated' })
   async update(@Param('id') id: string, @Body() dto: UpdateInquiryDto) {
     return this.inquiriesService.update(id, dto);
+  }
+
+  @Delete(':id')
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @ApiOperation({ summary: 'Delete inquiry' })
+  @ApiResponse({ status: 200, description: 'Inquiry deleted' })
+  async remove(@Param('id') id: string): Promise<{ message: string }> {
+    await this.inquiriesService.remove(id);
+    return { message: 'Inquiry deleted successfully' };
   }
 
   @Patch(':id/assign/:userId')

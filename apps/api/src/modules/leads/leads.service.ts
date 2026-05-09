@@ -125,6 +125,12 @@ export class LeadsService {
     return updatedLead;
   }
 
+  async remove(id: string): Promise<void> {
+    const lead = await this.prisma.lead.findUnique({ where: { id } });
+    if (!lead) throw new NotFoundException('Lead not found');
+    await this.prisma.lead.delete({ where: { id } });
+  }
+
   async assignToUser(leadId: string, userId: string): Promise<any> {
     const lead = await this.prisma.lead.findUnique({
       where: { id: leadId },

@@ -1,7 +1,5 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Target, Eye, Heart, Award, Users, Truck, Shield, CheckCircle } from 'lucide-react';
@@ -10,6 +8,8 @@ import { Footer } from '@/components/layout/footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PageHeroSlider, pageHeroSlides } from '@/components/features/page-hero-slider';
+
+export const dynamic = 'force-dynamic';
 
 export default function AboutPage() {
   const values = [

@@ -26,6 +26,7 @@ const SUPER_ADMIN_NAV = [
   { href: '/admin/dealers', icon: MapPin, label: 'Dealers' },
   { href: '/admin/leads', icon: MessageSquare, label: 'Leads' },
   { href: '/admin/inquiries', icon: Mail, label: 'Inquiries' },
+  { href: '/admin/newsletter', icon: Mail, label: 'Newsletter' },
   { href: '/admin/users', icon: Users, label: 'Users' },
   { href: '/admin/access', icon: Shield, label: 'Access Control' },
   { href: '/admin/pages/gallery', icon: ImageIcon, label: 'Gallery' },

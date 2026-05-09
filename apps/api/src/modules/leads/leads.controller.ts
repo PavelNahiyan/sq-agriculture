@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Delete, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { LeadsService } from './leads.service';
 import { CreateLeadDto, UpdateLeadDto, LeadQueryDto, LeadResponseDto } from './dto';
@@ -52,6 +52,15 @@ export class LeadsController {
     @Body() dto: UpdateLeadDto,
   ): Promise<LeadResponseDto> {
     return this.leadsService.update(id, dto);
+  }
+
+  @Delete(':id')
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @ApiOperation({ summary: 'Delete lead' })
+  @ApiResponse({ status: 200, description: 'Lead deleted' })
+  async remove(@Param('id') id: string): Promise<{ message: string }> {
+    await this.leadsService.remove(id);
+    return { message: 'Lead deleted successfully' };
   }
 
   @Patch(':id/assign/:userId')

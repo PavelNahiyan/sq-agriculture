@@ -99,6 +99,12 @@ export class InquiriesService {
     });
   }
 
+  async remove(id: string): Promise<void> {
+    const inquiry = await this.prisma.inquiry.findUnique({ where: { id } });
+    if (!inquiry) throw new NotFoundException('Inquiry not found');
+    await this.prisma.inquiry.delete({ where: { id } });
+  }
+
   async assignToUser(inquiryId: string, userId: string): Promise<any> {
     const inquiry = await this.prisma.inquiry.findUnique({
       where: { id: inquiryId },

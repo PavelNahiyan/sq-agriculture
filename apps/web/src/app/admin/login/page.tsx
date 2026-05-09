@@ -1,7 +1,5 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
 import * as React from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -10,6 +8,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+
+export const dynamic = 'force-dynamic';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -158,10 +158,6 @@ export default function AdminLoginPage() {
                 </Button>
               </form>
 
-              <div className="mt-6 text-center text-sm text-gray-500">
-                <p>Demo credentials:</p>
-                <p className="font-mono text-xs mt-1">admin@sqagriculture.com / admin123</p>
-              </div>
             </CardContent>
           </Card>
 

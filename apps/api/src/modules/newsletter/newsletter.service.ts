@@ -67,4 +67,13 @@ export class NewsletterService {
     ]);
     return { total, active };
   }
+
+  async remove(id: string): Promise<void> {
+    const sub = await this.prisma.newsletterSubscription.findUnique({ where: { id } });
+    if (!sub) throw new NotFoundException('Subscription not found');
+    await this.prisma.newsletterSubscription.update({
+      where: { id },
+      data: { isActive: false, unsubscribedAt: new Date() },
+    });
+  }
 }

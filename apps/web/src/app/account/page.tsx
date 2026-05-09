@@ -1,8 +1,6 @@
 'use client';
 
 import * as React from 'react';
-
-export const dynamic = 'force-dynamic';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { User, Mail, Phone, MapPin, ShoppingBag, Heart, LogOut, Loader2 } from 'lucide-react';
@@ -11,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/use-auth';
+
+export const dynamic = 'force-dynamic';
 
 export default function AccountPage() {
   const router = useRouter();

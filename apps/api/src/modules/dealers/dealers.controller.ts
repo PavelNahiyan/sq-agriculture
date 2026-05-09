@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Delete, Param, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { DealersService } from './dealers.service';
 import { CreateDealerDto, UpdateDealerDto, DealerQueryDto } from './dto';
@@ -77,11 +77,20 @@ export class DealersController {
     return this.dealersService.update(id, dto);
   }
 
+  @Delete(':id')
+  @Roles(Role.ADMIN, Role.MANAGER)
+  @ApiOperation({ summary: 'Delete dealer' })
+  @ApiResponse({ status: 200, description: 'Dealer deleted' })
+  async removeHard(@Param('id') id: string) {
+    await this.dealersService.remove(id);
+    return { message: 'Dealer deleted successfully' };
+  }
+
   @Patch(':id/deactivate')
   @Roles(Role.ADMIN)
   @ApiOperation({ summary: 'Deactivate dealer' })
   @ApiResponse({ status: 200, description: 'Dealer deactivated' })
-  async remove(@Param('id') id: string) {
+  async deactivate(@Param('id') id: string) {
     await this.dealersService.remove(id);
     return { message: 'Dealer deactivated successfully' };
   }

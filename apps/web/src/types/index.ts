@@ -1,6 +1,3 @@
-// Re-export all shared types
-export * from './index';
-
 // API Response types
 export interface ApiResponse<T> {
   success: boolean;
