@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as Sentry from '@sentry/node';
+import * as helmet from 'helmet';
 import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
@@ -16,12 +17,16 @@ Sentry.init({
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.use(helmet.default());
+
   const configService = app.get(ConfigService);
   const port = process.env.PORT || configService.get<number>('APP_PORT', 3001);
 
-  // Enable CORS
+  // Enable CORS (supports comma-separated origins)
+  const corsOrigin = configService.get<string>('CORS_ORIGIN', 'http://localhost:3000');
+  const allowedOrigins = corsOrigin.split(',').map((o) => o.trim()).filter(Boolean);
   app.enableCors({
-    origin: configService.get<string>('CORS_ORIGIN', 'http://localhost:3000'),
+    origin: allowedOrigins.length === 1 ? allowedOrigins[0] : allowedOrigins,
     credentials: true,
   });
 

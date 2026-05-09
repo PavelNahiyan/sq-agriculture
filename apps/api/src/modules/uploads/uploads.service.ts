@@ -38,7 +38,19 @@ export class UploadsService {
   async browseMediaFolder(folder: string) {
     const fs = require('fs');
     const path = require('path');
-    const fullPath = path.join(__dirname, '../../../../web/public', folder);
+    
+    // Path traversal protection
+    const sanitized = folder.replace(/\.\./g, '').replace(/[\\\/]/g, '');
+    if (sanitized !== folder) {
+      return [];
+    }
+    
+    const basePath = path.resolve(__dirname, '../../../../web/public');
+    const fullPath = path.resolve(basePath, folder);
+    
+    if (!fullPath.startsWith(basePath)) {
+      return [];
+    }
     
     try {
       const files = fs.readdirSync(fullPath);

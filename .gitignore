@@ -29,8 +29,9 @@ coverage/
 .nyc_output/
 
 # Uploads (local storage) - ignore all for development, use cloud storage in production
-uploads/
+./uploads/
 apps/api/uploads/
+apps/web/public/uploads/
 
 # Prisma
 apps/api/prisma/*.db

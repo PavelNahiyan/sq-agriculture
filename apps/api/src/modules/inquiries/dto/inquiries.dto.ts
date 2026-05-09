@@ -1,5 +1,6 @@
 import {
   IsString,
+  IsEmail,
   MaxLength,
   IsOptional,
   IsInt,
@@ -17,7 +18,7 @@ export class CreateInquiryDto {
   @ApiProperty({ maxLength: 100 })
   name: string;
 
-  @IsString()
+  @IsEmail()
   @ApiProperty()
   email: string;
 
@@ -55,7 +56,7 @@ export class UpdateInquiryDto {
   @ApiPropertyOptional({ maxLength: 100 })
   name?: string;
 
-  @IsString()
+  @IsEmail()
   @IsOptional()
   @ApiPropertyOptional()
   email?: string;

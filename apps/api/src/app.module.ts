@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
@@ -36,6 +37,17 @@ import { PrismaModule } from './prisma/prisma/prisma.module';
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: ['.env', '.env.local'],
+    }),
+
+    ThrottlerModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        throttlers: [{
+          ttl: (config.get<number>('RATE_LIMIT_TTL', 60)) * 1000,
+          limit: config.get<number>('RATE_LIMIT_MAX', 100),
+        }],
+      }),
     }),
 
     PassportModule.register({ defaultStrategy: 'jwt' }),
@@ -78,6 +90,10 @@ import { PrismaModule } from './prisma/prisma/prisma.module';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
     },
     SyncMaterialsService,
   ],
