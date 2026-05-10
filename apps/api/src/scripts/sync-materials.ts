@@ -201,8 +201,8 @@ export class SyncMaterialsService implements OnModuleInit {
   constructor(private prisma: PrismaService) {}
 
   async onModuleInit() {
-    console.log('🔄 Starting Materials Sync...');
-    await this.syncAllMaterials();
+    // Fire and forget — don't block app startup for local materials sync
+    this.syncAllMaterials().catch(() => {});
   }
 
   private async syncAllMaterials() {
