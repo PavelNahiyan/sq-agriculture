@@ -1,5 +1,11 @@
-import { Get, Delete, Controller, Query, Param, NotFoundException } from '@nestjs/common';
+import {
+  Get, Delete, Post, Controller, Query, Param, Body,
+  NotFoundException, UseInterceptors, UploadedFile,
+  UploadedFiles, Req,
+} from '@nestjs/common';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { UploadsService } from './uploads.service';
+import { Request } from 'express';
 
 @Controller('uploads')
 export class UploadsController {
@@ -27,10 +33,58 @@ export class UploadsController {
     return { message: 'File deleted successfully' };
   }
 
-  @Get('media/browse')
-  async browseMedia(
-    @Query('folder') folder: string = 'images',
+  @Post('single')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadSingle(
+    @UploadedFile() file: Express.Multer.File,
+    @Body('entityType') entityType?: string,
+    @Body('entityId') entityId?: string,
+    @Req() req?: Request,
   ) {
+    const result = await this.uploadsService.uploadSingle(
+      file,
+      entityType,
+      entityId,
+      (req as any).user?.id,
+    );
+    return { url: result.secure_url, filename: result.public_id };
+  }
+
+  @Post('multiple')
+  @UseInterceptors(FilesInterceptor('files'))
+  async uploadMultiple(
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body('entityType') entityType?: string,
+    @Body('entityId') entityId?: string,
+    @Req() req?: Request,
+  ) {
+    const results = await this.uploadsService.uploadMultiple(
+      files,
+      entityType,
+      entityId,
+      (req as any).user?.id,
+    );
+    return results.map((r) => ({ url: r.secure_url, filename: r.public_id }));
+  }
+
+  @Post('from-url')
+  async uploadFromUrl(
+    @Body('url') url: string,
+    @Body('entityType') entityType?: string,
+    @Body('entityId') entityId?: string,
+    @Req() req?: Request,
+  ) {
+    const result = await this.uploadsService.uploadFromUrl(
+      url,
+      entityType,
+      entityId,
+      (req as any).user?.id,
+    );
+    return { url: result.secure_url, filename: result.public_id };
+  }
+
+  @Get('media/browse')
+  async browseMedia(@Query('folder') folder: string = 'images') {
     return this.uploadsService.browseMediaFolder(folder);
   }
 }
