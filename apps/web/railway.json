@@ -1,0 +1,15 @@
+{
+  "$schema": "https://railway.app/schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "npm run build --workspace=@sq-agriculture/web",
+    "watchPatterns": ["apps/web/**"]
+  },
+  "deploy": {
+    "numReplicas": 1,
+    "restartDelaySecs": 10,
+    "startCommand": "npx next start -H 0.0.0.0 -p ${PORT:-3000}",
+    "healthcheckPath": "/",
+    "healthcheckInterval": 30
+  }
+}
